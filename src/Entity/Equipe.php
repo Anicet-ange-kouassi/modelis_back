@@ -14,7 +14,7 @@ class Equipe
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\Column(name: 'libelle', type: 'string', length: 254, nullable: true)]
+    #[ORM\Column(name: 'libelle', type: 'string', length: 500, nullable: true)]
     #[Assert\NotBlank(message: "Veuillez renseigner le libellé du poste ou de la fonction occupée dans l'équipe")]
     #[Assert\Length(
         min: 2,
@@ -30,10 +30,6 @@ class Equipe
 
     #[ORM\Column(name: 'description', type: 'string', length: 254, nullable: true)]
     private ?string $description = null;
-
-    #[ORM\Column(name: 'mot', type: 'text', nullable: true)]
-    private ?string $mot = null;
-
     #[ORM\Column(name: 'dateCreation', type: 'datetime', nullable: false, options: ['default' => 'CURRENT_TIMESTAMP'])]
     private \DateTimeInterface $datecreation;
 
@@ -51,25 +47,23 @@ class Equipe
     {
         return $this->libelle;
     }
+
     public function setLibelle(?string $libelle): self
     {
         $this->libelle = $libelle;
 
         return $this;
     }
+
     public function getPersonneid(): ?Personne
     {
         return $this->personneid;
     }
 
-    /**
-     * @param Personne|null $personneid
-     */
     public function setPersonneid(?Personne $personneid): void
     {
         $this->personneid = $personneid;
     }
-
 
     public function getDescription(): ?string
     {
@@ -79,18 +73,6 @@ class Equipe
     public function setDescription(?string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getMot(): ?string
-    {
-        return $this->mot;
-    }
-
-    public function setMot(?string $mot): self
-    {
-        $this->mot = $mot;
 
         return $this;
     }
