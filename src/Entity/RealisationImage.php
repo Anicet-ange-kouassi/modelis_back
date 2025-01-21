@@ -3,9 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\RealisationImageRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
+#[\AllowDynamicProperties]
 #[ORM\Entity(repositoryClass: RealisationImageRepository::class)]
 class RealisationImage
 {
@@ -14,38 +15,22 @@ class RealisationImage
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private ?int $realisationId = null;
-
-    #[ORM\Column(type: 'text')]
-    #[Assert\NotBlank(message: 'L\'image est obligatoire.')]
-    private string $image;
-
-    #[ORM\Column(type: 'string', length: 254, nullable: true)]
-    private ?string $description = null;
-
-    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
-    private \DateTimeInterface $dateCreation;
+    #[ORM\ManyToOne(targetEntity: Realisation::class)]
+    #[ORM\JoinColumn(name: 'realisationId', referencedColumnName: 'id', nullable: false)]
+    private ?Realisation $realisationId = null;
+    #[ORM\Column(name: 'image', type: 'text', nullable: true)]
+    private ?string $image = null;
+    #[ORM\Column(name: 'date_creation', type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
+    private ?\DateTimeInterface $date_creation = null;
 
     public function __construct()
     {
-        $this->dateCreation = new \DateTime();
+        $this->date_creation = new \DateTime();
     }
 
-    public function getId(): ?int
+    public function setImage(Collection $image): void
     {
-        return $this->id;
-    }
-
-    public function getRealisationId(): ?int
-    {
-        return $this->realisationId;
-    }
-
-    public function setRealisationId(?int $realisationId): self
-    {
-        $this->realisationId = $realisationId;
-        return $this;
+        $this->image = $image;
     }
 
     public function getImage(): string
@@ -53,25 +38,33 @@ class RealisationImage
         return $this->image;
     }
 
-    public function setImage(string $image): self
+    public function getId(): ?int
     {
-        $this->image = $image;
-        return $this;
+        return $this->id;
     }
 
-    public function getDescription(): ?string
+    public function setId(?int $id): void
     {
-        return $this->description;
+        $this->id = $id;
     }
 
-    public function setDescription(?string $description): self
+    public function getDate_Creation(): \DateTimeInterface
     {
-        $this->description = $description;
-        return $this;
+        return $this->date_creation;
     }
 
-    public function getDateCreation(): \DateTimeInterface
+    public function setDate_Creation(\DateTimeInterface $date_creation): void
     {
-        return $this->dateCreation;
+        $this->date_creation = $date_creation;
+    }
+
+    public function getRealisationId(): ?Realisation
+    {
+        return $this->realisationId;
+    }
+
+    public function setRealisationId(?Realisation $realisationId): void
+    {
+        $this->realisationId = $realisationId;
     }
 }

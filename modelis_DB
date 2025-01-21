@@ -1,0 +1,813 @@
+-- MySQL dump 10.13  Distrib 8.0.40, for Linux (x86_64)
+--
+-- Host: localhost    Database: modelis_DB
+-- ------------------------------------------------------
+-- Server version	8.0.40-0ubuntu0.24.04.1
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `action`
+--
+
+DROP TABLE IF EXISTS `action`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `action` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `action`
+--
+
+LOCK TABLES `action` WRITE;
+/*!40000 ALTER TABLE `action` DISABLE KEYS */;
+/*!40000 ALTER TABLE `action` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `blog`
+--
+
+DROP TABLE IF EXISTS `blog`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `blog` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `utilisateur_id` int DEFAULT NULL,
+  `libelle` varchar(500) NOT NULL,
+  `description` longtext,
+  `image` longtext,
+  `date_creation` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `blog`
+--
+
+LOCK TABLES `blog` WRITE;
+/*!40000 ALTER TABLE `blog` DISABLE KEYS */;
+/*!40000 ALTER TABLE `blog` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `blog_commentaire`
+--
+
+DROP TABLE IF EXISTS `blog_commentaire`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `blog_commentaire` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `blog_id` int NOT NULL,
+  `utilisateur_id` int DEFAULT NULL,
+  `commentaire` longtext COLLATE utf8mb4_unicode_ci,
+  `nom` longtext COLLATE utf8mb4_unicode_ci,
+  `prenom` longtext COLLATE utf8mb4_unicode_ci,
+  `email` longtext COLLATE utf8mb4_unicode_ci,
+  `image` longtext COLLATE utf8mb4_unicode_ci,
+  `date_creation` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `blog_commentaire`
+--
+
+LOCK TABLES `blog_commentaire` WRITE;
+/*!40000 ALTER TABLE `blog_commentaire` DISABLE KEYS */;
+/*!40000 ALTER TABLE `blog_commentaire` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `competence`
+--
+
+DROP TABLE IF EXISTS `competence`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `competence` (
+  `id` int NOT NULL,
+  `libelle` text,
+  `description` text,
+  `icon` varchar(500) NOT NULL,
+  `image` text,
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `competence`
+--
+
+LOCK TABLES `competence` WRITE;
+/*!40000 ALTER TABLE `competence` DISABLE KEYS */;
+/*!40000 ALTER TABLE `competence` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `contact`
+--
+
+DROP TABLE IF EXISTS `contact`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `contact` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `email` varchar(255) NOT NULL,
+  `tel` varchar(50) NOT NULL,
+  `adresse` text NOT NULL,
+  `dateCreation` date NOT NULL,
+  `paysId` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `paysId` (`paysId`),
+  CONSTRAINT `contact_ibfk_1` FOREIGN KEY (`paysId`) REFERENCES `pays` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `contact`
+--
+
+LOCK TABLES `contact` WRITE;
+/*!40000 ALTER TABLE `contact` DISABLE KEYS */;
+INSERT INTO `contact` VALUES (1,'contact@modelis-tech.com','(+225) 21 74 84 34','COCODY FAYA EN FACE DE LA CLINIQUE BON SAMARITAIN, Abidjan','2025-01-21',1),(2,'contact@modelis-tech.fr','(+33) 1 23 45 67 89','Paris, France','2025-01-21',2),(3,'contact@modelis-tech.se','(+221) 23 45 56 789','Dakar, Sénégal','2025-01-21',3),(4,'contact@modelis-tech.ml','(+223) 23 45 56 789','Bamako,Mali','2025-01-21',4);
+/*!40000 ALTER TABLE `contact` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `domaine`
+--
+
+DROP TABLE IF EXISTS `domaine`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `domaine` (
+  `id` int NOT NULL,
+  `libelle` text NOT NULL,
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `dateModification` datetime DEFAULT NULL,
+  `dateSuppression` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `domaine`
+--
+
+LOCK TABLES `domaine` WRITE;
+/*!40000 ALTER TABLE `domaine` DISABLE KEYS */;
+/*!40000 ALTER TABLE `domaine` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `domaineexperience`
+--
+
+DROP TABLE IF EXISTS `domaineexperience`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `domaineexperience` (
+  `id` int NOT NULL,
+  `personneId` int DEFAULT NULL,
+  `domaineId` int NOT NULL,
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `dateModification` datetime DEFAULT NULL,
+  `dateSuppression` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_domaineExperience_domaine` (`domaineId`),
+  KEY `FK_domaineExperience_personne` (`personneId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `domaineexperience`
+--
+
+LOCK TABLES `domaineexperience` WRITE;
+/*!40000 ALTER TABLE `domaineexperience` DISABLE KEYS */;
+/*!40000 ALTER TABLE `domaineexperience` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `equipe`
+--
+
+DROP TABLE IF EXISTS `equipe`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `equipe` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `personneId` int NOT NULL,
+  `libelle` varchar(500) DEFAULT NULL,
+  `description` text,
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `personneId` (`personneId`),
+  CONSTRAINT `equipe_ibfk_1` FOREIGN KEY (`personneId`) REFERENCES `personne` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `equipe`
+--
+
+LOCK TABLES `equipe` WRITE;
+/*!40000 ALTER TABLE `equipe` DISABLE KEYS */;
+INSERT INTO `equipe` VALUES (1,3,'Informaticien de formation, Mr Franck ANGBA est à la manœuvre pour les activités de conception et de développement de logiciels.\nAvec plusieurs cordes à son arc, dont le Système d’information géographique, il met ses compétences à la réussite des projets.',NULL,'2025-01-21 15:02:10'),(2,5,'Géomaticien de formation Mr Rémi KOUASSI a rejoint l’équipe où il participe à la conception de solution métier',NULL,'2025-01-21 15:02:10'),(3,6,'Responsable du Service GEOMATIQUE Mr Wilfried N\'ZI est à la manœuvre pour les activités de conception et de développement de solution métier',NULL,'2025-01-21 15:02:10'),(4,8,'Informaticien de formation, Mr ADEKPE DYLAN participe aux activités de conception et de développement de solution métier',NULL,'2025-01-21 15:02:10'),(5,4,'Informaticien de formation, Mr Kouassi Ange Anicet participe aux activités de conception et de développement de solution métier',NULL,'2025-01-21 15:02:10'),(6,7,'Informaticien de formation, Mr Arnaud Timité participe aux activités de conception et de développement de solution métier',NULL,'2025-01-21 15:02:10');
+/*!40000 ALTER TABLE `equipe` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `espace`
+--
+
+DROP TABLE IF EXISTS `espace`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `espace` (
+  `id` int NOT NULL,
+  `libelle` varchar(254) DEFAULT NULL,
+  `description` varchar(254) DEFAULT NULL,
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `dateModification` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `espace`
+--
+
+LOCK TABLES `espace` WRITE;
+/*!40000 ALTER TABLE `espace` DISABLE KEYS */;
+/*!40000 ALTER TABLE `espace` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `historique`
+--
+
+DROP TABLE IF EXISTS `historique`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `historique` (
+  `id` int NOT NULL,
+  `libelle` text,
+  `date` date DEFAULT NULL,
+  `description` text,
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `dateModification` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `historique`
+--
+
+LOCK TABLES `historique` WRITE;
+/*!40000 ALTER TABLE `historique` DISABLE KEYS */;
+INSERT INTO `historique` VALUES (1,'Notre <strong>histoire</strong>','2020-12-01','Le groupe Modelis s\'est créé et se développe autour d\'une unique motivation : répondre aux besoins de nos clients. C\'est pourquoi, il s\'est adapté au fil des années en spécialisant ses équipes autour des trois domaines prioritaires : la topographie, la géomatique et le génie civil.<br><br>La base du groupe Modelis se trouve en Côte d\'ivoire. Nous restons attachés à cela et ambitionnons de créer une multi-nationale ancrée dans les valeurs et la culture africaine.<br><span><br>Partout où le groupe Modelis ira, le client sera toujours au cœur de notre attention. C\'est notre motivation et celle de nos équipes au quotidien : offrir la plus grande valeur ajoutée à nos clients.</span>','2025-01-20 14:12:33','2025-01-20 14:12:33'),(2,'libelle 1','2018-06-01','description','2025-01-20 14:12:33','2025-01-20 14:12:33'),(3,'libelle 2','2014-04-29','description','2025-01-20 14:12:33','2025-01-20 14:12:33');
+/*!40000 ALTER TABLE `historique` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `info`
+--
+
+DROP TABLE IF EXISTS `info`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `info` (
+  `id` int NOT NULL,
+  `accueilLibelle` text,
+  `accueilDescription` text,
+  `expertiseLibelle` text,
+  `valeurLibelle` text,
+  `valeurDescription` text,
+  `expertiseAccueilLibelle` text,
+  `expertiseAccueilDescription` text,
+  `expertiseDescription` text,
+  `realisationLibelle` text,
+  `realisationDescription` text,
+  `equipeLibelle` text,
+  `equipeDescription` text,
+  `carriereLibelle` text,
+  `carriereDescription` text,
+  `contactLibelle` text,
+  `contactDescription` text,
+  `blogDescription` text,
+  `blogLibelle` text,
+  `referenceLibelle` text,
+  `referenceDescription` text,
+  `image` text,
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `info`
+--
+
+LOCK TABLES `info` WRITE;
+/*!40000 ALTER TABLE `info` DISABLE KEYS */;
+/*!40000 ALTER TABLE `info` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `lien`
+--
+
+DROP TABLE IF EXISTS `lien`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `lien` (
+  `id` int NOT NULL,
+  `typelienid` int NOT NULL,
+  `libelle` varchar(254) DEFAULT NULL,
+  `lien` varchar(254) DEFAULT NULL,
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `FK_lien_typelien` (`typelienid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `lien`
+--
+
+LOCK TABLES `lien` WRITE;
+/*!40000 ALTER TABLE `lien` DISABLE KEYS */;
+INSERT INTO `lien` VALUES (1,1,'MODELIS GROUP','https://modelisgroup.com/','2025-01-17 00:00:00'),(2,2,'Site de vente en ligne','https://shop.modelis-gis.com/','2025-01-17 00:00:00'),(3,3,'Catalogue en ligne','https://catalogue.modelis-gis.com/','2025-01-17 00:00:00'),(4,4,'Logiciel EasyTopo','https://www.easytopo.fr/','2025-01-17 00:00:00'),(5,5,'Site de Formation MODELIS','https://formation.easytopo.fr/','2025-01-17 00:00:00'),(6,3,'MODELIS TECH','https://modelis-tech.com/','2025-01-17 00:00:00'),(7,6,'Modelis-Gc','https://modelis-gc.com/','2025-01-17 00:00:00'),(8,5,'Modelis-Gis','https://modelis-gis.com/','2025-01-17 00:00:00'),(9,7,'Modelis-Tech','http://modelis-tech.com/','2025-01-17 00:00:00'),(10,8,'Modelis-France','http://modelis-france.com/','2025-01-17 00:00:00'),(11,5,'Modelis-Sénégal','http://modelis-senegal.com/','2025-01-17 00:00:00'),(12,9,'Modelis-Mali','http://demo.modelis-mali.com/','2025-01-17 00:00:00'),(13,10,'Modelis-Group','https://modelisgroup.com/','2025-01-17 00:00:00');
+/*!40000 ALTER TABLE `lien` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `metier`
+--
+
+DROP TABLE IF EXISTS `metier`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `metier` (
+  `id` int NOT NULL,
+  `libelle` varchar(50) DEFAULT NULL,
+  `description` text,
+  `image` text,
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `metier`
+--
+
+LOCK TABLES `metier` WRITE;
+/*!40000 ALTER TABLE `metier` DISABLE KEYS */;
+/*!40000 ALTER TABLE `metier` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `nosmetiers`
+--
+
+DROP TABLE IF EXISTS `nosmetiers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `nosmetiers` (
+  `id` int NOT NULL,
+  `libelle` text NOT NULL,
+  `description` text,
+  `image` text,
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `nosmetiers`
+--
+
+LOCK TABLES `nosmetiers` WRITE;
+/*!40000 ALTER TABLE `nosmetiers` DISABLE KEYS */;
+/*!40000 ALTER TABLE `nosmetiers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `offre`
+--
+
+DROP TABLE IF EXISTS `offre`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `offre` (
+  `id` int NOT NULL,
+  `utilisateurId` int DEFAULT NULL,
+  `sousEspaceId` int NOT NULL,
+  `typeOffreId` int NOT NULL,
+  `actif` int NOT NULL,
+  `libelle` varchar(254) NOT NULL,
+  `description` text,
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `lieu` varchar(254) DEFAULT NULL,
+  `image` text NOT NULL,
+  `entreprise` varchar(254) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `offre`
+--
+
+LOCK TABLES `offre` WRITE;
+/*!40000 ALTER TABLE `offre` DISABLE KEYS */;
+/*!40000 ALTER TABLE `offre` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `pays`
+--
+
+DROP TABLE IF EXISTS `pays`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `pays` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `code` varchar(254) DEFAULT NULL,
+  `nom` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pays`
+--
+
+LOCK TABLES `pays` WRITE;
+/*!40000 ALTER TABLE `pays` DISABLE KEYS */;
+INSERT INTO `pays` VALUES (1,'CIV','Côte d\'Ivoire'),(2,'FR','France'),(3,'SE','Sénégal'),(4,'ML','Mali');
+/*!40000 ALTER TABLE `pays` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `personne`
+--
+
+DROP TABLE IF EXISTS `personne`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `personne` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `profilId` int NOT NULL,
+  `PaysResidence` varchar(255) DEFAULT NULL,
+  `nationalite` varchar(255) DEFAULT NULL,
+  `nom` varchar(254) NOT NULL,
+  `prenom` varchar(254) NOT NULL,
+  `linkedin` varchar(254) DEFAULT NULL,
+  `sexe` varchar(255) DEFAULT NULL,
+  `email` varchar(50) NOT NULL,
+  `tel` varchar(50) DEFAULT NULL,
+  `adresse` varchar(50) DEFAULT NULL,
+  `image` text,
+  `dateNaissance` date DEFAULT NULL,
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `profilId` (`profilId`),
+  CONSTRAINT `personne_ibfk_1` FOREIGN KEY (`profilId`) REFERENCES `profil` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `personne`
+--
+
+LOCK TABLES `personne` WRITE;
+/*!40000 ALTER TABLE `personne` DISABLE KEYS */;
+INSERT INTO `personne` VALUES (1,32,'côte d\'ivoire','Ivoirienne','IRIE BI','Lizié FRANCK','https://www.linkedin.com/in/bi-lizie-franck-irie-48349916/','M','irie.fabrice@modelisgc.com','07 59 67 12 64','Cocody','/images/personne/0fcf670e93b6726dc9c3d1ed2589dae1.png','1983-04-10','2025-01-21 13:13:12'),(2,1,'côte d\'ivoire','Ivoirienne','IRIE BI','Irie Fabrice',NULL,'M','irie.fabrice@modelisgc.com','07 59 67 12 25','Angré','/images/personne/e9bb377f3a6ec3cd732077e8b75046c0.png','1987-04-10','2025-01-21 13:13:12'),(3,19,'côte d\'ivoire','Ivoirienne','Angba','Franck',NULL,'M','franck.angba@modelis-tech.com','07 59 67 18 25','Angré','/images/personne/e9bb377f3a6ec3cd732077e8b75046c0.png','1987-04-10','2025-01-21 13:13:12'),(4,6,'côte d\'ivoire','Ivoirienne','kouassi','Ange Anicet',NULL,'M','anicet.kouassi@modelis-tech.com','07 59 68 11 37','Faya','/images/personne/0fcf670e93b6726dc9c3d1ed2589dae1.png','1987-04-10','2025-01-21 13:13:12'),(5,33,'côte d\'ivoire','Ivoirienne','Kouassi','Remi Gnamien',NULL,'M','remi.kouassi@modelis-tech.com','07 59 68 11 47','Koumassi','/images/personne/0fcf670e93b6726dc9c3d1ed2589dae1.png','1987-04-10','2025-01-21 13:13:12'),(6,31,'côte d\'ivoire','Ivoirienne','N\'zi','Wilfried',NULL,'M','wilfried.nzi@modelis-tech.com','07 59 68 11 47','Faya','/images/personne/0fcf670e93b6726dc9c3d1ed2589dae1.png','1987-04-10','2025-01-21 13:13:12'),(7,6,'côte d\'ivoire','Ivoirienne','Timité','Arnaud',NULL,'M','arnaud.timite@modelis-tech.com','07 59 68 11 47','Bingerville','/images/personne/0fcf670e93b6726dc9c3d1ed2589dae1.png','1987-04-10','2025-01-21 13:13:12'),(8,12,'côte d\'ivoire','Ivoirienne','Adekpé','Dylan',NULL,'M','dylan.adekpe@modelis-tech.com','07 59 68 11 50','Faya','/images/personne/0fcf670e93b6726dc9c3d1ed2589dae1.png','1987-04-10','2025-01-21 13:13:12');
+/*!40000 ALTER TABLE `personne` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `profil`
+--
+
+DROP TABLE IF EXISTS `profil`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `profil` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `libelle` varchar(500) DEFAULT NULL,
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `profil`
+--
+
+LOCK TABLES `profil` WRITE;
+/*!40000 ALTER TABLE `profil` DISABLE KEYS */;
+INSERT INTO `profil` VALUES (1,'Super Administrateur','2025-01-21 10:10:36'),(2,'Administrateur Système','2025-01-21 10:10:36'),(3,'Administrateur Réseau','2025-01-21 10:10:36'),(4,'Développeur Front-End','2025-01-21 10:10:36'),(5,'Développeur Back-End','2025-01-21 10:10:36'),(6,'Développeur Full-Stack','2025-01-21 10:10:36'),(7,'Ingénieur DevOps','2025-01-21 10:10:36'),(8,'Architecte Logiciel','2025-01-21 10:10:36'),(9,'Responsable Technique','2025-01-21 10:10:36'),(10,'Chef de Projet Technique','2025-01-21 10:10:36'),(11,'Ingénieur QA (Qualité)','2025-01-21 10:10:36'),(12,'Chef de Projet','2025-01-21 10:10:36'),(13,'Scrum Master','2025-01-21 10:10:36'),(14,'Product Owner','2025-01-21 10:10:36'),(15,'Responsable Marketing','2025-01-21 10:10:36'),(16,'Community Manager','2025-01-21 10:10:36'),(17,'Responsable Communication','2025-01-21 10:10:36'),(18,'Directeur Général','2025-01-21 10:10:36'),(19,'Directeur Technique (CTO)','2025-01-21 10:10:36'),(20,'Directeur des Opérations (COO)','2025-01-21 10:10:36'),(21,'Directeur Commercial (CCO)','2025-01-21 10:10:36'),(22,'Responsable Support','2025-01-21 10:10:36'),(23,'Technicien Support','2025-01-21 10:10:36'),(24,'Consultant Fonctionnel','2025-01-21 10:10:36'),(25,'Responsable RH','2025-01-21 10:10:36'),(26,'Chargé de Recrutement','2025-01-21 10:10:36'),(27,'Analyste de Données','2025-01-21 10:10:36'),(28,'Responsable Sécurité Informatique','2025-01-21 10:10:36'),(29,'Designer UX/UI','2025-01-21 10:10:36'),(30,'Stagiaire','2025-01-21 10:10:36'),(31,'Responsable Géomaticien','2025-01-21 10:12:33'),(32,'President','2025-01-21 10:46:40'),(33,'Developpeur Geomaticien','2025-01-21 10:58:05');
+/*!40000 ALTER TABLE `profil` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `realisation`
+--
+
+DROP TABLE IF EXISTS `realisation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `realisation` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `typeclientId` int NOT NULL,
+  `paysId` int NOT NULL,
+  `libelle` text,
+  `description` text,
+  `dateDebut` date DEFAULT NULL,
+  `dateFin` date DEFAULT NULL,
+  `enCours` tinyint(1) DEFAULT '0',
+  `resultat` text,
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `typeclientId` (`typeclientId`),
+  KEY `paysId` (`paysId`),
+  CONSTRAINT `realisation_ibfk_1` FOREIGN KEY (`typeclientId`) REFERENCES `typeclient` (`id`),
+  CONSTRAINT `realisation_ibfk_2` FOREIGN KEY (`paysId`) REFERENCES `pays` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `realisation`
+--
+
+LOCK TABLES `realisation` WRITE;
+/*!40000 ALTER TABLE `realisation` DISABLE KEYS */;
+INSERT INTO `realisation` VALUES (1,13,1,'DÉVELOPPEMENT D\'UNE APPLICATION DE TOPOGRAPHIE : EASYTOPO','<p>Dans les années 2000, les fondateurs de Modelis technologie ont développé une première version d’une application de topographie appelée EasyTopo. Cette application est très appréciée des cabinets de géomètres experts au Mali. La plupart l’utilise dans leur activité quotidienne pour gérer des lotissements et éditer des documents administratifs.</p>\n<p>Utilisé depuis 2004, ce logiciel présente aujourd’hui de nombreuses limitations. En effet, le langage de programmation n’est plus maintenu par Microsoft. Il n’existe aucune notion de base de données ainsi que du réseau. La sécurité est quasi inexistante.</p>\n<p>Courant 2014, Modelis Technologie a repensé l’architecture de l’application. Tout le logiciel a été réécrit à partir de zéro. Ce sont plus de deux millions de lignes de codes qui ont été portés en java.</p> <p>Le SIG est devenu un concept de base du logiciel. Un vrai modèle de données a vu le jour avec une base de données associée.</p>','2017-01-01',NULL,1,'<p>EasyTopo:</p>\n    <ul>\n        <li>Intègre les données CAD dans une base de données</li>\n        <li>Donne la possibilité de manipuler les données CAD dans un Système d’Information Géographique (SIG)</li>\n        <li>Fournit plusieurs fonctionnalités SIG</li>\n        <li>Facilite l’utilisation de logiciels SIG</li>\n        <li>Sécurise les données grâce à son excellent module de sécurité</li>\n    </ul>','2025-01-22 15:17:24'),(3,5,1,'RÉALISATION D’UNE ÉTUDE GLOBALE SUR L’ASSAINISSEMENT ET LA GESTION INTÉGRÉE DU BASSIN VERSANT DU GOUROU','<p>Le projet de réalisation d’une étude globale sur l’assainissement et la gestion intégrée du Bassin Versant du Gourou se situe en Côte d’Ivoire, dans le district d’Abidjan, constitué de la Ville d’Abidjan, des communes d’Anyama, Bingerville, Songon.</p>\n<p>Sur le territoire d’Abidjan, le Bassin Versant du Gourou couvre une superficie d’environ 28,6 km². Il est délimité à l’Est par le prolongement du boulevard Latrille, vers le quartier des Deux Plateaux, au Nord par Abobo, à l’Ouest par la ligne de chemin de fer (Adjamé-Anyama) et au Sud par le carrefour de l’Indenié où le Bassin Versant du Gourou trouve son exutoire : la baie de Cocody</p>.','2015-02-01','2015-03-01',0,'<p>MODELIS TECH produit les différentes cartes demandées par le Client.</p>,<p>Pour cela, nous avons :</p>\n    <ul>\n        <li>Traité les données issues de collecte GPS</li>\n        <li>Traité les orthophotos</li>\n        <li>Généré les différentes cartes thématiques souhaitées</li>\n    </ul>','2025-01-22 15:32:47'),(4,13,1,'DÉVELOPPEMENT DE LA PLATE-FORME DE DÉMONSTRATION DE MODELIS TECH','<p>Modelis Technologie, dans son besoin de communication sur son savoir faire a décidé de mettre en ligne une plateforme de démonstrations. Le but de cette plateforme est multiple :</p> <ul>\n        <li>Avoir une vitrine de présentation de son savoir faire ;</li>\n        <li>présenter différents usages du SIG appliqué à des métiers différents;</li>\n        <li>montrer différentes architectures open sources ;</li>\n        <li>mettre en situation la résolution de plusieurs problématiques métiers à partir d’outil.</li>\n    </ul>\n<p>Un impératif de cette plateforme est d’intégrer tout en local. Aucune donnée ne devrait être distante. Cela comprend :</p><ul>\n        <li>les bases de données;</li>\n        <li>les serveurs : web, d’application, cartographique ;</li>\n        <li>les serveurs de cache.</li>\n    </ul>','2015-04-01','2016-04-01',0,'<p>Un portail de démonstration de différentes technologies Open Sources :</p>\n    <ul>\n        <li>Un site cartographique qui présente les couches administratives</li>\n        <li>Un site cartographique pour les opérateurs de télécom</li>\n        <li>Un site cartographique pour le cadatsre</li>\n    </ul> <p>Le développement du portail a été effectué en mode agile pour prendre en compte les remarques tout au long de la réalisation des différents sites.</p>','2025-01-22 15:49:51'),(5,1,1,'GESTION DES BORDEREAUX DE ROUTE HOMOLOGUÉS (BRH)','<p>Le projet vise à mettre en place un Système d’Information Géographique (SIG) par la conception d’une base de données cartographique sur la contenance des concessions forestières.</p>,\n<p>La cartographie numérique des périmètres permettra au ministère des Eaux et Forêts une meilleure gestion du patrimoine forestier de la Côte d’Ivoire.</p>,<p>Le SIG associé permettra à l’administration forestière d’assurer une gestion rationnelle et un contrôle plus efficace des ressources forestières. Des données plus détaillées seront ainsi mis à la disposition des opérateurs de la filière forêt-bois pour une meilleure gestion des limites de leur périmètres dans la mise en œuvre du levé des coordonnées cartographiques au GPS des arbres à abattre.</p>','2016-03-01','2016-08-01',0,'<p>Une application Web qui permet de gérer les Bordereaux de Routes Homologués (BRH) comprenant :</p>,\n    <ul>\n        <li>Une base de données centralisée</li>\n        <li>Une application en responsive design</li>\n        <li>Un code source maitrisé avec des fonctionnalités répondant aux besoins du client</li>\n        <li>Une interface conviviale et simple à l’usage</li>\n        <li>Des données sécurisées avec un accès par profil</li>\n    </ul>,<p>Le développement de l’application a été effectuée en mode Agile pour prendre en compte les remarques du client tout au long de la phase de réalisation des différents modules applicatifs</p>','2025-01-22 16:08:26'),(6,2,1,'SOLUTION INTÉGRÉE DE GESTIONS DES INFORMATIONS DU CADASTRE DE CÔTE D\'IVOIRE','<p>Face à ses ambitions futures et les problèmes rencontrés par les agents sur le terrain, le Cadastre de Côte d’Ivoire a engagé une réflexion autour de son système d’information cadastrale. Un groupe de travail a été ainsi mandaté pour faire un état des lieux et rechercher des solutions. Les principales difficultés qui ressortent de l’état des lieux sont les suivants :</p> ,<ul>\n        <li>L’absence de solution centralisée ;</li>\n        <li>L’usage d’un logiciel plus adapté aux standards actuels. Le logiciel actuel est monoposte et fonctionne sous MS DOS. Il est incompatible avec les nouveaux systèmes d’exploitation ;</li>\n        <li>La sécurisation des données ;</li>\n<li>Le besoin de tableau de bord pour les décideurs ;</li>\n<li>Le besoin d’outils nomades pour les agents de terrain ;</li>\n<li>La connexion avec les bases de données existantes : fiscales, foncières…</li>\n<li>L’usage du SIG comme base du système</li>\n    </ul>,<p>Suite à cet état des lieux, Modelis Technologie a été sollicité par le groupe de travail afin de trouver des solutions</p>','2016-01-01',NULL,1,'<p>Une base de données SIG : sécurisée, ouverte et répondant aux standards internationaux</p>,<p>Une solution intégrée de gestion de l’information cadastrale appelée LTT</p>\n    <ul>\n        <li>Un client desktop ou LTT desktop : pour les agents de bureau. Ce client fournit les outils métiers pour interroger, manipuler, créer et mettre à jour l’information cadastrale. Il est basé sur Netbeans Platform (open source), est modulaire et offre plusieurs niveaux de sécurité. Il est aussi multi plateforme et compatible à tous les systèmes d’informations</li>\n        <li>Un client Web ou LTT Web : pour les décideurs. Il donne une vision globale des données et permet d’avoir une vue de l’ensemble du territoire national. Il offre aussi des outils d’interrogation en ligne.</li>\n        <li>Un client mobile ou LTT Mobile : pour les agents de terrain. Ce client permet d’interroger la base de données directement depuis le terrain.</li>\n    </ul> ,<p>A partir de ce système intégré, il est possible d’interroger la base de données fiscales et foncières.</p>','2025-01-22 16:26:57'),(7,6,2,'SITE WEB COLLABORATIF POUR L\'ÉGLISE CIE FRANCE','<p>Le Centre International d’Évangélisation Mission France (CIE/FRANCE) est un ministère du Centre International d’Évangélisation Mission Africaine (CIE/MIA) basé à Ouagadougou.</p>,\n<p>Dans sa politique de développement le CIE France a engagé une réflexion autour de ses outils de communication. Le site web de l’association a été ainsi positionné au cœur de cette démarche et Modelis Technologie via son responsable a été mandaté pour accomplir ce site.</p>,<p>L’idée du site est de permette au CIE France de divulguer les nouvelles tout en donnant une meilleure visibilité aux activités de l’association.</p>','2016-06-01','2016-08-01',0,'<ul>\n        <li>Un site web responsive design : Web, Tablette, Smatphone</li>\n        <li>Une charte graphique correspondant au besoin du client</li>\n        <li>L’amélioration de la visibilité du CIE France</li>\n        <li>Le transfert de compétences vers les équipes du CIE France</li>\n        <li>Un tableau de bord donnant un accès aux statistiques des visites</li>\n    </ul>','2025-01-22 16:37:37');
+/*!40000 ALTER TABLE `realisation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `realisation_image`
+--
+
+DROP TABLE IF EXISTS `realisation_image`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `realisation_image` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `realisationId` int NOT NULL,
+  `image` text NOT NULL,
+  `date_creation` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `realisationId` (`realisationId`),
+  CONSTRAINT `realisation_image_ibfk_1` FOREIGN KEY (`realisationId`) REFERENCES `realisation` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `realisation_image`
+--
+
+LOCK TABLES `realisation_image` WRITE;
+/*!40000 ALTER TABLE `realisation_image` DISABLE KEYS */;
+INSERT INTO `realisation_image` VALUES (1,1,'/images/realisation/937956c24aae99f0873f803115f65d6c.png','2025-01-23 00:13:56'),(2,1,'/images/realisation/a35d8c3fa6ef2a730575fc6538d56450.jpg','2025-01-23 00:13:56'),(3,1,'/images/realisation/2d248fcce25cc4bd34c4604c05e7891c.png','2025-01-23 00:13:56'),(4,3,'/images/realisation/ee977b9989d0c9ea1ff68e40557b3abe.png','2025-01-23 00:13:56'),(5,3,'/images/realisation/f3c489940d10467523f4c682891ad969.png','2025-01-23 00:13:56'),(6,4,'/images/realisation/95aec6d8ee92ed17f9e1244690629f8b.png','2025-01-23 00:13:56'),(7,4,'/images/realisation/303cf03ee81dbbe0a6929017202073eb.png','2025-01-23 00:13:56'),(8,4,'/images/realisation/694a861919cc1d08d38bb5dfc1db74d9.png','2025-01-23 00:13:56'),(9,4,'/images/realisation/f0503309082c6f5a0d5072d3fa72cc0e.png','2025-01-23 00:13:56'),(10,5,'/images/realisation/0e1a3508a2ec1f7450bf40d8ae1e95fd.png','2025-01-23 00:13:56'),(11,5,'/images/realisation/3d90f4427adce451b824f9926db41778.png','2025-01-23 00:13:56'),(12,6,'/images/realisation/196ebe3edb66dc42851ad55001623296.png','2025-01-23 00:13:56'),(13,6,'/images/realisation/d8074336e8359efe0b95a1ae8d4edea4.png','2025-01-23 00:13:56'),(14,6,'/images/realisation/167ef0cc25af6ca3f76f295d1c98ecc6.png','2025-01-23 00:13:56'),(15,6,'/images/realisation/ade93273c0f9ee6b45bcaea84f2ed7c0.png','2025-01-23 00:13:56'),(16,7,'/images/realisation/09741a6544cecd20bad9627962596b41.png','2025-01-23 00:13:56'),(17,7,'/images/realisation/8bf75a8329cbc983ddcc74807ddd4ef2.png','2025-01-23 00:13:56');
+/*!40000 ALTER TABLE `realisation_image` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `service`
+--
+
+DROP TABLE IF EXISTS `service`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `service` (
+  `id` int NOT NULL,
+  `typeservice_id` int NOT NULL,
+  `libelle` varchar(500) NOT NULL,
+  `icon` longtext,
+  `lien` varchar(500) DEFAULT NULL,
+  `description` text,
+  `image` text,
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `typeserviceId` (`typeservice_id`),
+  CONSTRAINT `service_ibfk_1` FOREIGN KEY (`typeservice_id`) REFERENCES `typeservice` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `service`
+--
+
+LOCK TABLES `service` WRITE;
+/*!40000 ALTER TABLE `service` DISABLE KEYS */;
+INSERT INTO `service` VALUES (1,1,'Ingénierie de projet de génie civil','<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"currentColor\" class=\"size-6\">\n  <path fill-rule=\"evenodd\" d=\"M4.5 2.25a.75.75 0 0 0 0 1.5v16.5h-.75a.75.75 0 0 0 0 1.5h16.5a.75.75 0 0 0 0-1.5h-.75V3.75a.75.75 0 0 0 0-1.5h-15ZM9 6a.75.75 0 0 0 0 1.5h1.5a.75.75 0 0 0 0-1.5H9Zm-.75 3.75A.75.75 0 0 1 9 9h1.5a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75ZM9 12a.75.75 0 0 0 0 1.5h1.5a.75.75 0 0 0 0-1.5H9Zm3.75-5.25A.75.75 0 0 1 13.5 6H15a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1-.75-.75ZM13.5 9a.75.75 0 0 0 0 1.5H15A.75.75 0 0 0 15 9h-1.5Zm-.75 3.75a.75.75 0 0 1 .75-.75H15a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1-.75-.75ZM9 19.5v-2.25a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-.75.75h-4.5A.75.75 0 0 1 9 19.5Z\" clip-rule=\"evenodd\" />\n  </svg>',NULL,'Accompagnement dans la Phase d\'avant-Projet et l\'étude des besoins.','images/service/bg-ingenierie.png','2025-01-20 11:44:08'),(2,1,'Réalisation de postes électriques','fa fa-road',NULL,'MODELIS GC dispose de très bonnes références en matière de construction de poste électrique.','images/service/bg-electric.png','2025-01-20 11:44:08'),(3,1,'Suivi et contrôle de chantier','<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"size-6\">\n  <path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z\" /></svg>',NULL,'MODELIS GC peut accompagner ses clients de la phase d\'avant projet jusqu’à la livraison du projet. Nous disposons de l\'expérience nécessaire en matière de gestion de projet.','images/service/bg-suivis.png','2025-01-20 11:44:08'),(4,1,'Travaux de construction et de rénovation de bâtiment','fa fa-stop',NULL,'MODELIS GC réalise tous types de travaux en bâtiment. Qu’il s’agisse de la construction ou de la rénovation de bâtiments anciens.','images/service/bg-construction.jpg','2025-01-20 11:44:08'),(5,1,'Formation','fa fa-road',NULL,'Des ingénieurs spécialisés en génie civil fournissent à vos collaborateurs des formations sur mesure.','images/service/bg-formation.jpg','2025-01-20 11:44:08');
+/*!40000 ALTER TABLE `service` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sousespace`
+--
+
+DROP TABLE IF EXISTS `sousespace`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sousespace` (
+  `id` int NOT NULL,
+  `espaceId` int NOT NULL,
+  `libelle` varchar(254) DEFAULT NULL,
+  `description` varchar(254) DEFAULT NULL,
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sousespace`
+--
+
+LOCK TABLES `sousespace` WRITE;
+/*!40000 ALTER TABLE `sousespace` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sousespace` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `typeclient`
+--
+
+DROP TABLE IF EXISTS `typeclient`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `typeclient` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `image` text,
+  `description` text,
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `typeclient`
+--
+
+LOCK TABLES `typeclient` WRITE;
+/*!40000 ALTER TABLE `typeclient` DISABLE KEYS */;
+INSERT INTO `typeclient` VALUES (1,'/images/client/2b4e242f393aab426ec16c22eaec29f3.png','Description pour le client 1.','2025-01-22 14:37:37'),(2,'/images/client/7e60276e4bf86f08430bb1b12e94419f.png','Description pour le client 2.','2025-01-22 14:37:37'),(3,'/images/client/45ee3e420497863b20bd551a33868cdc.png','Description pour le client 3.','2025-01-22 14:37:37'),(5,'/images/client/80a50c59c25997b144b8a20da1252cec.jpg','Description pour le client 5.','2025-01-22 14:37:37'),(6,'/images/client/8402c43cde81a4c87927cff61ba5c2ce.png','Description pour le client 6.','2025-01-22 14:37:37'),(7,'/images/client/APROMAC.png','Description pour le client 7.','2025-01-22 14:37:37'),(8,'/images/client/ci-energies.png','Description pour le client 8.','2025-01-22 14:37:37'),(9,'/images/client/France.jpg','Description pour le client 9.','2025-01-22 14:37:37'),(10,'/images/client/LogoAFORColorhorizontal.svg','Description pour le client 10.','2025-01-22 14:37:37'),(11,'/images/client/logo-MclauArmoirie.png','Description pour le client 11.','2025-01-22 14:37:37'),(12,'/images/client/ministere_mine.png','Description pour le client 12.','2025-01-22 14:37:37'),(13,'/images/client/Modelis-tech.png','Description pour le client 13.','2025-01-22 14:37:37'),(14,'/images/client/premu.png','Description pour le client 14.','2025-01-22 14:37:37');
+/*!40000 ALTER TABLE `typeclient` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `typelien`
+--
+
+DROP TABLE IF EXISTS `typelien`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `typelien` (
+  `id` int NOT NULL,
+  `libelle` varchar(254) DEFAULT NULL,
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `typelien`
+--
+
+LOCK TABLES `typelien` WRITE;
+/*!40000 ALTER TABLE `typelien` DISABLE KEYS */;
+INSERT INTO `typelien` VALUES (1,'Autres liens','2025-01-17 16:26:20'),(2,'Liens utiles','2025-01-17 16:27:30'),(3,'groupe','2025-01-17 16:28:50');
+/*!40000 ALTER TABLE `typelien` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `typeoffre`
+--
+
+DROP TABLE IF EXISTS `typeoffre`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `typeoffre` (
+  `id` int NOT NULL,
+  `libelle` varchar(254) DEFAULT NULL,
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `typeoffre`
+--
+
+LOCK TABLES `typeoffre` WRITE;
+/*!40000 ALTER TABLE `typeoffre` DISABLE KEYS */;
+/*!40000 ALTER TABLE `typeoffre` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `typeservice`
+--
+
+DROP TABLE IF EXISTS `typeservice`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `typeservice` (
+  `id` int NOT NULL,
+  `libelle` varchar(254) DEFAULT NULL,
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `typeservice`
+--
+
+LOCK TABLES `typeservice` WRITE;
+/*!40000 ALTER TABLE `typeservice` DISABLE KEYS */;
+INSERT INTO `typeservice` VALUES (1,'Global','2025-01-20 11:18:56');
+/*!40000 ALTER TABLE `typeservice` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `utilisateur`
+--
+
+DROP TABLE IF EXISTS `utilisateur`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `utilisateur` (
+  `id` int NOT NULL,
+  `personneId` int DEFAULT NULL,
+  `generer` int DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
+  `code` varchar(255) DEFAULT NULL,
+  `motDePasse` text,
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `roles` json DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `utilisateur`
+--
+
+LOCK TABLES `utilisateur` WRITE;
+/*!40000 ALTER TABLE `utilisateur` DISABLE KEYS */;
+/*!40000 ALTER TABLE `utilisateur` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `valeur`
+--
+
+DROP TABLE IF EXISTS `valeur`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `valeur` (
+  `id` int NOT NULL,
+  `libelle` text,
+  `description` text,
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `valeur`
+--
+
+LOCK TABLES `valeur` WRITE;
+/*!40000 ALTER TABLE `valeur` DISABLE KEYS */;
+/*!40000 ALTER TABLE `valeur` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2025-01-23  9:32:57

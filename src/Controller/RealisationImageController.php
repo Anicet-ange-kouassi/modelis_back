@@ -18,10 +18,15 @@ class RealisationImageController extends AbstractController
     public function index(RealisationImageRepository $repository, SerializerInterface $serializer): JsonResponse
     {
         $images = $repository->findAll();
-        $jsonImages = $serializer->serialize($images, 'json');
 
-        return new JsonResponse($jsonImages, Response::HTTP_OK, [], true);
+        $jsonData = $serializer->serialize(
+            $images,
+            'json'
+        );
+
+        return new JsonResponse($jsonData, Response::HTTP_OK, [], true);
     }
+
 
     #[Route('/api/realisation-image/{id}', name: 'api_realisation_image_detail', methods: ['GET'])]
     public function show(int $id, RealisationImageRepository $repository, SerializerInterface $serializer): JsonResponse

@@ -3,8 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\RealisationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: RealisationRepository::class)]
 class Realisation
@@ -14,77 +16,82 @@ class Realisation
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-//    #[ORM\Column(type: 'integer')]
-//    #[Assert\NotBlank(message: 'Le service ID est requis.')]
-//    private int $serviceId;
+    #[ORM\ManyToOne(targetEntity: Typeclient::class)]
+    #[ORM\JoinColumn(name: 'typeclientId', referencedColumnName: 'id', nullable: false)]
+    private ?Typeclient $typeclientId = null;
 
-    #[ORM\Column(type: 'string', length: 254, nullable: true)]
+    #[ORM\ManyToOne(targetEntity: Pays::class)]
+    #[ORM\JoinColumn(name: 'paysId ', referencedColumnName: 'id', nullable: false)]
+    private ?Pays $paysId = null;
+
+    #[ORM\Column(name: 'libelle', type: 'string', length: 500, nullable: true)]
+    #[Assert\NotBlank(message: 'Veuillez renseigner le libellé de la realisation')]
+    #[Assert\Length(
+        min: 2,
+        max: 100,
+        minMessage: 'Le libellé doit contenir au moins {{ limit }} caractères.',
+        maxMessage: 'Le libellé ne peut contenir que {{ limit }} caractères'
+    )]
     private ?string $libelle = null;
 
-    #[ORM\Column(type: 'date', nullable: true)]
-    private ?\DateTimeInterface $date = null;
-
-    #[ORM\Column(type: 'string', length: 254, nullable: true)]
-    private ?string $lieu = null;
-
-    #[ORM\Column(type: 'string', length: 254, nullable: true)]
+    #[ORM\Column(name: 'description', type: 'text', nullable: true)]
     private ?string $description = null;
+    #[ORM\Column(name: 'dateDebut', type: 'date', nullable: true)]
+    #[Assert\Date(message: 'Veuillez fournir une date de début valide.')]
+    private ?\DateTimeInterface $dateDebut = null;
 
-    #[ORM\Column(name: 'dateCreation', type: 'datetime', nullable: false, options: ['default' => 'CURRENT_TIMESTAMP'])]
-    private \DateTimeInterface $dateCreation;
+    #[ORM\Column(name: 'dateFin', type: 'date', nullable: true)]
+    #[Assert\Date(message: 'Veuillez fournir une date de fin valide.')]
+    private ?\DateTimeInterface $dateFin = null;
 
-    public function __construct()
-    {
-        $this->dateCreation = new \DateTime();
-    }
+    #[ORM\Column(name: 'enCours', type: 'boolean', options: ['default' => false])]
+    private ?bool $enCours = false;
+
+    #[ORM\Column(name: 'resultat', type: 'text', nullable: true)]
+    private ?string $resultat = null;
+
+    #[ORM\Column(name: 'dateCreation', type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
+    private ?\DateTimeInterface $dateCreation = null;
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-//    public function getServiceId(): int
-//    {
-//        return $this->serviceId;
-//    }
-//
-//    public function setServiceId(int $serviceId): self
-//    {
-//        $this->serviceId = $serviceId;
-//        return $this;
-//    }
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function setLibelle(?string $libelle): void
+    {
+        $this->libelle = $libelle;
+    }
 
     public function getLibelle(): ?string
     {
         return $this->libelle;
     }
 
-    public function setLibelle(?string $libelle): self
+    public function getDateCreation(): ?\DateTimeInterface
     {
-        $this->libelle = $libelle;
-        return $this;
+        return $this->dateCreation;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function setDateCreation(?\DateTimeInterface $dateCreation): void
     {
-        return $this->date;
+        $this->dateCreation = $dateCreation;
     }
 
-    public function setDate(?\DateTimeInterface $date): self
+    public function getDateDebut(): ?\DateTimeInterface
     {
-        $this->date = $date;
-        return $this;
+        return $this->dateDebut;
     }
 
-    public function getLieu(): ?string
+    public function getDateFin(): ?\DateTimeInterface
     {
-        return $this->lieu;
-    }
-
-    public function setLieu(?string $lieu): self
-    {
-        $this->lieu = $lieu;
-        return $this;
+        return $this->dateFin;
     }
 
     public function getDescription(): ?string
@@ -92,20 +99,58 @@ class Realisation
         return $this->description;
     }
 
-    public function setDescription(?string $description): self
+    public function getEnCours(): ?bool
+    {
+        return $this->enCours;
+    }
+
+    public function getPaysId(): Pays
+    {
+        return $this->paysId;
+    }
+
+    public function getResultat(): ?string
+    {
+        return $this->resultat;
+    }
+
+    public function getTypeclientId(): Typeclient
+    {
+        return $this->typeclientId;
+    }
+
+    public function setDateDebut(?\DateTimeInterface $dateDebut): void
+    {
+        $this->dateDebut = $dateDebut;
+    }
+
+    public function setDateFin(?\DateTimeInterface $dateFin): void
+    {
+        $this->dateFin = $dateFin;
+    }
+
+    public function setDescription(?string $description): void
     {
         $this->description = $description;
-        return $this;
     }
 
-    public function getDateCreation(): \DateTimeInterface
+    public function setEnCours(?bool $enCours): void
     {
-        return $this->dateCreation;
+        $this->enCours = $enCours;
     }
 
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    public function setPaysId(?Pays $paysId): void
     {
-        $this->dateCreation = $dateCreation;
-        return $this;
+        $this->paysId = $paysId;
+    }
+
+    public function setResultat(?string $resultat): void
+    {
+        $this->resultat = $resultat;
+    }
+
+    public function setTypeclientId(?Typeclient $typeclientId): void
+    {
+        $this->typeclientId = $typeclientId;
     }
 }

@@ -21,7 +21,7 @@ class TypeclientController extends AbstractController
         return new JsonResponse($jsonTypeClientList, Response::HTTP_OK, [], true);
     }
 
-    #[Route('/api/typeclient/{id}', name: 'type_client_show', methods: ['GET'])] // Corrigé le chemin
+    #[Route('/api/typeclient/{id}', name: 'type_client_show', methods: ['GET'])]
     public function show(Typeclient $typeClient): Response
     {
         return $this->json($typeClient);

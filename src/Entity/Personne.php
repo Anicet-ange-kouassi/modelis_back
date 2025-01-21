@@ -50,7 +50,7 @@ class Personne
     #[ORM\Column(name: 'dateNaissance', type: 'date', nullable: true)]
     private ?\DateTimeInterface $dateNaissance = null;
 
-    #[ORM\Column(name: 'dateCreation',type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
+    #[ORM\Column(name: 'dateCreation', type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
     private ?\DateTimeInterface $dateCreation = null;
 
     public function setAdresse(?string $adresse): void
