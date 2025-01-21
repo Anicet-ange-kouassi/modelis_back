@@ -1,0 +1,14 @@
+# Route pour exposer la documentation JSON Swagger
+app.swagger:
+    path: /api/doc.json
+    methods: [GET]
+    defaults:
+        _controller: nelmio_api_doc.controller.swagger
+
+# Route pour afficher Swagger UI
+app.swagger_ui:
+    path: /api/doc
+    methods: [GET]
+    defaults:
+        _controller: nelmio_api_doc.controller.swagger_ui
+# config/routes.yaml
