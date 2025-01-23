@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Repository\RealisationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -13,42 +12,52 @@ use Symfony\Component\Serializer\SerializerInterface;
 class RealisationController extends AbstractController
 {
     #[Route('/api/realisation', name: 'api_realisation_list', methods: ['GET'])]
-    public function index(Request $request, RealisationRepository $realisationRepository, SerializerInterface $serializer): JsonResponse
+    public function index(RealisationRepository $repository, SerializerInterface $serializer): JsonResponse
     {
-        $limit = $request->query->getInt('limit', 10); // Par défaut, 10 éléments
-        $exclude = $request->query->getInt('exclude', 0); // Par défaut, aucun ID à exclure (0)
+        $realisations = $repository->findAll();
 
-        $queryBuilder = $realisationRepository->createQueryBuilder('r');
+        $jsonData = $serializer->serialize(
+            $realisations,
+            'json'
+        );
 
-        if ($exclude > 0) {
-            $queryBuilder->andWhere('r.id != :exclude')
-                ->setParameter('exclude', $exclude);
-        }
-
-        $queryBuilder->setMaxResults($limit);
-
-        $realisations = $queryBuilder->getQuery()->getResult();
-        $jsonRealisations = $serializer->serialize($realisations, 'json');
-
-        return new JsonResponse($jsonRealisations, Response::HTTP_OK, [], true);
+        return new JsonResponse($jsonData, Response::HTTP_OK, [], true);
     }
 
-    /**
-     * Détails d'une réalisation spécifique par son ID.
-     */
     #[Route('/api/realisation/{id}', name: 'api_realisation_detail', methods: ['GET'])]
-    public function show(int $id, RealisationRepository $realisationRepository, SerializerInterface $serializer): JsonResponse
+    public function getRealisationWithImages(int $id, RealisationRepository $repository, SerializerInterface $serializer): JsonResponse
     {
-        $realisation = $realisationRepository->find($id);
+        $realisation = $repository->find($id);
 
         if (!$realisation) {
             return new JsonResponse(['message' => 'Réalisation introuvable'], Response::HTTP_NOT_FOUND);
         }
 
-        $jsonRealisation = $serializer->serialize($realisation, 'json');
+        $jsonData = $serializer->serialize(
+            $realisation,
+            'json',
+            ['groups' => 'realisation:read'] // Spécifie le groupe à utiliser
+        );
 
-        return new JsonResponse($jsonRealisation, Response::HTTP_OK, [], true);
+        return new JsonResponse($jsonData, Response::HTTP_OK, [], true);
     }
+
+    /*
+     * Détails d'une réalisation spécifique par son ID.
+     */
+    //    #[Route('/api/realisation/{id}', name: 'api_realisation_detail', methods: ['GET'])]
+    //    public function show(int $id, RealisationRepository $realisationRepository, SerializerInterface $serializer): JsonResponse
+    //    {
+    //        $realisation = $realisationRepository->find($id);
+    //
+    //        if (!$realisation) {
+    //            return new JsonResponse(['message' => 'Réalisation introuvable'], Response::HTTP_NOT_FOUND);
+    //        }
+    //
+    //        $jsonRealisation = $serializer->serialize($realisation, 'json');
+    //
+    //        return new JsonResponse($jsonRealisation, Response::HTTP_OK, [], true);
+    //    }
 }
 
 //

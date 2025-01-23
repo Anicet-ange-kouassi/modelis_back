@@ -30,7 +30,6 @@ final class PersonneController extends AbstractController
         $personne->setPrenom($data['prenom'] ?? null);
         $personne->setEmail($data['email'] ?? null);
         $personne->setDateNaissance(new \DateTime($data['dateNaissance'] ?? 'now'));
-        // Add other setters as necessary...
 
         $entityManager->persist($personne);
         $entityManager->flush();
@@ -64,7 +63,6 @@ final class PersonneController extends AbstractController
         $personne->setPrenom($data['prenom'] ?? $personne->getPrenom());
         $personne->setEmail($data['email'] ?? $personne->getEmail());
         $personne->setDateNaissance(new \DateTime($data['dateNaissance'] ?? $personne->getDateNaissance()->format('Y-m-d')));
-        // Update other fields as necessary...
 
         $entityManager->flush();
 

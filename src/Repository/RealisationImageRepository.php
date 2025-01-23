@@ -16,20 +16,15 @@ class RealisationImageRepository extends ServiceEntityRepository
         parent::__construct($registry, RealisationImage::class);
     }
 
-    //    /**
-    //     * @return RealisationImage[] Returns an array of RealisationImage objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('r.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findByRealisationId(int $realisationId): array
+    {
+        return $this->createQueryBuilder('ri')
+            ->andWhere('ri.realisationId = :realisationId')
+            ->setParameter('realisationId', $realisationId)
+            ->getQuery()
+            ->getResult();
+    }
+
 
     //    public function findOneBySomeField($value): ?RealisationImage
     //    {
