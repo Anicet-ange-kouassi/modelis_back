@@ -14,19 +14,21 @@ class Blog
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private ?int $utilisateurId = null;
+    #[ORM\ManyToOne(targetEntity: Utilisateur::class)]
+    #[ORM\JoinColumn(name: 'utilisateurId', referencedColumnName: 'id', nullable: false)]
+    private ?Utilisateur $utilisateurId = null;
 
-    #[ORM\Column(type: 'string', length: 500)]
+    #[ORM\Column(type: 'string', length: 254)]
+    #[Assert\NotBlank(message: 'Le libellé est obligatoire.')]
     private string $libelle;
 
-    #[ORM\Column(type: 'text', nullable: true)]
-    private ?string $description = null;
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $description = null;
+
 
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $image = null;
-
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(name: 'dateCreation', type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
     private \DateTimeInterface $dateCreation;
 
     public function getId(): ?int
@@ -34,16 +36,19 @@ class Blog
         return $this->id;
     }
 
-    public function getUtilisateurId(): ?int
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function getUtilisateurId(): ?Utilisateur
     {
         return $this->utilisateurId;
     }
 
-    public function setUtilisateurId(?int $utilisateurId): self
+    public function setUtilisateurId(?Utilisateur $utilisateurId): void
     {
         $this->utilisateurId = $utilisateurId;
-
-        return $this;
     }
 
     public function getLibelle(): string
@@ -58,12 +63,12 @@ class Blog
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): ?array
     {
         return $this->description;
     }
 
-    public function setDescription(?string $description): self
+    public function setDescription(?array $description): self
     {
         $this->description = $description;
 
