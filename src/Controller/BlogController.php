@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Blog;
 use App\Repository\BlogRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,18 +14,53 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class BlogController extends AbstractController
 {
-    #[Route('/api/blog', name: 'api_blog_list', methods: ['GET'])]
-    public function index(BlogRepository $blogRepository, SerializerInterface $serializer, EntityManagerInterface $em): JsonResponse
+    #[Route('/api/blogs/user/{utilisateurId}', name: 'get_blogs_by_user', methods: ['GET'])]
+    public function getBlogsByUser(int $utilisateurId, BlogRepository $blogRepository): JsonResponse
     {
-        $blogs = $blogRepository->findAll();
+        $blogs = $blogRepository->findBAllWithRelations($utilisateurId);
 
-        // Enregistrer une action "Lecture"
-        $this->logAction($em, 'Lecture', 'blog', null);
+        $response = array_map(function ($blog) {
+            return [
+                'id' => $blog->getId(),
+                'libelle' => $blog->getLibelle(),
+                'image' => $blog->getImage(),
+                'description' => $blog->getDescription(),
+                'dateCreation' => $blog->getDateCreation()->format('Y-m-d H:i:s'),
+                'utilisateur' => $blog->getUtilisateurId() ? [
+                    'nom' => $blog->getUtilisateurId()->getPersonneId()->getNom(),
+                    'prenom' => $blog->getUtilisateurId()->getPersonneId()->getPrenom(),
+                    'image' => $blog->getUtilisateurId()->getPersonneId()->getImage(),
+                ] : null,
+            ];
+        }, $blogs);
 
-        $jsonBlogs = $serializer->serialize($blogs, 'json');
-
-        return new JsonResponse($jsonBlogs, Response::HTTP_OK, [], true);
+        return new JsonResponse($response, Response::HTTP_OK);
     }
+    #[Route('/api/blog', name: 'get_all_blogs', methods: ['GET'])]
+    public function getAllBlogs(BlogRepository $blogRepository): JsonResponse
+    {
+        // Récupération de tous les blogs avec leurs relations
+        $blogs = $blogRepository->findAllWithRelations();
+
+        // Formatage de la réponse
+        $response = array_map(function ($blog) {
+            return [
+                'id' => $blog->getId(),
+                'libelle' => $blog->getLibelle(),
+                'image' => $blog->getImage(),
+                'description' => $blog->getDescription(),
+                'dateCreation' => $blog->getDateCreation()->format('Y-m-d H:i:s'),
+                'utilisateur' => $blog->getUtilisateurId() ? [
+                    'nom' => $blog->getUtilisateurId()->getPersonneId()->getNom(),
+                    'prenom' => $blog->getUtilisateurId()->getPersonneId()->getPrenom(),
+                    'image' => $blog->getUtilisateurId()->getPersonneId()->getImage(),
+                ] : null,
+            ];
+        }, $blogs);
+
+        return new JsonResponse($response, Response::HTTP_OK);
+    }
+
 
     #[Route('/api/blog/{id}', name: 'api_blog_detail', methods: ['GET'])]
     public function show(int $id, BlogRepository $blogRepository, SerializerInterface $serializer, EntityManagerInterface $em): JsonResponse
