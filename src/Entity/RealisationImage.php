@@ -3,8 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\RealisationImageRepository;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[\AllowDynamicProperties]
 #[ORM\Entity(repositoryClass: RealisationImageRepository::class)]
@@ -15,20 +15,23 @@ class RealisationImage
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: Realisation::class)]
+    #[ORM\ManyToOne(targetEntity: Realisation::class, inversedBy: 'images')]
     #[ORM\JoinColumn(name: 'realisationId', referencedColumnName: 'id', nullable: false)]
+    #[Groups(['realisation_image:read'])]
     private ?Realisation $realisationId = null;
-    #[ORM\Column(name: 'image', type: 'text', nullable: true)]
-    private ?string $image = null;
+
+    #[ORM\Column(name: 'image', type: 'string', length: 255)]
+    #[Groups(['realisation:read'])]
+    private string $image;
     #[ORM\Column(name: 'date_creation', type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
-    private ?\DateTimeInterface $date_creation = null;
+    private ?\DateTimeInterface $dateCreation = null;
 
     public function __construct()
     {
-        $this->date_creation = new \DateTime();
+        $this->dateCreation = new \DateTime();
     }
 
-    public function setImage(Collection $image): void
+    public function setImage(string $image): void
     {
         $this->image = $image;
     }
@@ -48,14 +51,14 @@ class RealisationImage
         $this->id = $id;
     }
 
-    public function getDate_Creation(): \DateTimeInterface
+    public function getDateCreation(): \DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDate_Creation(\DateTimeInterface $date_creation): void
+    public function setDateCreation(\DateTimeInterface $dateCreation): void
     {
-        $this->date_creation = $date_creation;
+        $this->datecreation = $dateCreation;
     }
 
     public function getRealisationId(): ?Realisation
@@ -66,5 +69,10 @@ class RealisationImage
     public function setRealisationId(?Realisation $realisationId): void
     {
         $this->realisationId = $realisationId;
+    }
+
+    public function setRealisation(Realisation $realisation): void
+    {
+        $this->realisationId = $realisation;
     }
 }

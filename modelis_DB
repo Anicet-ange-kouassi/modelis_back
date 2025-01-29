@@ -16,28 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `action`
---
-
-DROP TABLE IF EXISTS `action`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `action` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `action`
---
-
-LOCK TABLES `action` WRITE;
-/*!40000 ALTER TABLE `action` DISABLE KEYS */;
-/*!40000 ALTER TABLE `action` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `blog`
 --
 
@@ -48,7 +26,7 @@ CREATE TABLE `blog` (
   `id` int NOT NULL AUTO_INCREMENT,
   `utilisateurId` int DEFAULT NULL,
   `libelle` varchar(500) NOT NULL,
-  `description` json DEFAULT NULL,
+  `description` text,
   `image` text,
   `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -63,7 +41,7 @@ CREATE TABLE `blog` (
 
 LOCK TABLES `blog` WRITE;
 /*!40000 ALTER TABLE `blog` DISABLE KEYS */;
-INSERT INTO `blog` VALUES (1,1,'INSTALLATION L.A.M.P SUR UBUNTU 12.04','{\"sections\": [{\"title\": \"SECTION 1: INSTALLATION\", \"subsections\": [{\"title\": \"APACHE2\", \"note-1\": \"À la question Souhaitez-vous continuer [O/n] ?, tapez O\", \"content\": \"Apache est un serveur web. Il peut gérer les fichiers de service, l’indexation des répertoires, servant les fichiers HTML, etc. Pour l’installer, exécutez la commande suivante dans un terminal :\", \"commands\": [\"sudo apt-get install apache2\"]}, {\"title\": \"PHP5\", \"note-1\": \"À la question Souhaitez-vous continuer [O/n] ?, tapez O\", \"content\": \"PHP (acronyme récursif pour « PHP: Hypertext Preprocessor ») est un langage de script principalement utilisé pour produire des pages web de manière dynamique. Il est donc, dans la très grande majorité des cas, couplé à un serveur HTTP (comme Apache) pour la communication avec le client web. Pour installer PHP correctement, vous devez installer le paquet php5 puis le module php5 Apache. Exécutez la commande suivante dans un terminal :\", \"commands\": [\"sudo apt-get install php5\", \"sudo apt-get install libapache2-mod-php5\"]}, {\"title\": \"MYSQL5\", \"note-1\": \"Vous devez saisir un mot de passe pour l\'administrateur de MySQL.\", \"content\": \"MySQL est ce que la plupart des serveurs et des sites utilisent pour leurs bases de données, les hébergeurs doivent définitivement l’installer. Vous pouvez installer MySQL et son module PHP en exécutant la commande suivante dans un terminal :\", \"commands\": [\"sudo service apache2 restart\"], \"content-1\": \"Vous devez obtenir une fenêtre demandant la saisie d’un mot de passe pour le compte d’administration de MySQL (root), semblable à celle-ci. Nous allons saisir un mot de passe pour le compte administrateur de MySQL. Entrez à nouveau le mot de passe pour confirmation. Après avoir installé LAMP sur UBUNTU 12.04 LTS, vous avez besoin de redémarrer Apache pour s’assurer que tout est correctement chargé. Vous pouvez le faire en exécutant la commande suivante :\"}, {\"title\": \"PHPMYADMIN\", \"note-1\": \"Dans la fenêtre qui s’affiche, choisissez « apache » avec la direction et validez en appuyant sur ENTRER.\", \"note-2\": \"Choisissez « oui » et appuyez sur ENTRER.\", \"note-3\": \"Entrez le mot de passe du compte d’administration.\", \"note-4\": \"Redémarrez Apache : sudo service apache2 restart. Accédez à PhpMyAdmin en tapant l’adresse suivante dans un navigateur : http://adresse_serveur:port/phpmyadmin\", \"content\": \"Vous pouvez également installer PhpMyAdmin. C’est une interface web qui permet d’agir sur votre base de données MySQL.\", \"commands\": [\"sudo apt-get install phpmyadmin\"], \"content-1\": \"Vous devez saisir le même mot de passe pour confirmer. PhpMyAdmin a été installé dans /usr/share alors que les fichiers HTML et PHP doivent se trouver par défaut dans /var/www. C’est l’installation standard d’Apache. La commande suivante va créer un lien symbolique pour pointer sur les fichiers situés dans /usr/share depuis /var/www.\", \"commands-1\": [\"sudo ln -s /usr/share/phpmyadmin/  /var/www/phpmyadmin\"]}]}, {\"title\": \"SECTION 2: PARAMÉTRAGE\", \"subsections\": [{\"steps\": [\"cd /etc/apache2\", \"sudo vi apache2.conf\", \"Insérez la ligne : ServerName localhost\", \"sudo service apache2 restart\"], \"title\": \"MODULE APACHE\", \"content\": \"Apache, de façon basique, ne connaît pas le nom de la machine sur laquelle il est installé. Pour éviter cela, il faut fournir à Apache le nom de la machine via son fichier de configuration.\"}, {\"steps\": [\"cd /var/www\", \"sudo touch phpinfo.php\", \"sudo vi phpinfo.php\", \"Insérez cette ligne : <?php phpinfo(); ?>\"], \"title\": \"MODULE PHP\", \"content\": \"Pour vérifier que les modules PHP sont actifs, testez l\'exécution d\'un fichier PHP.\", \"steps-1\": [\"sudo service apache2 restart\", \"Vous devez avoir ce message : * Restarting web server apache2 … waiting [ OK ]\"]}]}]}','images/blog/08e7b83c3161c33e87149e42d3f7c535.png','2025-01-26 21:27:23'),(2,1,'INSTALLATION APACHE SUBVERSION SUR UBUNTU SERVER 14.04','{\"sections\": [{\"subsections\": [{\"points\": [\"Garder un historique des différentes versions des fichiers d’un projet.\", \"Permettre le retour à une version antérieure quelconque.\", \"Garder un historique des modifications avec leur nature, leur date, leur auteur.\", \"Fournir un accès souple à ces fichiers, en local ou via un réseau.\", \"Permettre à des utilisateurs distincts et souvent distants de collaborer sur les mêmes fichiers.\"], \"content\": \"Ce article décrit comment installer et configurer le gestionnaire de sources et de contrôle de versions Apache Subversion sur Linux Ubuntu Server 14.04 LTS. Ce type de programme présente plusieurs fonctions, notamment :\"}]}, {\"title\": \"Installation des paquets\", \"subsections\": [{\"note\": \"L’adresse du serveur sera Votre_Adresse_Locale et le port sera 80. Le répertoire principal du serveur subversion est /var/svn. Nous considérerons cette base pour la suite de l’article.\", \"content\": \"Toutes installations de SVN nécessitent le paquet Subversion. Créez une base de dépôts dans le répertoire /var via les commandes suivantes :\", \"commands\": [\"sudo apt-get install subversion\", \"sudo mkdir /var/svn\"]}, {\"note\": \"Dans cet article, nous utilisons la troisième option (SVN + Apache).\", \"content\": \"SVN peut être installé de plusieurs façons :\", \"options\": [\"Seul en local, l’accès au dépôt se faisant par file://var/svn/projet\", \"Seul en mode serveur, c’est-à-dire que l’accès au dépôt SVN sera sous la forme svn://Votre_Adresse_Locale/projet1, avec des utilisateurs SVN créés à cet effet ;\", \"Ou administré via un module d’Apache (dav_svn), c’est-à-dire que l’accès au dépôt SVN sera sous la forme http://Votre_Adresse_Locale:80/projet1, avec des utilisateurs créés pour le module dav_svn pour l’authentification.\"]}]}, {\"title\": \"SVN + Apache\", \"subsections\": [{\"note\": \"Vérifiez l’installation en accédant à Votre_Adresse_Locale:80/svn/projet_1 via un navigateur.\", \"steps\": [\"<location /svn>\", \"DAV svn\", \"SVNParentPath /var/svn\", \"</location>\"], \"config\": [\"Configurer tous les dépôts un par un, ce qui permet de gérer les autorisations dépôt par dépôt mais qui oblige à modifier la configuration d’Apache (et donc de le relancer ensuite) à chaque ajout de dépôt.\", \"Une source classique d’erreur est d’utiliser un répertoire pour SVN qui est dans le path d’Apache, dans ce cas SVN ne fonctionne pas. Il faut obligatoirement utiliser un répertoire en dehors du path d’Apache.\", \"Ouvrir le fichier /etc/apache2/mods-available/dav_svn.conf.\", \"Décommenter la ligne d’ouverture de l’environnement. Ensuite, modifier le nom par l’URL que vous voulez utiliser.\"], \"content\": \"Pour installer un serveur SVN utilisant le serveur web Apache, nous aurons besoin d’Apache et de la bibliothèque de Subversion pour Apache. Il faut donc installer les paquets apache2, libapache2svn via la commande :\", \"commands\": [\"sudo apt-get install apache2 libapache2-svn apache2-utils\"], \"commands-1\": [\"Redémarrer Apache via la commande : sudo service apache2 restart.\", \"Créer le dépôt projet_1 et donner les droits d’accès au dépôt uniquement à Apache :\", \"sudo svnadmin create /var/svn/projet_1\", \"sudo chown -R www-data:www-data /var/svn/projet_1\"]}]}, {\"title\": \"Authentification\", \"subsections\": [{\"steps\": [\"AuthType Basic\", \"AuthName Subversion Repository\", \"AuthUserFile /etc/apache2/dav_svn.passwd\", \"Require valid-user\"], \"config\": [\"Votre fichier doit ressembler à ceci :\", \"<location /svn>\", \"DAV svn\", \"SVNParentPath /var/svn\", \"AuthType Basic\", \"AuthName Subversion Repository\", \"AuthUserFile /etc/apache2/dav_svn.passwd\", \"</location>\"], \"content\": \"Pour activer l’authentification, vous devez modifier le fichier /etc/apache2/mods-available/dav_svn.conf. Retirer le commentaire sur les lignes suivantes :\", \"commands\": [\"Créer le fichier d’authentification contenant les utilisateurs et mots de passe :\", \"sudo htpasswd -cs /etc/apache2/dav_svn.passwd bob\", \"Pour ajouter un autre utilisateur :\", \"sudo htpasswd -cs /etc/apache2/dav_svn.passwd bill\"], \"additional-notes\": [\"Faire appartenir ce fichier à l’utilisateur Apache avec la commande :\", \"sudo chown www-data:www-data /etc/apache2/dav_svn.passwd\", \"Redémarrer Apache pour appliquer les modifications :\", \"sudo service apache2 restart\"], \"final-verification\": [\"Votre dépôt est maintenant accessible via les commandes SVN de base sous l’URL suivante :\", \"Votre_Adresse_Locale:80/svn/projet_1\", \"Si l’authentification est bien configurée, un nom d’utilisateur et un mot de passe seront demandés.\"]}]}]}','images/blog/3593f00b054c2d2857b3e7c430a19d39.png','2025-01-27 04:17:27'),(3,1,'INTERVIEW ACCORDÉ À BUSINESS AFRICA PAR LE PRÉSIDENT DU GROUPE MODELIS','{\"sections\": [{\"content\": \"Dans le but d’accentuer la présence du Groupe MODELIS sur le plan National et International, Mr Fabrice BI IRIE (Président du Groupe MODELIS) a accordé une interview au Magazine BUSINESS AFRICA (page 12 – 13) parue dans l’édition N°141 – Novembre 2016.\"}]}','images/blog/1090f828e4bf6d4b1e989ebdbe1f54bf.jpeg','2025-01-27 04:39:44'),(4,1,'CAFÉ GISS','{\"sections\": [{\"content\": \"Après un mois de Févier innovant  ouvert par sa journée technologique dénommée ‘’TECHNO DAY’’ MODELIS débute une nouvelle saison d’échanges avec la série des cafés. Des matinées techniques à destination de secteur d’activités spécifiques.\"}]}','images/blog/1c63be055ba75c264eeb515670ba62ad.jpeg','2025-01-27 04:46:11'),(5,1,'INSTALLATION REDMINE UBUNTU SERVER 12.04','{\"sections\": [{\"content\": \"Ce article décrit comment installer et configurer tous les logiciels nécessaires pour faire fonctionner le gestionnaire de projet Redmine sur Linux Ubuntu Server 12.04 LTS.\"}, {\"title\": \"INSTALLATION DE LOGICIELS\", \"subsections\": [{\"note\": \"Le processus d’installation de MySQL vous demandera un mot de passe pour l’accès au « root » pour le serveur de base de données.\", \"steps\": [\"Ouvrez votre Terminal (raccourcis CRTL+ALT+T).\", \"Tapez la commande suivante :\", \"sudo apt-get install apache2 libapache2-mod-passenger\", \"Éditez le fichier /etc/apache2/apache2.conf et insérer cette ligne :\", \"# Global configuration\", \"# Server Name\", \"ServerName localhost\"], \"title\": \"PRÉRÉQUIS : APACHE, MOD-PASSENGER, MYSQL\", \"content\": \"Il existe plusieurs packages de support que nous allons installer. L’installation d’Apache est assez simple si vous suivez les instructions et acceptez les valeurs par défaut.\", \"commands\": [\"sudo apt-get install mysql-server mysql-client\"]}, {\"steps\": [\"Dans votre terminal, tapez la commande :\", \"sudo apt-get install redmine redmine-mysql\", \"Lorsque vous êtes invité, sélectionnez Yes pour autoriser dbconfig-commun à configurer la base de données.\", \"Fournissez le mot de passe du « root » pour permettre la création de la base de données Redmine.\", \"Sélectionnez MySQL parmi les types de bases de données offerts.\", \"Fournissez un mot de passe pour protéger votre base de données Redmine.\", \"Confirmez le mot de passe de Redmine.\"], \"title\": \"INSTALLATION ET CONFIGURATION DE REDMINE\"}]}, {\"title\": \"CONFIGURATION\", \"subsections\": [{\"note\": \"Vous devriez maintenant être en mesure d’accéder à Redmine en tapant l’adresse suivante dans votre navigateur : http://adresse_physique/redmine\", \"steps\": [\"Modifiez le fichier /etc/apache2/mods-available/passenger.conf pour ajouter le texte : PassengerDefaultUser www-data.\", \"Créez un lien symbolique pour connecter Redmine dans l’espace de document web :\", \"sudo ln -s /usr/share/redmine/public/ var/www/redmine\", \"Désactivez le site par défaut et activez Redmine :\", \"sudo a2dissite 000-default\", \"sudo a2ensite redmine\", \"Installez Bundler : sudo gem install bundler.\", \"Allez dans le répertoire /usr/share/redmine puis lancez la commande suivante :\", \"sudo bundle install --without development test\", \"Enfin, redémarrez Apache avec la commande : sudo service apache2 restart.\"], \"title\": \"CONFIGURATION D’APACHE2\", \"content\": \"Vous devez modifier des fichiers pour Apache.\"}]}]}','images/blog/229b88139e9cc8b179985afc9843ba3d.png','2025-01-27 05:00:32');
+INSERT INTO `blog` VALUES (1,1,'<h2>Installation LAMP sur Ubuntu 12.04</h2>  <p>1. INSTALLATION</p>','<p>Apache est un serveur web. Il peut gérer les fichiers de service, l’indexation des répertoires, servant les fichiers HTML, etc. Pour l’installer, exécutez la commande suivante dans un terminal :</p>\n    <pre>sudo apt-get install apache2</pre>\n    <p>À la question <strong>Souhaitez-vous continuer [O/n] ?</strong>, tapez <strong>O</strong>.</p>\n    <h2>PHP5</h2>\n    <p>PHP (acronyme récursif pour « PHP: Hypertext Preprocessor ») est un langage de script principalement utilisé pour produire des pages web de manière dynamique. Il est donc, dans la très grande majorité des cas, couplé à un serveur HTTP (comme Apache) pour la communication avec le client web.</p>\n    <p>Pour installer PHP, exécutez les commandes suivantes :</p>\n    <pre>sudo apt-get install php5<br>sudo apt-get install libapache2-mod-php5</pre>\n    <p>À la question <strong>Souhaitez-vous continuer [O/n] ?</strong>, tapez <strong>O</strong>.</p>\n    <h2>MySQL5</h2>\n    <p>MySQL est utilisé pour les bases de données. Vous pouvez l’installer avec son module PHP :</p>\n    <pre>sudo apt-get install mysql-server libapache2-mod-auth-mysql php5-mysql</pre>\n    <p>Entrez un mot de passe pour l’administrateur MySQL (root) et confirmez-le. Après l’installation, redémarrez Apache :</p>\n    <pre>sudo service apache2 restart</pre>\n    <h2>PhpMyAdmin</h2>\n    <p>Vous pouvez installer PhpMyAdmin avec la commande suivante :</p>\n    <pre>sudo apt-get install phpmyadmin</pre>\n    <p>Après l’installation, créez un lien symbolique pour accéder à PhpMyAdmin :</p>\n    <pre>sudo ln -s /usr/share/phpmyadmin /var/www/phpmyadmin</pre>\n    <p>Accédez à PhpMyAdmin via : <strong>http://adresse_serveur/phpmyadmin</strong></p>\n    <h2>Configuration Apache</h2>\n    <p>Pour éviter les messages d’avertissement d’Apache, ajoutez le nom de la machine dans le fichier de configuration :</p>\n    <pre>cd /etc/apache2<br>sudo vi apache2.conf<br>ServerName localhost</pre>\n    <p>Relancez Apache :</p>\n    <pre>sudo service apache2 restart</pre>\n    <h2>Tester PHP</h2>\n    <p>Créez un fichier <strong>phpinfo.php</strong> pour tester PHP :</p>\n    <pre>cd /var/www<br>sudo touch phpinfo.php<br>sudo vi phpinfo.php</pre>\n    <p>Ajoutez le contenu suivant :</p>\n    <pre>&lt;?php echo phpinfo(); ?></pre>\n    <p>Accédez à : <strong>http://adresse_serveur/phpinfo.php</strong> et vérifiez que PHP fonctionne.</p>','images/blog/08e7b83c3161c33e87149e42d3f7c535.png','2025-01-27 14:45:13'),(2,1,'<h2>INSTALLATION APACHE SUBVERSION SUR UBUNTU SERVER 14.04</h2>','<p>Ce article décrit comment installer et configurer le gestionnaire de sources et de contrôle de versions Apache Subversion sur Linux Ubuntu Server 14.04 LTS.Ce type de programme présente plus fonctions, notamment :</p>\n    <ul>\n        <li>Garder un historique des différentes versions des fichiers d’un projet.</li>\n        <li>Permettre le retour à une version antérieure quelconque.</li>\n        <li>Garder un historique des modifications avec leur nature, leur date, leur auteur.</li>\n        <li>Permettre un accès souple à ces fichiers, en local ou via un réseau.</li>\n        <li>Permettre à des utilisateurs distincts et souvent distants de travailler ensemble sur les mêmes fichiers.</li>\n    </ul>\n    <h2>INSTALLATION DES PAQUETS</h2>\n    <p>Toutes installations de SVN nécessiteront l’installation du paquet <strong>subversion</strong>. Pour les futurs repository,une base de dépôts va être créer dans le répertoire /var via la commande :</p>\n    <pre>sudo apt-get install subversion<br>sudo mkdir /var/svn</pre>\n    <p>L’adresse du serveur sera <code>Votre_Adresse_Locale</code> et le port sera 80.Le répertoire principale du serveur subversion est /var/svn. Nous considérerons cette base pour la suite de l’article.</p>,\n    <h2>INSTALLATION DES PAQUETS</>\n    <p>SVN peut être installé en plusieurs méthodes :</p>\n    <ul>\n    <li>Seul en local, l’accès au dépôt se faisant par file://var/svn/projet</li>\n\n<li>Seul en mode serveur, c’est-à-dire que l’accès au dépôt SVN sera sous la forme svn://Votre_Adresse_Locale/projet1, avec des utilisateurs SVN créés à cet effet ;</li>\n\n<li>ou administré via un module d’Apache (dav_svn), c’est à dire que l’accès au dépôt SVN sera sous la forme http://Votre_Adresse_Locale:80/projet1, avec des utilisateurs crées pour le module dav_svn pour l’authentification.</li>\n  </ul>\n  <p>Dans notre cas, nous utiliserons la troisième option (SVN + Apache).</p>,\n  <h2>SVN + APACHE</h2>\n    <p>Pour installer un serveur SVN utilisant le serveur web Apache, nous aurons besoin d’Apache et de la bibliothèque de Subversion pour Apache. Il faut donc installer les paquets apache2, libapache2svn via la commande :</p>\n    <pre>sudo apt-get install apache2 libapache2-svn apache2-utils</pre>\n    <p>Suivez notre article sur la mise en place d’un LAMP sur Linux Ubuntu Server</p>\n    <p>La configuration principale du serveur SVN se situe dans le fichier /etc/apache2/mods-enabled/dav_svn.conf</p> <p>Il y a deux orientations de configuration :</p>\n   <ul>\n     <li>Configurer tous les dépôts un par un, ce qui permet de gérer les autorisations dépôt par dépôt mais qui oblige à modifier la configuration d’Apache (et donc de le relancer ensuite) à chaque ajout de dépôt ;</li>\n     <li>Configurer un répertoire parent de tous les dépôts, ce qui n’oblige pas à reconfigurer Apache à chaque ajout mais qui ne permet de gérer les autorisations finement.</li>\n   </ul>\n   <p>Une source classique d’erreur est d’utiliser un répertoire pour SVN qui est dans le path d’Apache, dans ce cas SVN ne fonctionne pas. Il faut obligatoirement utiliser un répertoire en dehors du path d’Apache.</p>,\n   <p>La deuxième option de configuration ne sera pas développée dans cet article. Ici nous considérons que le nom du dépôt à créer est « projet_1 » et qu’il doit se situer dans le répertoire « /var/svn » et que l’on veut y accéder par l’url Votre_Adresse_Locale:80/svn (le nom et l’url sont ici volontairement différents pour voir la différence).</p>\n   <p>Ouvrir le fichier /etc/apache2/mods-available/dav_svn.conf</p>\n   <p>Décommenter la ligne d’ouverture de l’environnement. Ensuite modifier le nom par l’url que vous voulez utiliser :</p>\n   <pre><location /svn></pre>\n   <p>Retirer le commentaire sur la ligne pour activer le module</p>\n   <pre>DAV svn</pre>\n   <p>Retirer le commentaire et faire pointer vers votre répertoire SVN la ligne suivante vers l’adresse du dépôt sur votre disque dur.</p>\n   <pre>SVNParentPath /var/svn</pre>\n   <p>Retirer le commentaire devant la ligne de fermeture de l’environnement ouvert précédemment</p>\n   <pre></location></pre>\n   <p>Votre fichier doit ressembler à ceci :</p>\n    <pre><location /svn><br>DAV svn<br>SVNParentPath /var/svn<br></location></pre>\n    <p>Redémarrer Apache via la commande :</p>\n    <pre>sudo service apache2 restart</pre>\n    <p>Créer le dépôt projet_1 et donner les droits d’accès au dépôt uniquement à Apache</p>\n    <pre>sudo svnadmin create /var/svn/projet_1</pre>\n    <pre>sudo chown -R www-data:www-data /var/svn/projet_1</p>,\n    <p>Vérifier à l’aide d’un navigateur que Votre_Adresse_Locale:80/svn/projet_1 répond</p>\n    <h2>AUTHENTIFICATION</h2>\n    <p>Pour activer l’authentification, vous devez modifier le fichier /etc/apache2/mods-available/dav_svn.conf</p>\n    <p>Retirer le commentaire sur la ligne</p>\n    <pre>AuthType Basic<br>AuthName \"Subversion Repository\"<br>AuthUserFile /etc/apache2/dav_svn.passwd<br>Require valid-user</pre>\n    <p>Votre fichier doit ressembler à ceci :</p>\n    <pre><location /svn><br>DAV svn<br>SVNParentPath /var/svn<br>AuthType Basic<br>AuthName \"Subversion Repository\"<br>AuthUserFile /etc/apache2/dav_svn.passwd<br></location></pre>\n    <p>Puis avec la commande htpasswd, créer le fichier /etc/apache2/dav_svn.passwd contenant tous les utilisateurs et les mots de passe.</p>\n    <p>Pour le premier utilisateur à créer, utiliser cette commande :</p>\n    <pre>sudo htpasswd -cs /etc/apache2/dav_svn.passwd bob</pre>\n    <p>Nous utiliserons par contre cette commande pour les autres utilisateurs :</p>\n    <pre>sudo htpasswd -cs /etc/apache2/dav_svn.passwd bill</pre>\n    <p>Faire appartenir ce fichier à l’utilisateur d’Apache via cette commande :</p>\n    <pre>sudo chown www-data:www-data /etc/apache2/dav_svn.passwd</pre>\n    <p>Redémarrer à nouveau Apache:</p>\n    <pre>sudo service apache2 restart</pre>\n    <p>Votre dépôt doit maintenant être accessible via les commandes SVN de base sous l’URL :</p>\n    <p>Accédez à : <code>http://Votre_Adresse_Locale:80/svn/projet_1</code>.</p>, <p>Si vous avez suivi la procédure d’authentification à la lettre, un nom utilisateur et mot de passe (précédemment créés) seront demandés.</p>','images/blog/3593f00b054c2d2857b3e7c430a19d39.png','2025-01-27 15:38:06'),(3,1,'<h2>INSTALLATION REDMINE UBUNTU SERVER 12.04</h2>','<p>Ce article décrit comment installer et configurer tous les logiciels nécessaires pour faire fonctionner le gestionnaire de projet Redmine sur Linux Ubuntu Server 12.04 LTS.</p>\n    <h2>I. INSTALLATION DE LOGICIELS</h2>\n    <h3> I.1 PRÉRÉQUIS : APACHE, MOD-PASSENGER, MYSQL</h3>\n    <p>Il existe plusieurs packages de support que nous allons installer. L’installation d’Apache est assez simple simple si vous suivez les instructions et acceptez les valeurs par défaut.</p>\n    <p>Ouvrez votre Terminal (raccourcis CRTL+ALT+T)</p>\n    <p>Tapez la commande suivante :</p>\n    <pre>sudo apt-get install apache2 libapache2-mod-passenger</pre>\n    <p>Éditez le fichier /etc/apache2/apache2.conf et insérer cette ligne :</p>\n    <p># Global configuration</p>\n    <p># Server Name</p>,\n    <p>ServerName localhost<p/>\n    <p>L’installation de MySQL prend juste un peu de temps.</p>\n    <p>dans votre terminal tapez cette commande :</p>\n    <pre>sudo apt-get install mysql-server mysql-client</pre>\n    <p>Le processus d’installation de MySQL vous demandera un mot de passe pour l’accès au « root » pour le serveur de base de données.</p>\n    <h3> I.2 INSTALLATION T CONFIGURATION DE REDMINE</h3>\n    <p>Dans votre terminal tapez cette commande :</p>\n    <pre>sudo apt-get install redmine redmine-mysql</pre>\n    <p>Le processus d’installation demandera si vous souhaiter autoriser dbconfig-commun pour configurer la base de données lorsque vous êtes invité afin de sélectionner Yes.</p>\n    <p>Après avoir sélectionner Yes, vous devez fournir le mot de passe du « root » pour la base de données, que l’installateur puisse créer la base de données de redmine.</p>\n    <p>Ensuite sélectionner mysql parmi les différents types de bases de données offerts.</p>\n    <p>Maintenant vous êtes invité à fournir un mot de passe qui sera utiliser protéger votre base de données redmine. Redmine l’utilisera quand il veut accéder à MySQL.</p>\n    <p>Confirmer le mot de passe de Redmine.</p>\n    <h2>II. CONFIGURATION</h2>\n    <h3>CONFIGURATION D’APACHE2</h3>\n    <p>Vous devez modifier des fichiers pour apache. Le premier est /etc/apache2/mods-available/passenge.conf qui a besoin du texte PassengerDefaultUser www-data</p>\n    <p>Maintenant créer un lien symbolique pour connecter redmine dans l’espace de document web en tapant la commande suivante :</p>\n    <pre>sudo ln -s /usr/share/redmine/public/ var/www/redmine</pre>\n    <p>Ensuite créer ce fichier en tapant la commande suivante.</p>\n    <p>Désactivez le site par défaut et activez redmine :</p>\n    <pre>sudo a2dissite 000-default<br>sudo a2ensite redmine<br>sudo gem install bundler</pre>\n    <p>Allez dans le répertoire /usr/share/redmine puis lancez la commande suivante :</p>\n    <pre>sudo bundle install -without development test</pre>\n    <p>Enfin, redémarrez apache avec la commande :</pre>\n    <pre>sudo service apache2 restart</pre>\n    <p>Vous devriez maintenant être en mesure d’accéder à redmine en tapant l’adresse suivante dans votre navigateur :</p>\n    <pre>http://adresse_physique/redmine</pre>','images/blog/229b88139e9cc8b179985afc9843ba3d.png','2025-01-27 16:14:52'),(4,1,'<h2>INTERVIEW ACCORDÉ À BUSINESS AFRICA PAR LE PRÉSIDENT DU GROUPE MODELIS</h2>','<p>Dans le but d’accentuer la présence du Groupe MODELIS sur le plan National et International, Mr Fabrice BI IRIE (Président du Groupe MODELIS) a accordé une interview au Magazine BUSINESS AFRICA (page 12 – 13) parue dans l’édition N°141 – Novembre 2016.</p>','images/blog/1090f828e4bf6d4b1e989ebdbe1f54bf.jpeg','2025-01-27 16:18:43'),(5,1,'<h2>CAFÉ GIS</h2>','<p>Après un mois de Févier innovant  ouvert par sa journée technologique dénommée ‘’TECHNO DAY’’ MODELIS débute une nouvelle saison d’échanges avec la série des cafés. Des matinées techniques à destination de secteur d’activités spécifiques.</p>','images/blog/1c63be055ba75c264eeb515670ba62ad.jpeg','2025-01-27 16:20:17');
 /*!40000 ALTER TABLE `blog` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -84,7 +62,7 @@ CREATE TABLE `blog_commentaire` (
   PRIMARY KEY (`id`),
   KEY `blogId` (`blogId`),
   CONSTRAINT `blog_commentaire_ibfk_1` FOREIGN KEY (`blogId`) REFERENCES `blog` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -93,6 +71,7 @@ CREATE TABLE `blog_commentaire` (
 
 LOCK TABLES `blog_commentaire` WRITE;
 /*!40000 ALTER TABLE `blog_commentaire` DISABLE KEYS */;
+INSERT INTO `blog_commentaire` VALUES (2,1,'Merci pour le partage','Anisco','galahav816@fundapk.com','2025-01-27 14:46:04');
 /*!40000 ALTER TABLE `blog_commentaire` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -133,12 +112,12 @@ DROP TABLE IF EXISTS `contact`;
 CREATE TABLE `contact` (
   `id` int NOT NULL AUTO_INCREMENT,
   `email` varchar(255) NOT NULL,
-  `tel` varchar(50) NOT NULL,
-  `adresse` text NOT NULL,
-  `dateCreation` date NOT NULL,
+  `tel` varchar(20) NOT NULL,
+  `adresse` longtext NOT NULL,
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `paysId` int NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `paysId` (`paysId`),
+  KEY `IDX_4C62E63835569A8D` (`paysId`),
   CONSTRAINT `contact_ibfk_1` FOREIGN KEY (`paysId`) REFERENCES `pays` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -149,87 +128,37 @@ CREATE TABLE `contact` (
 
 LOCK TABLES `contact` WRITE;
 /*!40000 ALTER TABLE `contact` DISABLE KEYS */;
-INSERT INTO `contact` VALUES (1,'contact@modelis-tech.com','(+225) 21 74 84 34','COCODY FAYA EN FACE DE LA CLINIQUE BON SAMARITAIN, Abidjan','2025-01-21',1),(2,'contact@modelis-tech.fr','(+33) 1 23 45 67 89','Paris, France','2025-01-21',2),(3,'contact@modelis-tech.se','(+221) 23 45 56 789','Dakar, Sénégal','2025-01-21',3),(4,'contact@modelis-tech.ml','(+223) 23 45 56 789','Bamako,Mali','2025-01-21',4);
+INSERT INTO `contact` VALUES (1,'contact@modelis-tech.com','(+225) 21 74 84 34','COCODY FAYA EN FACE DE LA CLINIQUE BON SAMARITAIN, Abidjan','2025-01-21 00:00:00',1),(2,'contact@modelis-tech.fr','(+33) 1 23 45 67 89','Paris, France','2025-01-21 00:00:00',2),(3,'contact@modelis-tech.se','(+221) 23 45 56 789','Dakar, Sénégal','2025-01-21 00:00:00',3),(4,'contact@modelis-tech.ml','(+223) 23 45 56 789','Bamako,Mali','2025-01-21 00:00:00',4);
 /*!40000 ALTER TABLE `contact` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `doctrine_migration_versions`
+-- Table structure for table `contactez-nous`
 --
 
-DROP TABLE IF EXISTS `doctrine_migration_versions`;
+DROP TABLE IF EXISTS `contactez-nous`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `doctrine_migration_versions` (
-  `version` varchar(191) COLLATE utf8mb3_unicode_ci NOT NULL,
-  `executed_at` datetime DEFAULT NULL,
-  `execution_time` int DEFAULT NULL,
-  PRIMARY KEY (`version`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `doctrine_migration_versions`
---
-
-LOCK TABLES `doctrine_migration_versions` WRITE;
-/*!40000 ALTER TABLE `doctrine_migration_versions` DISABLE KEYS */;
-/*!40000 ALTER TABLE `doctrine_migration_versions` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `domaine`
---
-
-DROP TABLE IF EXISTS `domaine`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `domaine` (
-  `id` int NOT NULL,
-  `libelle` text NOT NULL,
-  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `dateModification` datetime DEFAULT NULL,
-  `dateSuppression` datetime DEFAULT NULL,
+CREATE TABLE `contactez-nous` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nom` varchar(254) NOT NULL,
+  `prenom` varchar(254) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `tel` varchar(50) DEFAULT NULL,
+  `objet` varchar(50) DEFAULT NULL,
+  `message` text NOT NULL,
+  `dateDenvoie` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `domaine`
+-- Dumping data for table `contactez-nous`
 --
 
-LOCK TABLES `domaine` WRITE;
-/*!40000 ALTER TABLE `domaine` DISABLE KEYS */;
-/*!40000 ALTER TABLE `domaine` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `domaineexperience`
---
-
-DROP TABLE IF EXISTS `domaineexperience`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `domaineexperience` (
-  `id` int NOT NULL,
-  `personneId` int DEFAULT NULL,
-  `domaineId` int NOT NULL,
-  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `dateModification` datetime DEFAULT NULL,
-  `dateSuppression` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_domaineExperience_domaine` (`domaineId`),
-  KEY `FK_domaineExperience_personne` (`personneId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `domaineexperience`
---
-
-LOCK TABLES `domaineexperience` WRITE;
-/*!40000 ALTER TABLE `domaineexperience` DISABLE KEYS */;
-/*!40000 ALTER TABLE `domaineexperience` ENABLE KEYS */;
+LOCK TABLES `contactez-nous` WRITE;
+/*!40000 ALTER TABLE `contactez-nous` DISABLE KEYS */;
+/*!40000 ALTER TABLE `contactez-nous` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -262,32 +191,6 @@ INSERT INTO `equipe` VALUES (1,3,'Informaticien de formation, Mr Franck ANGBA es
 UNLOCK TABLES;
 
 --
--- Table structure for table `espace`
---
-
-DROP TABLE IF EXISTS `espace`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `espace` (
-  `id` int NOT NULL,
-  `libelle` varchar(254) DEFAULT NULL,
-  `description` varchar(254) DEFAULT NULL,
-  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `dateModification` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `espace`
---
-
-LOCK TABLES `espace` WRITE;
-/*!40000 ALTER TABLE `espace` DISABLE KEYS */;
-/*!40000 ALTER TABLE `espace` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `historique`
 --
 
@@ -295,14 +198,14 @@ DROP TABLE IF EXISTS `historique`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `historique` (
-  `id` int NOT NULL,
-  `libelle` text,
-  `date` date DEFAULT NULL,
-  `description` text,
-  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `dateModification` datetime DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `libelle` longtext NOT NULL,
+  `date` date NOT NULL,
+  `description` longtext,
+  `date_creation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_modification` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -371,56 +274,6 @@ INSERT INTO `lien` VALUES (1,1,'MODELIS GROUP','https://modelisgroup.com/','2025
 UNLOCK TABLES;
 
 --
--- Table structure for table `metier`
---
-
-DROP TABLE IF EXISTS `metier`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `metier` (
-  `id` int NOT NULL,
-  `libelle` varchar(50) DEFAULT NULL,
-  `description` text,
-  `image` text,
-  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `metier`
---
-
-LOCK TABLES `metier` WRITE;
-/*!40000 ALTER TABLE `metier` DISABLE KEYS */;
-/*!40000 ALTER TABLE `metier` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `nosmetiers`
---
-
-DROP TABLE IF EXISTS `nosmetiers`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `nosmetiers` (
-  `id` int NOT NULL,
-  `libelle` text NOT NULL,
-  `description` text,
-  `image` text,
-  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `nosmetiers`
---
-
-LOCK TABLES `nosmetiers` WRITE;
-/*!40000 ALTER TABLE `nosmetiers` DISABLE KEYS */;
-/*!40000 ALTER TABLE `nosmetiers` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `offre`
 --
 
@@ -431,13 +284,13 @@ CREATE TABLE `offre` (
   `id` int NOT NULL AUTO_INCREMENT,
   `typeOffreId` int NOT NULL,
   `paysId` int NOT NULL,
-  `libelle` varchar(254) NOT NULL,
-  `description` text,
+  `libelle` varchar(500) DEFAULT NULL,
+  `description` longtext,
   `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `paysId` (`paysId`),
-  KEY `typeOffreId` (`typeOffreId`),
-  CONSTRAINT `offre_ibfk_1` FOREIGN KEY (`paysId`) REFERENCES `pays` (`id`),
+  KEY `IDX_AF86866FD95A082E` (`typeOffreId`),
+  KEY `IDX_AF86866F7A506642` (`paysId`),
+  CONSTRAINT `FK_AF86866F7A506642` FOREIGN KEY (`paysId`) REFERENCES `pays` (`id`),
   CONSTRAINT `offre_ibfk_2` FOREIGN KEY (`typeOffreId`) REFERENCES `typeoffre` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -511,7 +364,7 @@ CREATE TABLE `personne` (
 
 LOCK TABLES `personne` WRITE;
 /*!40000 ALTER TABLE `personne` DISABLE KEYS */;
-INSERT INTO `personne` VALUES (1,32,'côte d\'ivoire','Ivoirienne','IRIE BI','Lizié FRANCK','https://www.linkedin.com/in/bi-lizie-franck-irie-48349916/','M','irie.fabrice@modelisgc.com','07 59 67 12 64','Cocody','/images/personne/0fcf670e93b6726dc9c3d1ed2589dae1.png','1983-04-10','2025-01-21 13:13:12'),(2,1,'côte d\'ivoire','Ivoirienne','IRIE BI','Irie Fabrice',NULL,'M','irie.fabrice@modelisgc.com','07 59 67 12 25','Angré','/images/personne/e9bb377f3a6ec3cd732077e8b75046c0.png','1987-04-10','2025-01-21 13:13:12'),(3,19,'côte d\'ivoire','Ivoirienne','Angba','Franck',NULL,'M','franck.angba@modelis-tech.com','07 59 67 18 25','Angré','images/personne/angba-fanck.png','1987-04-10','2025-01-21 13:13:12'),(4,6,'côte d\'ivoire','Ivoirienne','kouassi','Ange Anicet',NULL,'M','anicet.kouassi@modelis-tech.com','07 59 68 11 37','Faya','images/personne/anicet.png','1987-04-10','2025-01-21 13:13:12'),(5,33,'côte d\'ivoire','Ivoirienne','Kouassi','Remi Gnamien',NULL,'M','remi.kouassi@modelis-tech.com','07 59 68 11 47','Koumassi','images/personne/remi.png','1987-04-10','2025-01-21 13:13:12'),(6,31,'côte d\'ivoire','Ivoirienne','N\'zi','Wilfried',NULL,'M','wilfried.nzi@modelis-tech.com','07 59 68 11 47','Faya','images/personne/wilfiednzi.png','1987-04-10','2025-01-21 13:13:12'),(7,6,'côte d\'ivoire','Ivoirienne','Timité','Arnaud',NULL,'M','arnaud.timite@modelis-tech.com','07 59 68 11 47','Bingerville','images/personne/arnaud-timé.jpeg','1987-04-10','2025-01-21 13:13:12'),(8,12,'côte d\'ivoire','Ivoirienne','Adekpé','Dylan',NULL,'M','dylan.adekpe@modelis-tech.com','07 59 68 11 50','Faya','images/personne/dylan.jpeg','1987-04-10','2025-01-21 13:13:12');
+INSERT INTO `personne` VALUES (1,32,'côte d\'ivoire','Ivoirienne','IRIE BI','Lizié FRANCK','https://www.linkedin.com/in/bi-lizie-franck-irie-48349916/','M','irie.fabrice@modelisgc.com','07 59 67 12 64','Cocody','images/personne/0fcf670e93b6726dc9c3d1ed2589dae1.png','1983-04-10','2025-01-21 13:13:12'),(2,1,'côte d\'ivoire','Ivoirienne','IRIE BI','Irie Fabrice',NULL,'M','irie.fabrice@modelisgc.com','07 59 67 12 25','Angré','images/personne/e9bb377f3a6ec3cd732077e8b75046c0.png','1987-04-10','2025-01-21 13:13:12'),(3,19,'côte d\'ivoire','Ivoirienne','Angba','Franck',NULL,'M','franck.angba@modelis-tech.com','07 59 67 18 25','Angré','images/personne/6235784eb70c0a24027298ce13fc39f9.png','1987-04-10','2025-01-21 13:13:12'),(4,6,'côte d\'ivoire','Ivoirienne','kouassi','Ange Anicet',NULL,'M','anicet.kouassi@modelis-tech.com','07 59 68 11 37','Faya','images/personne/anicet.png','1987-04-10','2025-01-21 13:13:12'),(5,33,'côte d\'ivoire','Ivoirienne','Kouassi','Remi Gnamien',NULL,'M','remi.kouassi@modelis-tech.com','07 59 68 11 47','Koumassi','images/personne/remi.png','1987-04-10','2025-01-21 13:13:12'),(6,31,'côte d\'ivoire','Ivoirienne','N\'zi','Wilfried',NULL,'M','wilfried.nzi@modelis-tech.com','07 59 68 11 47','Faya','images/personne/wilfriednzi.jpeg','1987-04-10','2025-01-21 13:13:12'),(7,6,'côte d\'ivoire','Ivoirienne','Timité','Arnaud',NULL,'M','arnaud.timite@modelis-tech.com','07 59 68 11 47','Bingerville','images/personne/arnaud-timité.jpeg','1987-04-10','2025-01-21 13:13:12'),(8,12,'côte d\'ivoire','Ivoirienne','Adekpé','Dylan',NULL,'M','dylan.adekpe@modelis-tech.com','07 59 68 11 50','Faya','images/personne/dylan.jpg','1987-04-10','2025-01-21 13:13:12');
 /*!40000 ALTER TABLE `personne` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -586,10 +439,10 @@ DROP TABLE IF EXISTS `realisation_image`;
 CREATE TABLE `realisation_image` (
   `id` int NOT NULL AUTO_INCREMENT,
   `realisationId` int NOT NULL,
-  `image` text NOT NULL,
-  `date_creation` datetime DEFAULT CURRENT_TIMESTAMP,
+  `image` varchar(255) NOT NULL,
+  `date_creation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `realisationId` (`realisationId`),
+  KEY `IDX_F9D6B0F8E8BD517` (`realisationId`),
   CONSTRAINT `realisation_image_ibfk_1` FOREIGN KEY (`realisationId`) REFERENCES `realisation` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -600,7 +453,7 @@ CREATE TABLE `realisation_image` (
 
 LOCK TABLES `realisation_image` WRITE;
 /*!40000 ALTER TABLE `realisation_image` DISABLE KEYS */;
-INSERT INTO `realisation_image` VALUES (1,1,'/images/realisation/937956c24aae99f0873f803115f65d6c.png','2025-01-23 00:13:56'),(2,1,'/images/realisation/a35d8c3fa6ef2a730575fc6538d56450.jpg','2025-01-23 00:13:56'),(3,1,'/images/realisation/2d248fcce25cc4bd34c4604c05e7891c.png','2025-01-23 00:13:56'),(4,3,'/images/realisation/ee977b9989d0c9ea1ff68e40557b3abe.png','2025-01-23 00:13:56'),(5,3,'/images/realisation/f3c489940d10467523f4c682891ad969.png','2025-01-23 00:13:56'),(6,4,'/images/realisation/95aec6d8ee92ed17f9e1244690629f8b.png','2025-01-23 00:13:56'),(7,4,'/images/realisation/303cf03ee81dbbe0a6929017202073eb.png','2025-01-23 00:13:56'),(8,4,'/images/realisation/694a861919cc1d08d38bb5dfc1db74d9.png','2025-01-23 00:13:56'),(9,4,'/images/realisation/f0503309082c6f5a0d5072d3fa72cc0e.png','2025-01-23 00:13:56'),(10,5,'/images/realisation/0e1a3508a2ec1f7450bf40d8ae1e95fd.png','2025-01-23 00:13:56'),(11,5,'/images/realisation/3d90f4427adce451b824f9926db41778.png','2025-01-23 00:13:56'),(12,6,'/images/realisation/196ebe3edb66dc42851ad55001623296.png','2025-01-23 00:13:56'),(13,6,'/images/realisation/d8074336e8359efe0b95a1ae8d4edea4.png','2025-01-23 00:13:56'),(14,6,'/images/realisation/167ef0cc25af6ca3f76f295d1c98ecc6.png','2025-01-23 00:13:56'),(15,6,'/images/realisation/ade93273c0f9ee6b45bcaea84f2ed7c0.png','2025-01-23 00:13:56'),(16,7,'/images/realisation/09741a6544cecd20bad9627962596b41.png','2025-01-23 00:13:56'),(17,7,'/images/realisation/8bf75a8329cbc983ddcc74807ddd4ef2.png','2025-01-23 00:13:56');
+INSERT INTO `realisation_image` VALUES (1,1,'images/realisation/937956c24aae99f0873f803115f65d6c.png','2025-01-23 00:13:56'),(2,1,'images/realisation/a35d8c3fa6ef2a730575fc6538d56450.jpg','2025-01-23 00:13:56'),(3,1,'images/realisation/2d248fcce25cc4bd34c4604c05e7891c.png','2025-01-23 00:13:56'),(4,3,'images/realisation/ee977b9989d0c9ea1ff68e40557b3abe.png','2025-01-23 00:13:56'),(5,3,'images/realisation/f3c489940d10467523f4c682891ad969.png','2025-01-23 00:13:56'),(6,4,'images/realisation/95aec6d8ee92ed17f9e1244690629f8b.png','2025-01-23 00:13:56'),(7,4,'images/realisation/303cf03ee81dbbe0a6929017202073eb.png','2025-01-23 00:13:56'),(8,4,'images/realisation/694a861919cc1d08d38bb5dfc1db74d9.png','2025-01-23 00:13:56'),(9,4,'images/realisation/f0503309082c6f5a0d5072d3fa72cc0e.png','2025-01-23 00:13:56'),(10,5,'images/realisation/0e1a3508a2ec1f7450bf40d8ae1e95fd.png','2025-01-23 00:13:56'),(11,5,'images/realisation/3d90f4427adce451b824f9926db41778.png','2025-01-23 00:13:56'),(12,6,'images/realisation/196ebe3edb66dc42851ad55001623296.png','2025-01-23 00:13:56'),(13,6,'images/realisation/d8074336e8359efe0b95a1ae8d4edea4.png','2025-01-23 00:13:56'),(14,6,'images/realisation/167ef0cc25af6ca3f76f295d1c98ecc6.png','2025-01-23 00:13:56'),(15,6,'images/realisation/ade93273c0f9ee6b45bcaea84f2ed7c0.png','2025-01-23 00:13:56'),(16,7,'images/realisation/09741a6544cecd20bad9627962596b41.png','2025-01-23 00:13:56'),(17,7,'images/realisation/8bf75a8329cbc983ddcc74807ddd4ef2.png','2025-01-23 00:13:56');
 /*!40000 ALTER TABLE `realisation_image` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -632,33 +485,8 @@ CREATE TABLE `service` (
 
 LOCK TABLES `service` WRITE;
 /*!40000 ALTER TABLE `service` DISABLE KEYS */;
-INSERT INTO `service` VALUES (1,1,'DÉVELOPPEMENT DE LOGICIEL','<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"currentColor\" class=\"size-6\">\n  <path fill-rule=\"evenodd\" d=\"M4.5 2.25a.75.75 0 0 0 0 1.5v16.5h-.75a.75.75 0 0 0 0 1.5h16.5a.75.75 0 0 0 0-1.5h-.75V3.75a.75.75 0 0 0 0-1.5h-15ZM9 6a.75.75 0 0 0 0 1.5h1.5a.75.75 0 0 0 0-1.5H9Zm-.75 3.75A.75.75 0 0 1 9 9h1.5a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75ZM9 12a.75.75 0 0 0 0 1.5h1.5a.75.75 0 0 0 0-1.5H9Zm3.75-5.25A.75.75 0 0 1 13.5 6H15a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1-.75-.75ZM13.5 9a.75.75 0 0 0 0 1.5H15A.75.75 0 0 0 15 9h-1.5Zm-.75 3.75a.75.75 0 0 1 .75-.75H15a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1-.75-.75ZM9 19.5v-2.25a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-.75.75h-4.5A.75.75 0 0 1 9 19.5Z\" clip-rule=\"evenodd\" />\n  </svg>','<a>Logiciel Web : CMS, HTML/CSS, JAVASCRIPT, JAVA EE,Spring, Hibernate, Junit</a>,\n<a>Logiciel Desktop : C#, Java, Hibernate, Junit, Eclipse RCP, NetBeans PlatForm</a>,\n<a>Ingenierie Logiciel : Hudson, Svn, Junit …</a>','<p>Nous Développons des logiciels métiers et spécifiques pour tout type de clients.</p>\n\n<p>Nos logiciels utilisent à la fois les systèmes libres et propriétaires.</p>\n\n<p>Domaines de Développement des logiciels :</p>','images/service/_61a8e80a-c686-476f-8b7d-440886eef2ca.jpeg','2025-01-20 11:44:08'),(2,1,'SYSTÈME D\'INFORMATION GÉOGRAPHIQUE','fa fa-road','<a>Consultance en SIG</a>,<a>Réalisation d’interface Web SIG</a>,<a>Conception de carte pour différents domaines SIG</a>,<a>Mise en place de base de données pour le SIG</a>','<p>Le SIG est un nouveau secteur d’activité. Il est cité parmi les dix métiers d’avenir.</p>,\n\n<p>MODELIS TECH se positionne comme un acteur majeur dans ce domaine. L’entreprise a pour ambition d’accompagner le maximum de structures dans la mise en place de leurs projets SIG.</p>\n\n','images/service/_1cbbcdec-318d-4288-88a1-0cea21899d33.jpeg','2025-01-20 11:44:08'),(3,1,'FORMATION','<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"size-6\">\n  <path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z\" /></svg>','<a>Formation en SIG : Open Source et propriétaire</a>,<a>Formation en développement Web & Mobile</a>,<a>Formation en développement d’applications</a>','<p>Nous vous proposons des formations dans les systèmes d’informations en générale.</p>\n\n<p>Nos formations sont répertoriées ainsi :</p>','images/service/bbc0d44811c4a1a225e44bf69d9776d9.png','2025-01-20 11:44:08'),(4,1,'HÉBERGEMENT','fa fa-stop',NULL,'Assurez l’hébergement de vos logiciels et site web à MODELIS TECH avec une fiabilité absolue.','images/service/image_service_hebergerment.png','2025-01-20 11:44:08'),(5,1,'ok','fa fa-road',NULL,'Des ingénieurs spécialisés en génie civil fournissent à vos collaborateurs des formations sur mesure.','images/service/bg-formation.jpg','2025-01-20 11:44:08');
+INSERT INTO `service` VALUES (1,1,'DÉVELOPPEMENT DE LOGICIEL','<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"currentColor\" class=\"size-6\">\n  <path fill-rule=\"evenodd\" d=\"M4.5 2.25a.75.75 0 0 0 0 1.5v16.5h-.75a.75.75 0 0 0 0 1.5h16.5a.75.75 0 0 0 0-1.5h-.75V3.75a.75.75 0 0 0 0-1.5h-15ZM9 6a.75.75 0 0 0 0 1.5h1.5a.75.75 0 0 0 0-1.5H9Zm-.75 3.75A.75.75 0 0 1 9 9h1.5a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75ZM9 12a.75.75 0 0 0 0 1.5h1.5a.75.75 0 0 0 0-1.5H9Zm3.75-5.25A.75.75 0 0 1 13.5 6H15a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1-.75-.75ZM13.5 9a.75.75 0 0 0 0 1.5H15A.75.75 0 0 0 15 9h-1.5Zm-.75 3.75a.75.75 0 0 1 .75-.75H15a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1-.75-.75ZM9 19.5v-2.25a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-.75.75h-4.5A.75.75 0 0 1 9 19.5Z\" clip-rule=\"evenodd\" />\n  </svg>','<a>Logiciel Web : CMS, HTML/CSS, JAVASCRIPT, JAVA EE,Spring, Hibernate, Junit</a>,\n<a>Logiciel Desktop : C#, Java, Hibernate, Junit, Eclipse RCP, NetBeans PlatForm</a>,\n<a>Ingenierie Logiciel : Hudson, Svn, Junit …</a>','Nous Développons des logiciels métiers et spécifiques pour tout type de clients.\n\nNos logiciels utilisent à la fois les systèmes libres et propriétaires.\n\nDomaines de Développement des logiciels :','images/service/_61a8e80a-c686-476f-8b7d-440886eef2ca.jpeg','2025-01-20 11:44:08'),(2,1,'SYSTÈME D\'INFORMATION GÉOGRAPHIQUE','fa fa-road','<a>Consultance en SIG</a>,<a>Réalisation d’interface Web SIG</a>,<a>Conception de carte pour différents domaines SIG</a>,<a>Mise en place de base de données pour le SIG</a>','Le SIG est un nouveau secteur d’activité. Il est cité parmi les dix métiers d’avenir.\n\nMODELIS TECH se positionne comme un acteur majeur dans ce domaine. L’entreprise a pour ambition d’accompagner le maximum de structures dans la mise en place de leurs projets SIG.\n\n','images/service/_1cbbcdec-318d-4288-88a1-0cea21899d33.jpeg','2025-01-20 11:44:08'),(3,1,'FORMATION','<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"size-6\">\n  <path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z\" /></svg>','<a>Formation en SIG : Open Source et propriétaire</a>,<a>Formation en développement Web & Mobile</a>,<a>Formation en développement d’applications</a>','Nous vous proposons des formations dans les systèmes d’informations en générale.\n\nNos formations sont répertoriées ainsi :','images/service/bbc0d44811c4a1a225e44bf69d9776d9.png','2025-01-20 11:44:08'),(4,1,'HÉBERGEMENT','fa fa-stop',NULL,'Assurez l’hébergement de vos logiciels et site web à MODELIS TECH avec une fiabilité absolue.','images/service/image_service_hebergerment.png','2025-01-20 11:44:08'),(5,1,'ok','fa fa-road',NULL,'Des ingénieurs spécialisés en génie civil fournissent à vos collaborateurs des formations sur mesure.','images/service/bg-formation.jpg','2025-01-20 11:44:08');
 /*!40000 ALTER TABLE `service` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `sousespace`
---
-
-DROP TABLE IF EXISTS `sousespace`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `sousespace` (
-  `id` int NOT NULL,
-  `espaceId` int NOT NULL,
-  `libelle` varchar(254) DEFAULT NULL,
-  `description` varchar(254) DEFAULT NULL,
-  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `sousespace`
---
-
-LOCK TABLES `sousespace` WRITE;
-/*!40000 ALTER TABLE `sousespace` DISABLE KEYS */;
-/*!40000 ALTER TABLE `sousespace` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -683,7 +511,7 @@ CREATE TABLE `typeclient` (
 
 LOCK TABLES `typeclient` WRITE;
 /*!40000 ALTER TABLE `typeclient` DISABLE KEYS */;
-INSERT INTO `typeclient` VALUES (1,'/images/client/2b4e242f393aab426ec16c22eaec29f3.png','Description pour le client 1.','2025-01-22 14:37:37'),(2,'/images/client/7e60276e4bf86f08430bb1b12e94419f.png','Description pour le client 2.','2025-01-22 14:37:37'),(3,'/images/client/45ee3e420497863b20bd551a33868cdc.png','Description pour le client 3.','2025-01-22 14:37:37'),(5,'/images/client/80a50c59c25997b144b8a20da1252cec.jpg','Description pour le client 5.','2025-01-22 14:37:37'),(6,'/images/client/8402c43cde81a4c87927cff61ba5c2ce.png','Description pour le client 6.','2025-01-22 14:37:37'),(7,'/images/client/APROMAC.png','Description pour le client 7.','2025-01-22 14:37:37'),(8,'/images/client/ci-energies.png','Description pour le client 8.','2025-01-22 14:37:37'),(9,'/images/client/France.jpg','Description pour le client 9.','2025-01-22 14:37:37'),(10,'/images/client/LogoAFORColorhorizontal.svg','Description pour le client 10.','2025-01-22 14:37:37'),(11,'/images/client/logo-MclauArmoirie.png','Description pour le client 11.','2025-01-22 14:37:37'),(12,'/images/client/ministere_mine.png','Description pour le client 12.','2025-01-22 14:37:37'),(13,'/images/client/Modelis-tech.png','Description pour le client 13.','2025-01-22 14:37:37'),(14,'/images/client/premu.png','Description pour le client 14.','2025-01-22 14:37:37');
+INSERT INTO `typeclient` VALUES (1,'images/client/2b4e242f393aab426ec16c22eaec29f3.png','Description pour le client 1.','2025-01-22 14:37:37'),(2,'images/client/7e60276e4bf86f08430bb1b12e94419f.png','Description pour le client 2.','2025-01-22 14:37:37'),(3,'images/client/45ee3e420497863b20bd551a33868cdc.png','Description pour le client 3.','2025-01-22 14:37:37'),(5,'images/client/80a50c59c25997b144b8a20da1252cec.jpg','Description pour le client 5.','2025-01-22 14:37:37'),(6,'images/client/8402c43cde81a4c87927cff61ba5c2ce.png','Description pour le client 6.','2025-01-22 14:37:37'),(7,'images/client/APROMAC.png','Description pour le client 7.','2025-01-22 14:37:37'),(8,'images/client/ci-energies.png','Description pour le client 8.','2025-01-22 14:37:37'),(9,'images/client/France.jpg','Description pour le client 9.','2025-01-22 14:37:37'),(10,'images/client/LogoAFORColorhorizontal.svg','Description pour le client 10.','2025-01-22 14:37:37'),(11,'images/client/logo-MclauArmoirie.png','Description pour le client 11.','2025-01-22 14:37:37'),(12,'images/client/ministere_mine.png','Description pour le client 12.','2025-01-22 14:37:37'),(13,'images/client/Modelis-tech.png','Description pour le client 13.','2025-01-22 14:37:37'),(14,'images/client/premu.png','Description pour le client 14.','2025-01-22 14:37:37');
 /*!40000 ALTER TABLE `typeclient` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -695,10 +523,11 @@ DROP TABLE IF EXISTS `typelien`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `typelien` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `libelle` varchar(254) DEFAULT NULL,
-  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -788,30 +617,6 @@ LOCK TABLES `utilisateur` WRITE;
 INSERT INTO `utilisateur` VALUES (1,4,'anicet.kouassi@modelis-tech.com','ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f','2025-01-26 17:00:28','admin');
 /*!40000 ALTER TABLE `utilisateur` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `valeur`
---
-
-DROP TABLE IF EXISTS `valeur`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `valeur` (
-  `id` int NOT NULL,
-  `libelle` text,
-  `description` text,
-  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `valeur`
---
-
-LOCK TABLES `valeur` WRITE;
-/*!40000 ALTER TABLE `valeur` DISABLE KEYS */;
-/*!40000 ALTER TABLE `valeur` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -822,4 +627,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-01-27  9:04:38
+-- Dump completed on 2025-01-29 14:49:56

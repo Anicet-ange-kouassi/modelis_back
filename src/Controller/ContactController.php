@@ -17,17 +17,6 @@ use Symfony\Component\Serializer\SerializerInterface;
 class ContactController extends AbstractController
 {
     #[Route('/api/contact', name: 'api_contact_list', methods: ['GET'])]
-    /**
-     * @OA\Get(
-     *     path="/api/contact",
-     *     @OA\Response(
-     *         response="200",
-     *     description="Nos contact",
-     *     @OA\JsonContent( type="string",description="nos differents contact",
-     *     @OA\Items(ref=@Model(type=Contact::class, groups={"full"}))),
-     *     )
-     * )
-     */
     public function index(ContactRepository $contactRepository, SerializerInterface $serializer): JsonResponse
     {
         $contacts = $contactRepository->findAll();
@@ -37,46 +26,6 @@ class ContactController extends AbstractController
     }
 
     #[Route('/api/contact', name: 'api_contact_create', methods: ['POST'])]
-    /**
-     * @Route("/api/contact", name="api_contact_create", methods={"POST"})
-     *
-     * @OA\Post(
-     *     summary="Créer un contact",
-     *     description="Créer un nouveau contact avec les informations fournies.",
-     *
-     *     @OA\RequestBody(
-     *         description="Données pour créer un contact",
-     *         required=true,
-     *
-     *         @OA\JsonContent(
-     *             type="object",
-     *
-     *             @OA\Property(property="email", type="string", example="example@domain.com"),
-     *             @OA\Property(property="tel", type="string", example="(+225) 21 74 84 34"),
-     *             @OA\Property(property="adresse", type="string", example="Abidjan, Côte d'Ivoire"),
-     *             @OA\Property(property="paysId", type="string", example="CIV"),
-     *             @OA\Property(property="dateModification", type="string", format="date-time", example="2025-01-20T16:36:34"),
-     *             @OA\Property(property="dateSuppression", type="string", format="date-time", example="2025-01-21T16:36:34")
-     *         )
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=201,
-     *         description="Contact créé avec succès",
-     *
-     *         @OA\JsonContent(
-     *             type="object",
-     *
-     *             @OA\Property(property="message", type="string", example="Contact créé avec succès")
-     *         )
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=400,
-     *         description="Requête invalide"
-     *     )
-     * )
-     */
     public function create(Request $request, EntityManagerInterface $em): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -100,13 +49,6 @@ class ContactController extends AbstractController
     }
 
     #[Route('/api/contact/{id}', name: 'api_contact_get', methods: ['GET'])]
-    /**
-     * @OA\Get(
-     *     path="/api/contact/{id}",
-     *     summary="Récupérer un contact par ID",
-     *     tags={"Contact"}
-     * )
-     */
     public function getById(int $id, ContactRepository $contactRepository, SerializerInterface $serializer): JsonResponse
     {
         $contact = $contactRepository->find($id);
@@ -119,13 +61,6 @@ class ContactController extends AbstractController
     }
 
     #[Route('/api/contact/{id}', name: 'api_contact_update', methods: ['PUT'])]
-    /**
-     * @OA\Put(
-     *     path="/api/contact/{id}",
-     *     summary="Modifier un contact existant",
-     *     tags={"Contact"}
-     * )
-     */
     public function update(
         Request $request,
         EntityManagerInterface $em,
@@ -159,13 +94,6 @@ class ContactController extends AbstractController
     }
 
     #[Route('/api/contact/{id}', name: 'api_contact_delete', methods: ['DELETE'])]
-    /**
-     * @OA\Delete(
-     *     path="/api/contact/{id}",
-     *     summary="Supprimer un contact par ID",
-     *     tags={"Contact"}
-     * )
-     */
     public function delete(EntityManagerInterface $em, ?Contact $contact = null): JsonResponse
     {
         if (!$contact) {
