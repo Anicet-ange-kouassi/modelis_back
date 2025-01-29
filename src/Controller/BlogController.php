@@ -5,38 +5,35 @@ namespace App\Controller;
 use App\Entity\Blog;
 use App\Repository\BlogRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use OpenApi\Annotations as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @Route("/api/blog", name="api_blog_")
+ */
 class BlogController extends AbstractController
 {
-    #[Route('/api/blogs/user/{utilisateurId}', name: 'get_blogs_by_user', methods: ['GET'])]
-    public function getBlogsByUser(int $utilisateurId, BlogRepository $blogRepository): JsonResponse
-    {
-        $blogs = $blogRepository->findBAllWithRelations($utilisateurId);
-
-        $response = array_map(function ($blog) {
-            return [
-                'id' => $blog->getId(),
-                'libelle' => $blog->getLibelle(),
-                'image' => $blog->getImage(),
-                'description' => $blog->getDescription(),
-                'dateCreation' => $blog->getDateCreation()->format('Y-m-d H:i:s'),
-                'utilisateur' => $blog->getUtilisateurId() ? [
-                    'nom' => $blog->getUtilisateurId()->getPersonneId()->getNom(),
-                    'prenom' => $blog->getUtilisateurId()->getPersonneId()->getPrenom(),
-                    'image' => $blog->getUtilisateurId()->getPersonneId()->getImage(),
-                ] : null,
-            ];
-        }, $blogs);
-
-        return new JsonResponse($response, Response::HTTP_OK);
-    }
-    #[Route('/api/blog', name: 'get_all_blogs', methods: ['GET'])]
+    /**
+     * @Route("/", name="list", methods={"GET"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns the list of blogs",
+     *
+     *     @OA\JsonContent(
+     *        type="array",
+     *
+     *        @OA\Items(ref=@Model(type=Blog::class))
+     *     )
+     * )
+     */
+    #[Route('/api/blog', name: 'get_blogs', methods: ['GET'])]
     public function getAllBlogs(BlogRepository $blogRepository): JsonResponse
     {
         // Récupération de tous les blogs avec leurs relations
@@ -61,6 +58,28 @@ class BlogController extends AbstractController
         return new JsonResponse($response, Response::HTTP_OK);
     }
 
+    #[Route('/api/blogs/user/{utilisateurId}', name: 'get_blogs_by_user', methods: ['GET'])]
+    public function getBlogsByUser(int $utilisateurId, BlogRepository $blogRepository): JsonResponse
+    {
+        $blogs = $blogRepository->findBAllWithRelations($utilisateurId);
+
+        $response = array_map(function ($blog) {
+            return [
+                'id' => $blog->getId(),
+                'libelle' => $blog->getLibelle(),
+                'image' => $blog->getImage(),
+                'description' => $blog->getDescription(),
+                'dateCreation' => $blog->getDateCreation()->format('Y-m-d H:i:s'),
+                'utilisateur' => $blog->getUtilisateurId() ? [
+                    'nom' => $blog->getUtilisateurId()->getPersonneId()->getNom(),
+                    'prenom' => $blog->getUtilisateurId()->getPersonneId()->getPrenom(),
+                    'image' => $blog->getUtilisateurId()->getPersonneId()->getImage(),
+                ] : null,
+            ];
+        }, $blogs);
+
+        return new JsonResponse($response, Response::HTTP_OK);
+    }
 
     #[Route('/api/blog/{id}', name: 'api_blog_detail', methods: ['GET'])]
     public function show(int $id, BlogRepository $blogRepository, SerializerInterface $serializer, EntityManagerInterface $em): JsonResponse
@@ -80,7 +99,7 @@ class BlogController extends AbstractController
     }
 
     #[Route('/api/blog', name: 'api_blog_create', methods: ['POST'])]
-    public function create(Request $request, SerializerInterface $serializer, EntityManagerInterface $em): JsonResponse
+    public function create(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, EntityManagerInterface $em): JsonResponse
     {
         $data = $request->getContent();
 
@@ -89,9 +108,6 @@ class BlogController extends AbstractController
 
         $em->persist($blog);
         $em->flush();
-
-        // Enregistrer une action "Ajout"
-        $this->logAction($em, 'Ajout', 'blog', $blog->getId());
 
         return new JsonResponse(['message' => 'Blog créé avec succès'], Response::HTTP_CREATED);
     }

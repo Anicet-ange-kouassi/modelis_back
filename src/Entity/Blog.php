@@ -4,31 +4,39 @@ namespace App\Entity;
 
 use App\Repository\BlogRepository;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Attributes as OA;
 
 #[ORM\Entity(repositoryClass: BlogRepository::class)]
 #[ORM\Table(name: 'blog')]
+#[OA\Schema()]
 class Blog
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[OA\Property(description: 'Identifiant unique du blog')]
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Utilisateur::class)]
     #[ORM\JoinColumn(name: 'utilisateurId', referencedColumnName: 'id', nullable: false)]
+    #[OA\Property(description: 'Utilisateur ayant créé le blog')]
     private ?Utilisateur $utilisateurId = null;
 
     #[ORM\Column(type: 'string', length: 254)]
     #[Assert\NotBlank(message: 'Le libellé est obligatoire.')]
+    #[OA\Property(description: 'Titre du blog')]
     private string $libelle;
 
-    #[ORM\Column(type: 'json', nullable: true)]
-    private ?array $description = null;
-
+    #[ORM\Column(type: 'text', length: 254, nullable: true)]
+    #[OA\Property(description: 'Description du blog')]
+    private ?string $description = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
+    #[OA\Property(description: "URL de l'image associée au blog")]
     private ?string $image = null;
+
     #[ORM\Column(name: 'dateCreation', type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
+    #[OA\Property(description: 'Date de création du blog', format: 'date-time')]
     private \DateTimeInterface $dateCreation;
 
     public function getId(): ?int
@@ -63,7 +71,7 @@ class Blog
         return $this;
     }
 
-    public function getDescription(): ?array
+    public function getDescription(): string
     {
         return $this->description;
     }

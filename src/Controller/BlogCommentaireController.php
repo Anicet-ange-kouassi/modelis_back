@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class BlogCommentaireController extends AbstractController
 {
-    #[Route('/api/blog/{blogId}/commentaires', name: 'api_blog_comment_list', methods: ['GET'])]
+    #[Route('/api/blog-commentaire', name: 'api_blog_comment_list', methods: ['GET'])]
     public function index(int $blogId, BlogCommentaireRepository $repository, SerializerInterface $serializer): JsonResponse
     {
         $comments = $repository->findByBlogId($blogId); // Récupère les commentaires associés au blogId

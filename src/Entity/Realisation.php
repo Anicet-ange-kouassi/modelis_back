@@ -13,15 +13,18 @@ class Realisation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[Groups(['realisation:read'])]
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Typeclient::class)]
     #[ORM\JoinColumn(name: 'typeclientId', referencedColumnName: 'id', nullable: false)]
+    #[Groups(['realisation:read'])]
     private ?Typeclient $typeclientId = null;
 
     #[ORM\ManyToOne(targetEntity: Pays::class)]
     #[ORM\JoinColumn(name: 'paysId ', referencedColumnName: 'id', nullable: false)]
+    #[Groups(['realisation:read'])]
     private ?Pays $paysId = null;
 
     #[ORM\Column(name: 'libelle', type: 'string', length: 500, nullable: true)]
@@ -32,27 +35,41 @@ class Realisation
         minMessage: 'Le libellé doit contenir au moins {{ limit }} caractères.',
         maxMessage: 'Le libellé ne peut contenir que {{ limit }} caractères'
     )]
+    #[Groups(['realisation:read'])]
     private ?string $libelle = null;
 
-    #[ORM\Column(name: 'description', type: 'text', nullable: true)]
+    #[ORM\Column(name: 'description', type: 'string', length: 500, nullable: true)]
+    #[Groups(['realisation:read'])]
     private ?string $description = null;
     #[ORM\Column(name: 'dateDebut', type: 'date', nullable: true)]
     #[Assert\Date(message: 'Veuillez fournir une date de début valide.')]
+    #[Groups(['realisation:read'])]
     private ?\DateTimeInterface $dateDebut = null;
-
+    #[Groups(['realisation:read'])]
+    #[ORM\OneToMany(targetEntity: RealisationImage::class, mappedBy: 'realisationId', cascade: ['persist', 'remove'])]
+    private Collection $images;
     #[ORM\Column(name: 'dateFin', type: 'date', nullable: true)]
     #[Assert\Date(message: 'Veuillez fournir une date de fin valide.')]
+    #[Groups(['realisation:read'])]
     private ?\DateTimeInterface $dateFin = null;
 
     #[ORM\Column(name: 'enCours', type: 'boolean', options: ['default' => false])]
+    #[Groups(['realisation:read'])]
     private ?bool $enCours = false;
 
     #[ORM\Column(name: 'resultat', type: 'text', nullable: true)]
+    #[Groups(['realisation:read'])]
     private ?string $resultat = null;
 
     #[ORM\Column(name: 'dateCreation', type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
+    #[Groups(['realisation:read'])]
     private ?\DateTimeInterface $dateCreation = null;
 
+    public function __construct()
+    {
+        $this->images = new ArrayCollection();
+        $this->dateCreation = new \DateTime();
+    }
 
     public function getId(): ?int
     {
@@ -139,9 +156,25 @@ class Realisation
         $this->enCours = $enCours;
     }
 
+    /**
+     * @param Pays|null $paysId
+     */
     public function setPaysId(?Pays $paysId): void
     {
         $this->paysId = $paysId;
+    }
+
+    /**
+     * @param Typeclient|null $typeclientId
+     */
+    public function setTypeclientId(?Typeclient $typeclientId): void
+    {
+        $this->typeclientId = $typeclientId;
+    }
+
+    public function setImages(Collection $images): void
+    {
+        $this->images = $images;
     }
 
     public function setResultat(?string $resultat): void
@@ -149,8 +182,18 @@ class Realisation
         $this->resultat = $resultat;
     }
 
-    public function setTypeclientId(?Typeclient $typeclientId): void
+    public function getImages(): Collection
     {
-        $this->typeclientId = $typeclientId;
+        return $this->images;
+    }
+
+    public function addImage(RealisationImage $image): self
+    {
+        if (!$this->images->contains($image)) {
+            $this->images[] = $image;
+            $image->setRealisation($this);
+        }
+
+        return $this;
     }
 }

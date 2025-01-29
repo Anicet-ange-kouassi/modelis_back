@@ -3,6 +3,7 @@ namespace App\Entity;
 
 use App\Repository\PaysRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: PaysRepository::class)]
 class Pays
@@ -10,12 +11,15 @@ class Pays
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['realisation:read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 3)]
+    #[Groups(['realisation:read'])]
     private ?string $code = null;
 
     #[ORM\Column(type: 'string', length: 100)]
+    #[Groups(['realisation:read'])]
     private ?string $nom = null;
 
     /**

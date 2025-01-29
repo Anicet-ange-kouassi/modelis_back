@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\TypeclientRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: TypeclientRepository::class)]
 class Typeclient
@@ -11,15 +12,19 @@ class Typeclient
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    #[Groups(['realisation:read'])]
+    private ?int $id = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    private $image;
+    #[Groups(['realisation:read'])]
+    private ?string $image;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    private $description;
+    #[Groups(['realisation:read'])]
+    private ?string $description;
 
     #[ORM\Column(name: 'dateCreation', type: 'datetime', nullable: false, options: ['default' => 'CURRENT_TIMESTAMP'])]
+    #[Groups(['realisation:read'])]
     private \DateTimeInterface $dateCreation;
 
     public function getId(): ?int
