@@ -2,15 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\Blog;
 use App\Entity\BlogCommentaire;
 use App\Repository\BlogCommentaireRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class BlogCommentaireController extends AbstractController
 {
@@ -23,52 +25,38 @@ class BlogCommentaireController extends AbstractController
         return new JsonResponse($jsonComments, Response::HTTP_OK, [], true); // Retourne une réponse JSON
     }
 
-
     #[Route('/api/blog/{blogId}/commentaires', name: 'api_blog_comment_create', methods: ['POST'])]
-    public function create(int $blogId, Request $request, SerializerInterface $serializer, EntityManagerInterface $em): JsonResponse
+    public function create(int $blogId, Request $request, ValidatorInterface $validator, EntityManagerInterface $em): JsonResponse
     {
-        $data = $request->getContent(); // Récupère les données brutes de la requête POST
+        $data = json_decode($request->getContent(), true);
 
-        $comment = $serializer->deserialize($data, BlogCommentaire::class, 'json'); // Transforme les données JSON en objet BlogCommentaire
-        $comment->setBlogId($blogId); // Associe le commentaire au blog spécifié
-
-        $em->persist($comment); // Prépare l'insertion en base de données
-        $em->flush(); // Exécute l'insertion
-
-        return new JsonResponse(['message' => 'Commentaire créé avec succès'], Response::HTTP_CREATED); // Réponse de confirmation
-    }
-
-
-    #[Route('/api/commentaires/{id}', name: 'api_blog_comment_update', methods: ['PUT'])]
-    public function update(int $id, Request $request, BlogCommentaireRepository $repository, SerializerInterface $serializer, EntityManagerInterface $em): JsonResponse
-    {
-        $comment = $repository->find($id); // Recherche le commentaire par son ID
-
-        if (!$comment) {
-            return new JsonResponse(['message' => 'Commentaire introuvable'], Response::HTTP_NOT_FOUND); // Si non trouvé
+        if (!$data || !isset($data['nom'], $data['commentaire'], $data['email'])) {
+            return new JsonResponse(['error' => 'bad request'], Response::HTTP_BAD_REQUEST);
         }
 
-        $data = $request->getContent(); // Récupère les données JSON de la requête
-        $serializer->deserialize($data, BlogCommentaire::class, 'json', ['object_to_populate' => $comment]); // Met à jour l'objet existant
-
-        $em->flush(); // Sauvegarde les modifications
-
-        return new JsonResponse(['message' => 'Commentaire mis à jour avec succès'], Response::HTTP_OK); // Réponse de confirmation
-    }
-
-    #[Route('/api/commentaires/{id}', name: 'api_blog_comment_delete', methods: ['DELETE'])]
-    public function delete(int $id, BlogCommentaireRepository $repository, EntityManagerInterface $em): JsonResponse
-    {
-        $comment = $repository->find($id); // Recherche le commentaire par son ID
-
-        if (!$comment) {
-            return new JsonResponse(['message' => 'Commentaire introuvable'], Response::HTTP_NOT_FOUND); // Si non trouvé
+        // Vérifier l'existence du blog
+        $blog = $em->getRepository(Blog::class)->find($blogId);
+        if (!$blog) {
+            return new JsonResponse(['error' => 'Blog non trouvé'], Response::HTTP_NOT_FOUND);
         }
 
-        $em->remove($comment); // Marque le commentaire pour suppression
-        $em->flush(); // Exécute la suppression
+        $message = new BlogCommentaire();
+        $message->setCommentaire($data['commentaire']);
+        $message->setEmail($data['email']);
+        $message->setNom($data['nom']);
+        $message->setDateCreation(new \DateTime());
+        $message->setBlog($blog); // Utiliser l'entité et non un ID directement
 
-        return new JsonResponse(['message' => 'Commentaire supprimé avec succès'], Response::HTTP_OK); // Réponse de confirmation
+        // Validation des données
+        $errors = $validator->validate($message);
+        if (count($errors) > 0) {
+            return new JsonResponse(['message' => 'Données invalides', 'errors' => (string) $errors], 400);
+        }
+
+        // Sauvegarde
+        $em->persist($message);
+        $em->flush();
+
+        return new JsonResponse(['message' => 'Commentaire créé avec succès'], Response::HTTP_CREATED);
     }
-
 }

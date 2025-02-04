@@ -4,10 +4,14 @@ namespace App\Entity;
 
 use App\Repository\PersonneRepository;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Annotations as OA;
 
 #[ORM\Entity(repositoryClass: PersonneRepository::class)]
 class Personne
 {
+    /**
+     * @OA\Property(description="The unique identifier of the user.")
+     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -22,10 +26,14 @@ class Personne
 
     #[ORM\Column(name: 'nationalite', type: 'string')]
     private ?string $nationalite = null;
-
+    /**
+     * @OA\Property(type="string", maxLength=255)
+     */
     #[ORM\Column(type: 'string', length: 254)]
     private ?string $nom = null;
-
+    /**
+     * @OA\Property(type="string", maxLength=255)
+     */
     #[ORM\Column(type: 'string', length: 254)]
     private ?string $prenom = null;
 
@@ -34,16 +42,24 @@ class Personne
 
     #[ORM\Column(name: 'sexe', type: 'string', nullable: true)]
     private ?string $sexe = null;
-
+    /**
+     * @OA\Property(type="string", maxLength=255)
+     */
     #[ORM\Column(type: 'string', length: 50)]
     private ?string $email = null;
-
+    /**
+     * @OA\Property(type="string", maxLength=255)
+     */
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
     private ?string $tel = null;
-
+    /**
+     * @OA\Property(type="string", maxLength=255)
+     */
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
     private ?string $adresse = null;
-
+    /**
+     * @OA\Property(type="string", maxLength=255)
+     */
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $image = null;
 
@@ -193,3 +209,45 @@ class Personne
         $this->tel = $tel;
     }
 }
+
+// use OpenApi\Annotations as OA;
+// use Doctrine\ORM\Mapping as ORM;
+//
+// #[ORM\Entity(repositoryClass: PersonneRepository::class)]
+// /**
+// * @OA\Schema(description="Représentation d'une personne")
+// */
+// class Personne
+// {
+//    /**
+//     * @OA\Property(type="integer", description="L'identifiant unique de la personne")
+//     */
+//    #[ORM\Id]
+//    #[ORM\GeneratedValue]
+//    #[ORM\Column(type: 'integer')]
+//    private ?int $id = null;
+//
+//    /**
+//     * @OA\Property(type="string", description="Nom de la personne", maxLength=254)
+//     */
+//    #[ORM\Column(type: 'string', length: 254)]
+//    private ?string $nom = null;
+//
+//    /**
+//     * @OA\Property(type="string", description="Prénom de la personne", maxLength=254)
+//     */
+//    #[ORM\Column(type: 'string', length: 254)]
+//    private ?string $prenom = null;
+//
+//    /**
+//     * @OA\Property(type="string", format="email", description="Email de la personne", maxLength=50)
+//     */
+//    #[ORM\Column(type: 'string', length: 50)]
+//    private ?string $email = null;
+//
+//    /**
+//     * @OA\Property(type="string", description="Numéro de téléphone", maxLength=50, nullable=true)
+//     */
+//    #[ORM\Column(type: 'string', length: 50, nullable: true)]
+//    private ?string $tel = null;
+// }

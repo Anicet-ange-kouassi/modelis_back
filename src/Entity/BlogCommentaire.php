@@ -5,7 +5,7 @@ namespace App\Entity;
 use App\Repository\BlogCommentaireRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: BlogCommentaireRepository::class)]
+#[\AllowDynamicProperties] #[ORM\Entity(repositoryClass: BlogCommentaireRepository::class)]
 #[ORM\Table(name: 'blog_commentaire')]
 class BlogCommentaire
 {
@@ -16,7 +16,7 @@ class BlogCommentaire
 
     #[ORM\ManyToOne(targetEntity: Blog::class)]
     #[ORM\JoinColumn(name: 'blogId', referencedColumnName: 'id', nullable: false)]
-    private ?Blog $blogId = null;
+    private ?Blog $blog = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $commentaire = null;
@@ -27,7 +27,7 @@ class BlogCommentaire
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $email = null;
 
-    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
+    #[ORM\Column(name: 'dateCreation', type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
     private \DateTimeInterface $dateCreation;
 
     public function __construct()
@@ -50,10 +50,6 @@ class BlogCommentaire
         return $this->dateCreation;
     }
 
-    public function getBlogId(): ?Blog
-    {
-        return $this->blogId;
-    }
 
     public function getCommentaire(): ?string
     {
@@ -75,11 +71,6 @@ class BlogCommentaire
         return $this->nom;
     }
 
-    public function setBlogId(?Blog $blogId): void
-    {
-        $this->blogId = $blogId;
-    }
-
     public function setCommentaire(?string $commentaire): void
     {
         $this->commentaire = $commentaire;
@@ -93,5 +84,17 @@ class BlogCommentaire
     public function setNom(?string $nom): void
     {
         $this->nom = $nom;
+    }
+
+    public function getBlog(): ?Blog
+    {
+        return $this->blog;
+    }
+
+    public function setBlog(?Blog $blog): self
+    {
+        $this->blog = $blog;
+
+        return $this;
     }
 }
