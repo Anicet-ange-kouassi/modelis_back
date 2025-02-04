@@ -29,8 +29,6 @@ class Offre
     #[ORM\ManyToOne(targetEntity: Pays::class)]
     #[ORM\JoinColumn(name: 'paysId ', referencedColumnName: 'id', nullable: false)]
     private ?Pays $paysId = null;
-    #[ORM\Column(name: 'dateCreation', type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
-    private ?\DateTimeInterface $dateCreation = null;
     public function getId(): ?int
     {
         return $this->id;
@@ -50,22 +48,6 @@ class Offre
     public function setLibelle(?string $libelle): void
     {
         $this->libelle = $libelle;
-    }
-
-    /**
-     * @param \DateTimeInterface|null $dateCreation
-     */
-    public function setDateCreation(?\DateTimeInterface $dateCreation): void
-    {
-        $this->dateCreation = $dateCreation;
-    }
-
-    /**
-     * @return \DateTimeInterface|null
-     */
-    public function getDateCreation(): ?\DateTimeInterface
-    {
-        return $this->dateCreation;
     }
 
     /**
