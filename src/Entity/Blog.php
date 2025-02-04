@@ -8,13 +8,13 @@ use OpenApi\Attributes as OA;
 
 #[ORM\Entity(repositoryClass: BlogRepository::class)]
 #[ORM\Table(name: 'blog')]
-#[OA\Schema()]
+#[OA\Schema(description: "Représentation d'une blog.")]
 class Blog
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[OA\Property(description: 'Identifiant unique du blog')]
+    #[OA\Property(description: 'Identifiant unique du blog.', type: 'integer')]
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Utilisateur::class)]
