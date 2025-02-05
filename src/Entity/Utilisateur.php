@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\UtilisateurRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
 class Utilisateur
@@ -16,7 +17,10 @@ class Utilisateur
     #[ORM\ManyToOne(targetEntity: Personne::class)]
     #[ORM\JoinColumn(name: 'personneId', referencedColumnName: 'id', nullable: false)]
     private ?Personne $personneId = null;
-
+    #[ORM\ManyToOne(targetEntity: Pays::class)]
+    #[ORM\JoinColumn(name: 'paysId ', referencedColumnName: 'id', nullable: false)]
+    #[Groups(['utilisateur:read'])]
+    private ?Pays $paysId = null;
     #[ORM\Column(type: 'string', length: 255)]
     private string $email;
 
@@ -89,5 +93,21 @@ class Utilisateur
     public function setRoles(string $roles): void
     {
         $this->roles = $roles;
+    }
+
+    /**
+     * @return Pays|null
+     */
+    public function getPaysId(): ?Pays
+    {
+        return $this->paysId;
+    }
+
+    /**
+     * @param Pays|null $paysId
+     */
+    public function setPaysId(?Pays $paysId): void
+    {
+        $this->paysId = $paysId;
     }
 }

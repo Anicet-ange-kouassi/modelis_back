@@ -38,6 +38,11 @@ class BlogController extends AbstractController
             'image' => $blog->getImage(),
             'description' => $blog->getDescription(),
             'dateCreation' => $blog->getDateCreation()->format('Y-m-d H:i:s'),
+            'paysId' => $blog->getPaysId() ? [
+                'id' => $blog->getPaysId()->getId(),
+                'nom' => $blog->getPaysId()->getNom(),
+                'code' => $blog->getPaysId()->getCode(),
+            ] : null,
             'utilisateur' => $blog->getUtilisateurId() ? [
                 'nom' => $blog->getUtilisateurId()->getPersonneId()->getNom(),
                 'prenom' => $blog->getUtilisateurId()->getPersonneId()->getPrenom(),
@@ -48,7 +53,7 @@ class BlogController extends AbstractController
         return new JsonResponse($response, Response::HTTP_OK);
     }
 
-    #[Route('/user/{utilisateurId}', name: 'get_blogs_by_user', methods: ['GET'])]
+    #[Route('/api/blog/{utilisateurId}', name: 'get_blogs_by_user', methods: ['GET'])]
     #[OA\Get(
         description: 'Retourne tous les blogs appartenant à un utilisateur spécifique.',
         summary: "Récupère les blogs d'un utilisateur",

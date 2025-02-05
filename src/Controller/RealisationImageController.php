@@ -10,21 +10,24 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class RealisationImageController extends AbstractController
 {
+
     #[Route('/api/realisation-image', name: 'api_realisation_image_list', methods: ['GET'])]
     public function index(RealisationImageRepository $repository, SerializerInterface $serializer): JsonResponse
     {
         $images = $repository->findAll();
 
-        $jsonData = $serializer->serialize(
+        $json = $serializer->serialize(
             $images,
-            'json'
+            'json',
+            [AbstractNormalizer::IGNORED_ATTRIBUTES => ['realisationId']]
         );
 
-        return new JsonResponse($jsonData, Response::HTTP_OK, [], true);
+        return new JsonResponse($json, Response::HTTP_OK, [], true);
     }
 
 
@@ -37,7 +40,11 @@ class RealisationImageController extends AbstractController
             return new JsonResponse(['message' => 'Image introuvable'], Response::HTTP_NOT_FOUND);
         }
 
-        $jsonImage = $serializer->serialize($image, 'json');
+        $jsonImage = $serializer->serialize(
+            $image,
+            'json',
+            [AbstractNormalizer::IGNORED_ATTRIBUTES => ['realisationId']]
+        );
 
         return new JsonResponse($jsonImage, Response::HTTP_OK, [], true);
     }

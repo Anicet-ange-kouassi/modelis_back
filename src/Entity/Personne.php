@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\PersonneRepository;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: PersonneRepository::class)]
 class Personne
@@ -16,7 +17,10 @@ class Personne
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
-
+    #[ORM\ManyToOne(targetEntity: Pays::class)]
+    #[ORM\JoinColumn(name: 'paysId ', referencedColumnName: 'id', nullable: false)]
+    #[Groups(['personne:read'])]
+    private ?Pays $paysId = null;
     #[ORM\ManyToOne(targetEntity: Profil::class)]
     #[ORM\JoinColumn(name: 'profilId', referencedColumnName: 'id', nullable: false)]
     private ?Profil $profil = null;
@@ -208,46 +212,20 @@ class Personne
     {
         $this->tel = $tel;
     }
-}
 
-// use OpenApi\Annotations as OA;
-// use Doctrine\ORM\Mapping as ORM;
-//
-// #[ORM\Entity(repositoryClass: PersonneRepository::class)]
-// /**
-// * @OA\Schema(description="Représentation d'une personne")
-// */
-// class Personne
-// {
-//    /**
-//     * @OA\Property(type="integer", description="L'identifiant unique de la personne")
-//     */
-//    #[ORM\Id]
-//    #[ORM\GeneratedValue]
-//    #[ORM\Column(type: 'integer')]
-//    private ?int $id = null;
-//
-//    /**
-//     * @OA\Property(type="string", description="Nom de la personne", maxLength=254)
-//     */
-//    #[ORM\Column(type: 'string', length: 254)]
-//    private ?string $nom = null;
-//
-//    /**
-//     * @OA\Property(type="string", description="Prénom de la personne", maxLength=254)
-//     */
-//    #[ORM\Column(type: 'string', length: 254)]
-//    private ?string $prenom = null;
-//
-//    /**
-//     * @OA\Property(type="string", format="email", description="Email de la personne", maxLength=50)
-//     */
-//    #[ORM\Column(type: 'string', length: 50)]
-//    private ?string $email = null;
-//
-//    /**
-//     * @OA\Property(type="string", description="Numéro de téléphone", maxLength=50, nullable=true)
-//     */
-//    #[ORM\Column(type: 'string', length: 50, nullable: true)]
-//    private ?string $tel = null;
-// }
+    /**
+     * @return Pays|null
+     */
+    public function getPaysId(): ?Pays
+    {
+        return $this->paysId;
+    }
+
+    /**
+     * @param Pays|null $paysId
+     */
+    public function setPaysId(?Pays $paysId): void
+    {
+        $this->paysId = $paysId;
+    }
+}

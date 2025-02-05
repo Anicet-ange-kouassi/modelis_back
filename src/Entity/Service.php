@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use AllowDynamicProperties;
 use App\Repository\ServiceRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-#[AllowDynamicProperties] #[ORM\Entity(repositoryClass: ServiceRepository::class)]
+#[\AllowDynamicProperties] #[ORM\Entity(repositoryClass: ServiceRepository::class)]
 class Service
 {
     #[ORM\Id]
@@ -16,6 +16,11 @@ class Service
     #[ORM\ManyToOne(targetEntity: Typeservice::class)]
     #[ORM\JoinColumn(nullable: false)]
     private ?Typeservice $typeservice = null;
+
+    #[ORM\ManyToOne(targetEntity: Pays::class)]
+    #[ORM\JoinColumn(name: 'paysId ', referencedColumnName: 'id', nullable: false)]
+    #[Groups(['service:read'])]
+    private ?Pays $paysId = null;
     #[ORM\Column(name: 'libelle', type: 'string', length: 254, nullable: true)]
     #[Assert\NotBlank(message: 'Veuillez renseigner le type de libellé ')]
     #[Assert\Length(
@@ -42,123 +47,94 @@ class Service
         return $this->id;
     }
 
-    /**
-     * @param string|null $libelle
-     */
     public function setLibelle(?string $libelle): void
     {
         $this->libelle = $libelle;
     }
 
-    /**
-     * @return string|null
-     */
     public function getLibelle(): ?string
     {
         return $this->libelle;
     }
 
-    /**
-     * @param int|null $id
-     */
     public function setId(?int $id): void
     {
         $this->id = $id;
     }
 
-    /**
-     * @return \DateTimeInterface
-     */
     public function getDateCreation(): \DateTimeInterface
     {
         return $this->dateCreation;
     }
 
-    /**
-     * @return string|null
-     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    /**
-     * @return string|null
-     */
     public function getIcon(): ?string
     {
         return $this->icon;
     }
 
-    /**
-     * @return string|null
-     */
     public function getImage(): ?string
     {
         return $this->image;
     }
 
-    /**
-     * @return string|null
-     */
     public function getLien(): ?string
     {
         return $this->lien;
     }
 
-    /**
-     * @return Typeservice|null
-     */
     public function getTypeservice(): ?Typeservice
     {
         return $this->typeservice;
     }
 
-    /**
-     * @param \DateTimeInterface $datecreation
-     */
     public function setDateCreation(\DateTimeInterface $dateCreation): void
     {
         $this->dateCreation = $dateCreation;
     }
 
-    /**
-     * @param string|null $description
-     */
     public function setDescription(?string $description): void
     {
         $this->description = $description;
     }
 
-    /**
-     * @param string|null $icon
-     */
     public function setIcon(?string $icon): void
     {
         $this->icon = $icon;
     }
 
-    /**
-     * @param string|null $image
-     */
     public function setImage(?string $image): void
     {
         $this->image = $image;
     }
 
-    /**
-     * @param string|null $lien
-     */
     public function setLien(?string $lien): void
     {
         $this->lien = $lien;
     }
 
-    /**
-     * @param Typeservice|null $typeservice
-     */
     public function setTypeservice(?Typeservice $typeservice): void
     {
         $this->typeservice = $typeservice;
+    }
+
+    /**
+     * @param Pays|null $paysId
+     */
+    public function setPaysId(?Pays $paysId): void
+    {
+        $this->paysId = $paysId;
+    }
+
+    /**
+     * @return Pays|null
+     */
+    public function getPaysId(): ?Pays
+    {
+        return $this->paysId;
     }
 }

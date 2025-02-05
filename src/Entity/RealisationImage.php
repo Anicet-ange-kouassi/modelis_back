@@ -4,7 +4,9 @@ namespace App\Entity;
 
 use App\Repository\RealisationImageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 #[\AllowDynamicProperties]
 #[ORM\Entity(repositoryClass: RealisationImageRepository::class)]
@@ -16,8 +18,8 @@ class RealisationImage
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Realisation::class, inversedBy: 'images')]
-    #[ORM\JoinColumn(name: 'realisationId', referencedColumnName: 'id', nullable: false)]
-    #[Groups(['realisation_image:read'])]
+    #[JoinColumn(name: 'realisationId', referencedColumnName: 'id', nullable: false)]
+    #[MaxDepth(1)]
     private ?Realisation $realisationId = null;
 
     #[ORM\Column(name: 'image', type: 'string', length: 255)]

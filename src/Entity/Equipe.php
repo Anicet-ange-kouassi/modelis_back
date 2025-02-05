@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\EquipeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EquipeRepository::class)]
@@ -28,6 +29,10 @@ class Equipe
     #[Assert\NotBlank(message: 'Veuillez choisir la personne')]
     private ?Personne $personneid = null;
 
+    #[ORM\ManyToOne(targetEntity: Pays::class)]
+    #[ORM\JoinColumn(name: 'paysId ', referencedColumnName: 'id', nullable: false)]
+    #[Groups(['equipe:read'])]
+    private ?Pays $paysId = null;
     #[ORM\Column(name: 'description', type: 'string', length: 254, nullable: true)]
     private ?string $description = null;
     #[ORM\Column(name: 'dateCreation', type: 'datetime', nullable: false, options: ['default' => 'CURRENT_TIMESTAMP'])]
@@ -87,5 +92,29 @@ class Equipe
         $this->datecreation = $datecreation;
 
         return $this;
+    }
+
+    /**
+     * @param Pays|null $paysId
+     */
+    public function setPaysId(?Pays $paysId): void
+    {
+        $this->paysId = $paysId;
+    }
+
+    /**
+     * @return Pays|null
+     */
+    public function getPaysId(): ?Pays
+    {
+        return $this->paysId;
+    }
+
+    /**
+     * @param int|null $id
+     */
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
     }
 }

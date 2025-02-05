@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\BlogRepository;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: BlogRepository::class)]
 #[ORM\Table(name: 'blog')]
@@ -21,6 +22,10 @@ class Blog
     #[ORM\JoinColumn(name: 'utilisateurId', referencedColumnName: 'id', nullable: false)]
     #[OA\Property(description: 'Utilisateur ayant créé le blog')]
     private ?Utilisateur $utilisateurId = null;
+    #[ORM\ManyToOne(targetEntity: Pays::class)]
+    #[ORM\JoinColumn(name: 'paysId ', referencedColumnName: 'id', nullable: false)]
+    #[Groups(['blog:read'])]
+    private ?Pays $paysId = null;
 
     #[ORM\Column(type: 'string', length: 254)]
     #[Assert\NotBlank(message: 'Le libellé est obligatoire.')]
@@ -38,6 +43,7 @@ class Blog
     #[ORM\Column(name: 'dateCreation', type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
     #[OA\Property(description: 'Date de création du blog', format: 'date-time')]
     private \DateTimeInterface $dateCreation;
+
 
     public function getId(): ?int
     {
@@ -105,5 +111,21 @@ class Blog
         $this->dateCreation = $dateCreation;
 
         return $this;
+    }
+
+    /**
+     * @return Pays|null
+     */
+    public function getPaysId(): ?Pays
+    {
+        return $this->paysId;
+    }
+
+    /**
+     * @param Pays|null $paysId
+     */
+    public function setPaysId(?Pays $paysId): void
+    {
+        $this->paysId = $paysId;
     }
 }
