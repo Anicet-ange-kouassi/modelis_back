@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\OffreRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: OffreRepository::class)]
 class Offre
@@ -11,6 +12,7 @@ class Offre
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['offre:read'])]
     private ?int $id = null;
     #[ORM\Column(name: 'libelle', type: 'string', length: 500, nullable: true)]
     #[Assert\NotBlank(message: 'Veuillez renseigner le libellé d\'offre')]
@@ -23,12 +25,16 @@ class Offre
     private ?string $libelle = null;
     #[ORM\ManyToOne(targetEntity: Typeoffre::class)]
     #[ORM\JoinColumn(name: 'typeOffreId', referencedColumnName: 'id', nullable: false)]
+    #[Groups(['offre:read'])]
     private ?Typeoffre $typeOffreId = null;
     #[ORM\Column(name: 'description', type: 'text', nullable: true)]
     private ?string $description = null;
     #[ORM\ManyToOne(targetEntity: Pays::class)]
     #[ORM\JoinColumn(name: 'paysId ', referencedColumnName: 'id', nullable: false)]
+    #[Groups(['offre:read'])]
     private ?Pays $paysId = null;
+    #[ORM\Column(name: 'dateCreation', type: 'datetime', nullable: false, options: ['default' => 'CURRENT_TIMESTAMP'])]
+    private \DateTimeInterface $dateCreation;
     public function getId(): ?int
     {
         return $this->id;
@@ -56,6 +62,22 @@ class Offre
     public function getLibelle(): ?string
     {
         return $this->libelle;
+    }
+
+    /**
+     * @param \DateTimeInterface $dateCreation
+     */
+    public function setDateCreation(\DateTimeInterface $dateCreation): void
+    {
+        $this->dateCreation = $dateCreation;
+    }
+
+    /**
+     * @return \DateTimeInterface
+     */
+    public function getDateCreation(): \DateTimeInterface
+    {
+        return $this->dateCreation;
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ContactRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 class Contact
@@ -11,6 +12,7 @@ class Contact
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['contact:read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
@@ -27,6 +29,7 @@ class Contact
 
     #[ORM\ManyToOne(targetEntity: Pays::class)]
     #[ORM\JoinColumn(name: 'paysId', referencedColumnName: 'id', nullable: false)]
+    #[Groups(['contact:read'])]
     private ?Pays $pays = null;
 
     public function setId(?int $id): void

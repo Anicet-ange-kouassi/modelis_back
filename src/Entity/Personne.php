@@ -23,51 +23,62 @@ class Personne
     private ?Pays $paysId = null;
     #[ORM\ManyToOne(targetEntity: Profil::class)]
     #[ORM\JoinColumn(name: 'profilId', referencedColumnName: 'id', nullable: false)]
+    #[Groups(['equipe:read'])]
     private ?Profil $profil = null;
 
     #[ORM\Column(name: 'paysResidence', type: 'string', nullable: true)]
+    #[Groups(['equipe:read'])]
     private ?string $paysResidence = null;
 
     #[ORM\Column(name: 'nationalite', type: 'string')]
+    #[Groups(['equipe:read'])]
     private ?string $nationalite = null;
     /**
      * @OA\Property(type="string", maxLength=255)
      */
     #[ORM\Column(type: 'string', length: 254)]
+    #[Groups(['equipe:read'])]
     private ?string $nom = null;
     /**
      * @OA\Property(type="string", maxLength=255)
      */
     #[ORM\Column(type: 'string', length: 254)]
+    #[Groups(['equipe:read'])]
     private ?string $prenom = null;
 
     #[ORM\Column(type: 'string', length: 254, nullable: true)]
     private ?string $linkedin = null;
 
     #[ORM\Column(name: 'sexe', type: 'string', nullable: true)]
+    #[Groups(['equipe:read'])]
     private ?string $sexe = null;
     /**
      * @OA\Property(type="string", maxLength=255)
      */
     #[ORM\Column(type: 'string', length: 50)]
+    #[Groups(['equipe:read'])]
     private ?string $email = null;
     /**
      * @OA\Property(type="string", maxLength=255)
      */
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
+    #[Groups(['equipe:read'])]
     private ?string $tel = null;
     /**
      * @OA\Property(type="string", maxLength=255)
      */
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
+    #[Groups(['equipe:read'])]
     private ?string $adresse = null;
     /**
      * @OA\Property(type="string", maxLength=255)
      */
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Groups(['equipe:read'])]
     private ?string $image = null;
 
     #[ORM\Column(name: 'dateNaissance', type: 'date', nullable: true)]
+    #[Groups(['equipe:read'])]
     private ?\DateTimeInterface $dateNaissance = null;
 
     #[ORM\Column(name: 'dateCreation', type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]

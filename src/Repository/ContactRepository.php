@@ -15,29 +15,22 @@ class ContactRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Contact::class);
     }
+    /**
+     * Retourne tous les contacts dont le pays a le code spécifié.
+     *
+     * @param string $countryCode Le code du pays (par exemple "FRA", "MLI", "SEN")
+     *
+     * @return Contact[] Retourne un tableau d'objets contact
+     */
+    public function findByCountryCode(string $countryCode): array
+    {
+        $qb = $this->createQueryBuilder('e')
+            ->innerJoin('e.pays', 'p')
+            ->addSelect('p')
+            ->where('p.code = :code')
+            ->setParameter('code', $countryCode);
 
-    //    /**
-    //     * @return Contact[] Returns an array of Contact objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('c.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+        return $qb->getQuery()->getResult();
+    }
 
-    //    public function findOneBySomeField($value): ?Contact
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
 }

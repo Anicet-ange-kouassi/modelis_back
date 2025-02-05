@@ -30,4 +30,41 @@ class EquipeRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+
+    /**
+     * Retourne toutes les équipes dont le pays a le code spécifié.
+     *
+     * @param string $countryCode Le code du pays (par exemple "FRA", "MLI", "SEN")
+     *
+     * @return Equipe[] Retourne un tableau d'objets Equipe
+     */
+    public function findByCountryCode(string $countryCode): array
+    {
+        $qb = $this->createQueryBuilder('e')
+            ->innerJoin('e.paysId', 'p')
+            ->addSelect('p')
+            ->where('p.code = :code')
+            ->setParameter('code', $countryCode);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Retourne toutes les équipes avec leurs relations (par exemple, pays, personnes et leurs profils).
+     *
+     * @return Equipe[] Retourne un tableau d'objets Equipe
+     */
+    public function findAllWithRelations(): array
+    {
+        $qb = $this->createQueryBuilder('e')
+            ->leftJoin('e.paysId', 'p')
+            ->addSelect('p')
+            ->leftJoin('e.personnes', 'pers')
+            ->addSelect('pers')
+            // Si chaque personne a d'autres relations (comme profil), vous pouvez les joindre :
+            ->leftJoin('pers.profil', 'prof')
+            ->addSelect('prof');
+
+        return $qb->getQuery()->getResult();
+    }
 }

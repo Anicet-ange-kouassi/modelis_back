@@ -26,6 +26,24 @@ class EquipeController extends AbstractController
         // Retourner la réponse JSON
         return new JsonResponse($jsonEquipList, Response::HTTP_OK, [], true);
     }
+    #[Route('/api/equipe/{payscode}', name: 'api_equipe_code', methods: ['GET'])]
+    public function getEquipeByPaysCode(
+        Request $request,
+        EquipeRepository $equipeRepository,
+        SerializerInterface $serializer,
+    ): JsonResponse {
+        $paysCodeParam = $request->get('payscode'); // récupère le code depuis l'URL
+
+        if ($paysCodeParam) {
+            $equipes = $equipeRepository->findByCountryCode($paysCodeParam);
+        } else {
+            $equipes = $equipeRepository->findAllWithRelations();
+        }
+
+        $json = $serializer->serialize($equipes, 'json');
+
+        return new JsonResponse($json, Response::HTTP_OK, [], true);
+    }
 
     #[Route('/api/equipe/{id}', name: 'api_equipe_detail', methods: ['GET'])]
     public function show(int $id, EquipeRepository $equipeRepository, SerializerInterface $serializer): JsonResponse

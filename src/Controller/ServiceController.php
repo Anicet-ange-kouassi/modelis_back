@@ -30,4 +30,21 @@ final class ServiceController extends AbstractController
 
         return new JsonResponse($jsonServiceList, Response::HTTP_OK, [], true);
     }
+
+    #[\Symfony\Component\Routing\Annotation\Route('api/service/{id}', name: 'api_service_detail', methods: ['GET'])]
+    public function getServiceById(int $id, ServiceRepository $repository, SerializerInterface $serializer): JsonResponse
+    {
+        $service = $repository->find($id);
+
+        if (!$service) {
+            return new JsonResponse(['message' => 'Service introuvable'], Response::HTTP_NOT_FOUND);
+        }
+
+        $jsonData = $serializer->serialize(
+            $service,
+            'json'
+        );
+
+        return new JsonResponse($jsonData, Response::HTTP_OK, [], true);
+    }
 }

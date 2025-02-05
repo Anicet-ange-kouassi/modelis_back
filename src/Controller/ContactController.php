@@ -6,7 +6,6 @@ use App\Entity\Contact;
 use App\Entity\Pays;
 use App\Repository\ContactRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use OpenApi\Annotations as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,6 +22,23 @@ class ContactController extends AbstractController
         $jsonContactList = $serializer->serialize($contacts, 'json');
 
         return new JsonResponse($jsonContactList, Response::HTTP_OK, [], true);
+    }
+
+    #[Route('/api/contact/{payscode}', name: 'api_contact_code', methods: ['GET'])]
+    public function getContactByPaysCode(
+        Request $request,
+        ContactRepository $contactRepository,
+        SerializerInterface $serializer,
+    ): JsonResponse {
+        $paysCodeParam = $request->get('payscode'); // récupère le code depuis l'URL
+
+        if ($paysCodeParam) {
+            $contacts = $contactRepository->findByCountryCode($paysCodeParam);
+        }
+
+        $json = $serializer->serialize($contacts, 'json');
+
+        return new JsonResponse($json, Response::HTTP_OK, [], true);
     }
 
     #[Route('/api/contact', name: 'api_contact_create', methods: ['POST'])]

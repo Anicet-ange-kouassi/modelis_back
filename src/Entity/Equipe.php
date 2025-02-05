@@ -10,9 +10,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: EquipeRepository::class)]
 class Equipe
 {
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['equipe:read'])]
     private ?int $id = null;
 
     #[ORM\Column(name: 'libelle', type: 'string', length: 500, nullable: true)]
@@ -23,10 +25,12 @@ class Equipe
         minMessage: 'Le libellé doit contenir au moins {{ limit }} caractères.',
         maxMessage: 'Le libellé ne peut contenir que {{ limit }} caractères'
     )]
+    #[Groups(['equipe:read'])]
     private ?string $libelle = null;
     #[ORM\ManyToOne(targetEntity: Personne::class)]
     #[ORM\JoinColumn(name: 'personneId', referencedColumnName: 'id')]
     #[Assert\NotBlank(message: 'Veuillez choisir la personne')]
+    #[Groups(['equipe:read'])]
     private ?Personne $personneid = null;
 
     #[ORM\ManyToOne(targetEntity: Pays::class)]
@@ -36,6 +40,7 @@ class Equipe
     #[ORM\Column(name: 'description', type: 'string', length: 254, nullable: true)]
     private ?string $description = null;
     #[ORM\Column(name: 'dateCreation', type: 'datetime', nullable: false, options: ['default' => 'CURRENT_TIMESTAMP'])]
+    #[Groups(['equipe:read'])]
     private \DateTimeInterface $datecreation;
 
     public function __construct()

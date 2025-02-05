@@ -21,9 +21,6 @@ class Typeoffre
         maxMessage: 'Le libellé ne peut contenir que {{ limit }} caractères'
     )]
     private ?string $libelle = null;
-    #[ORM\Column(name: 'dateCreation', type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
-    private ?\DateTimeInterface $dateCreation = null;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -37,21 +34,6 @@ class Typeoffre
         return $this->libelle;
     }
 
-    /**
-     * @return \DateTimeInterface|null
-     */
-    public function getDateCreation(): ?\DateTimeInterface
-    {
-        return $this->dateCreation;
-    }
-
-    /**
-     * @param \DateTimeInterface|null $dateCreation
-     */
-    public function setDateCreation(?\DateTimeInterface $dateCreation): void
-    {
-        $this->dateCreation = $dateCreation;
-    }
 
     /**
      * @param int|null $id

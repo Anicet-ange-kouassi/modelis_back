@@ -16,28 +16,37 @@ class OffreRepository extends ServiceEntityRepository
         parent::__construct($registry, Offre::class);
     }
 
-    //    /**
-    //     * @return Offre[] Returns an array of Offre objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('o')
-    //            ->andWhere('o.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('o.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+     * Retourne toutes les offres dont le pays a le code spécifié.
+     *
+     * @param string $countryCode Le code du pays (par exemple "FRA", "MLI", "SEN")
+     *
+     * @return Offre[] Retourne un tableau d'objets Offre
+     */
+    public function findByCountryCode(string $countryCode): array
+    {
+        $qb = $this->createQueryBuilder('e')
+            ->innerJoin('e.paysId', 'p')
+            ->addSelect('p')
+            ->where('p.code = :code')
+            ->setParameter('code', $countryCode);
 
-    //    public function findOneBySomeField($value): ?Offre
-    //    {
-    //        return $this->createQueryBuilder('o')
-    //            ->andWhere('o.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Retourne toutes les offres avec leurs relations (par exemple, pays, personnes et leurs profils).
+     *
+     * @return Offre[] Retourne un tableau d'objets Offre
+     */
+    public function findAllWithRelations(): array
+    {
+        $qb = $this->createQueryBuilder('e')
+            ->leftJoin('e.paysId', 'p')
+            ->addSelect('p')
+            ->leftJoin('e.typeOffreId', 'type')
+            ->addSelect('type');
+
+        return $qb->getQuery()->getResult();
+    }
 }
