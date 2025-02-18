@@ -1,7 +1,7 @@
 nelmio_api_doc:
     documentation:
         info:
-            title: Mon API
+            title: Anisco API 
             description: Documentation API de mon projet.
             version: 1.0.0
         servers:

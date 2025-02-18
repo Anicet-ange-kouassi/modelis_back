@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Blog;
 use App\Repository\BlogRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,7 +24,7 @@ class BlogController extends AbstractController
             new OA\Response(
                 response: 200,
                 description: 'Liste des blogs',
-                content: new OA\JsonContent(type: 'array', items: new OA\Items(ref: 'src/Entity/Blog.php'))
+                content: new OA\JsonContent(type: 'array', items: new OA\Items(ref: new Model(type: Blog::class)))
             ),
         ]
     )]
@@ -53,7 +54,6 @@ class BlogController extends AbstractController
         return new JsonResponse($response, Response::HTTP_OK);
     }
 
-    #[Route('/api/blog/{utilisateurId}', name: 'get_blogs_by_user', methods: ['GET'])]
     #[OA\Get(
         description: 'Retourne tous les blogs appartenant à un utilisateur spécifique.',
         summary: "Récupère les blogs d'un utilisateur",
@@ -87,6 +87,29 @@ class BlogController extends AbstractController
         return new JsonResponse($response, Response::HTTP_OK);
     }
 
+    #[Route('/api/blog/{utilisateurId}', name: 'get_blogs_by_user', methods: ['GET'])]
+    #[OA\Get(
+        path: '/api/blog/{utilisateurId}',
+        description: 'Retourne tous les blogs appartenant à un utilisateur spécifique.',
+        summary: "Récupère les blogs d'un utilisateur",
+        tags: ['Blog'],
+        parameters: [
+            new OA\Parameter(
+                name: 'utilisateurId',
+                description: 'ID de l\'utilisateur',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Liste des blogs de l'utilisateur",
+                content: new OA\JsonContent(type: 'array', items: new OA\Items(ref: new Model(type: Blog::class)))
+            ),
+        ]
+    )]
     #[Route('/api/blog/{id}', name: 'api_blog_detail', methods: ['GET'])]
     public function show(int $id, BlogRepository $blogRepository, SerializerInterface $serializer, EntityManagerInterface $em): JsonResponse
     {
@@ -105,6 +128,22 @@ class BlogController extends AbstractController
     }
 
     #[Route('/api/blog', name: 'api_blog_create', methods: ['POST'])]
+    #[OA\Post(
+        path: '/api/blog',
+        description: 'Crée un nouveau blog.',
+        summary: 'Création de blog',
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(ref: new Model(type: Blog::class))
+        ),
+        tags: ['Blog'],
+        responses: [
+            new OA\Response(
+                response: 201,
+                description: 'Blog créé avec succès'
+            ),
+        ]
+    )]
     public function create(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, EntityManagerInterface $em): JsonResponse
     {
         $data = $request->getContent();
@@ -119,6 +158,31 @@ class BlogController extends AbstractController
     }
 
     #[Route('/api/blog/{id}', name: 'api_blog_update', methods: ['PUT'])]
+    #[OA\Put(
+        path: '/api/blog/{id}',
+        description: 'Met à jour un blog existant.',
+        summary: 'Mise à jour d\'un blog',
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(ref: new Model(type: Blog::class))
+        ),
+        tags: ['Blog'],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                description: 'ID du blog à mettre à jour',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Blog mis à jour avec succès'
+            ),
+        ]
+    )]
     public function update(int $id, Request $request, BlogRepository $blogRepository, SerializerInterface $serializer, EntityManagerInterface $em): JsonResponse
     {
         $blog = $blogRepository->find($id);
@@ -138,6 +202,27 @@ class BlogController extends AbstractController
         return new JsonResponse(['message' => 'Blog mis à jour avec succès'], Response::HTTP_OK);
     }
 
+    #[OA\Delete(
+        path: '/api/blog/{id}',
+        description: 'Supprime un blog.',
+        summary: 'Suppression d\'un blog',
+        tags: ['Blog'],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                description: 'ID du blog à supprimer',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Blog supprimé avec succès'
+            ),
+        ]
+    )]
     #[Route('/api/blog/{id}', name: 'api_blog_delete', methods: ['DELETE'])]
     public function delete(int $id, BlogRepository $blogRepository, EntityManagerInterface $em): JsonResponse
     {

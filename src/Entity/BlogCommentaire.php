@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\BlogCommentaireRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[\AllowDynamicProperties] #[ORM\Entity(repositoryClass: BlogCommentaireRepository::class)]
 #[ORM\Table(name: 'blog_commentaire')]
@@ -16,7 +17,8 @@ class BlogCommentaire
 
     #[ORM\ManyToOne(targetEntity: Blog::class)]
     #[ORM\JoinColumn(name: 'blogId', referencedColumnName: 'id', nullable: false)]
-    private ?Blog $blog = null;
+    #[Groups(['BlogCommentaire:read'])]
+    private ?Blog $blogId = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $commentaire = null;
@@ -88,12 +90,12 @@ class BlogCommentaire
 
     public function getBlog(): ?Blog
     {
-        return $this->blog;
+        return $this->blogId;
     }
 
-    public function setBlog(?Blog $blog): self
+    public function setBlog(?Blog $blogId): self
     {
-        $this->blog = $blog;
+        $this->blog = $blogId;
 
         return $this;
     }

@@ -6,6 +6,8 @@ use App\Entity\Blog;
 use App\Entity\BlogCommentaire;
 use App\Repository\BlogCommentaireRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use OpenApi\Attributes as OA;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,6 +18,22 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class BlogCommentaireController extends AbstractController
 {
+    #[OA\Get(
+        path: '/api/blog-commentaire',
+        description: 'Retourne tous les blog-commentaires',
+        summary: 'Liste des blog-commentaires',
+        tags: ['BlogCommentaire'],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Liste des blog-commentaires',
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(ref: new Model(type: BlogCommentaire::class))
+                )
+            ),
+        ]
+    )]
     #[Route('/api/blog-commentaire', name: 'api_blog_comment_list', methods: ['GET'])]
     public function index(int $blogId, BlogCommentaireRepository $repository, SerializerInterface $serializer): JsonResponse
     {
@@ -25,6 +43,22 @@ class BlogCommentaireController extends AbstractController
         return new JsonResponse($jsonComments, Response::HTTP_OK, [], true); // Retourne une réponse JSON
     }
 
+    #[OA\Post(
+        path: '/api/blog/{blogId}/commentaires',
+        description: 'Crée d\'un commentaire',
+        summary: "Création d'un commentaire",
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(ref: new Model(type: BlogCommentaire::class))
+        ),
+        tags: ['BlogCommentaire'],
+        responses: [
+            new OA\Response(
+                response: 201,
+                description: 'Commentaire cré avec succès'
+            ),
+        ]
+    )]
     #[Route('/api/blog/{blogId}/commentaires', name: 'api_blog_comment_create', methods: ['POST'])]
     public function create(int $blogId, Request $request, ValidatorInterface $validator, EntityManagerInterface $em): JsonResponse
     {
