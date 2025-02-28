@@ -1,0 +1,330 @@
+-- MySQL dump 10.13  Distrib 8.0.41, for Linux (x86_64)
+--
+-- Host: localhost    Database: modelis_DB
+-- ------------------------------------------------------
+-- Server version	8.0.41-0ubuntu0.24.04.1
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `client`
+--
+
+DROP TABLE IF EXISTS `client`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `client` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `image` text,
+  `description` text,
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `siteId` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_client_site` (`siteId`),
+  CONSTRAINT `fk_client_site` FOREIGN KEY (`siteId`) REFERENCES `site` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `client`
+--
+
+LOCK TABLES `client` WRITE;
+/*!40000 ALTER TABLE `client` DISABLE KEYS */;
+INSERT INTO `client` VALUES (1,'images/client/2b4e242f393aab426ec16c22eaec29f3.png','Description pour le client 1.','2025-01-22 14:37:37',2),(2,'images/client/7e60276e4bf86f08430bb1b12e94419f.png','Description pour le client 2.','2025-01-22 14:37:37',3),(3,'images/client/45ee3e420497863b20bd551a33868cdc.png','Description pour le client 3.','2025-01-22 14:37:37',4),(5,'images/client/80a50c59c25997b144b8a20da1252cec.jpg','Description pour le client 5.','2025-01-22 14:37:37',5),(6,'images/client/8402c43cde81a4c87927cff61ba5c2ce.png','Description pour le client 6.','2025-01-22 14:37:37',6),(7,'images/client/APROMAC.png','Description pour le client 7.','2025-01-22 14:37:37',2),(8,'images/client/ci-energies.png','Description pour le client 8.','2025-01-22 14:37:37',3),(9,'images/client/France.jpg','Description pour le client 9.','2025-01-22 14:37:37',7),(10,'images/client/LogoAFORColorhorizontal.svg','Description pour le client 10.','2025-01-22 14:37:37',8),(11,'images/client/logo-MclauArmoirie.png','Description pour le client 11.','2025-01-22 14:37:37',4),(12,'images/client/ministere_mine.png','Description pour le client 12.','2025-01-22 14:37:37',3),(13,'images/client/Modelis-tech.png','Description pour le client 13.','2025-01-22 14:37:37',2),(14,'images/client/premu.png','Description pour le client 14.','2025-01-22 14:37:37',3);
+/*!40000 ALTER TABLE `client` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `contact`
+--
+
+DROP TABLE IF EXISTS `contact`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `contact` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `email` varchar(255) NOT NULL,
+  `tel` varchar(20) NOT NULL,
+  `adresse` longtext NOT NULL,
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `paysId` int NOT NULL,
+  `siteId` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_4C62E63835569A8D` (`paysId`),
+  KEY `fk_contact_site` (`siteId`),
+  CONSTRAINT `contact_ibfk_1` FOREIGN KEY (`paysId`) REFERENCES `pays` (`id`),
+  CONSTRAINT `fk_contact_site` FOREIGN KEY (`siteId`) REFERENCES `site` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `contact`
+--
+
+LOCK TABLES `contact` WRITE;
+/*!40000 ALTER TABLE `contact` DISABLE KEYS */;
+INSERT INTO `contact` VALUES (1,'contact@modelis-tech.com','(+225) 21 74 84 34','COCODY FAYA EN FACE DE LA CLINIQUE BON SAMARITAIN, Abidjan','2025-01-21 00:00:00',1,8),(2,'contact@modelis-tech.fr','(+33) 1 23 45 67 89','Paris, France','2025-01-21 00:00:00',2,8),(3,'contact@modelis-tech.se','(+221) 23 45 56 789','Dakar, Sénégal','2025-01-21 00:00:00',3,8),(4,'contact@modelis-tech.ml','(+223) 23 45 56 789','Bamako,Mali','2025-01-21 00:00:00',4,8);
+/*!40000 ALTER TABLE `contact` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `expertise`
+--
+
+DROP TABLE IF EXISTS `expertise`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `expertise` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `libelle` varchar(500) NOT NULL,
+  `lien` varchar(500) DEFAULT NULL,
+  `description` text,
+  `image` text,
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `paysId` int NOT NULL,
+  `siteId` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_expertise_site` (`siteId`),
+  CONSTRAINT `fk_expertise_site` FOREIGN KEY (`siteId`) REFERENCES `site` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `expertise`
+--
+
+LOCK TABLES `expertise` WRITE;
+/*!40000 ALTER TABLE `expertise` DISABLE KEYS */;
+INSERT INTO `expertise` VALUES (1,'DÉVELOPPEMENT DE LOGICIEL','<a>Logiciel Web : CMS, HTML/CSS, JAVASCRIPT, JAVA EE,Spring, Hibernate, Junit</a>,\n<a>Logiciel Desktop : C#, Java, Hibernate, Junit, Eclipse RCP, NetBeans PlatForm</a>,\n<a>Ingenierie Logiciel : Hudson, Svn, Junit …</a>','Nous Développons des logiciels métiers et spécifiques pour tout type de clients.\n\nNos logiciels utilisent à la fois les systèmes libres et propriétaires.\n\nDomaines de Développement des logiciels :','images/service/_61a8e80a-c686-476f-8b7d-440886eef2ca.jpeg','2025-01-20 11:44:08',1,3),(2,'SYSTÈME D\'INFORMATION GÉOGRAPHIQUE','<a>Consultance en SIG</a>,<a>Réalisation d’interface Web SIG</a>,<a>Conception de carte pour différents domaines SIG</a>,<a>Mise en place de base de données pour le SIG</a>','Le SIG est un nouveau secteur d’activité. Il est cité parmi les dix métiers d’avenir.\n\nMODELIS TECH se positionne comme un acteur majeur dans ce domaine. L’entreprise a pour ambition d’accompagner le maximum de structures dans la mise en place de leurs projets SIG.\n\n','images/service/_1cbbcdec-318d-4288-88a1-0cea21899d33.jpeg','2025-01-20 11:44:08',1,3),(3,'FORMATION','<a>Formation en SIG : Open Source et propriétaire</a>,<a>Formation en développement Web & Mobile</a>,<a>Formation en développement d’applications</a>','Nous vous proposons des formations dans les systèmes d’informations en générale.\n\nNos formations sont répertoriées ainsi :','images/service/bbc0d44811c4a1a225e44bf69d9776d9.png','2025-01-20 11:44:08',1,2),(4,'HÉBERGEMENT',NULL,'Assurez l’hébergement de vos logiciels et site web à MODELIS TECH avec une fiabilité absolue.','images/service/image_service_hebergerment.png','2025-01-20 11:44:08',1,2),(5,'ok',NULL,'Des ingénieurs spécialisés en génie civil fournissent à vos collaborateurs des formations sur mesure.','images/service/bg-formation.jpg','2025-01-20 11:44:08',1,7),(6,'COLLECTER','null','<p>Collecte de données de terrain; travaux de topographie</p> <p>Vente et location d’appareil de mesure</p> <p>Maintenance et réparation d’appareil</p>','null','2025-02-19 10:29:42',1,7),(7,'TRAITER','null','<p>Analyse Spatiale, Intégration de données</p> <p>Intégration et customisation de solutions</p> <p>Développement de solution métier (cadastre, Administration foncière, défense, environnement)</p>','null','2025-02-19 10:35:22',1,8),(8,'DIFFUSER','null','<p>SIG/ Cartographie</p> <p>Sites internet et applications mobiles</p> <p>Formation</p>','null','2025-02-19 10:37:37',1,8),(9,'CONSTRUIRE','null','<p>Ingénierie de projet de génie civil</p> <p>Réalisation de postes électriques</p> <p>Travaux de construction et de rénovation de bâtiment</p>','null','2025-02-19 10:39:15',1,8);
+/*!40000 ALTER TABLE `expertise` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `lien`
+--
+
+DROP TABLE IF EXISTS `lien`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `lien` (
+  `id` int NOT NULL,
+  `typelienid` int NOT NULL,
+  `libelle` varchar(254) DEFAULT NULL,
+  `lien` varchar(254) DEFAULT NULL,
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `siteId` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_lien_typelien` (`typelienid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `lien`
+--
+
+LOCK TABLES `lien` WRITE;
+/*!40000 ALTER TABLE `lien` DISABLE KEYS */;
+INSERT INTO `lien` VALUES (1,1,'MODELIS GROUP','https://modelisgroup.com/','2025-01-17 00:00:00',8),(2,2,'Site de vente en ligne','https://shop.modelis-gis.com/','2025-01-17 00:00:00',3),(3,3,'Catalogue en ligne','https://catalogue.modelis-gis.com/','2025-01-17 00:00:00',3),(4,4,'Logiciel EasyTopo','https://www.easytopo.fr/','2025-01-17 00:00:00',3),(5,5,'Site de Formation MODELIS','https://formation.easytopo.fr/','2025-01-17 00:00:00',3),(6,3,'MODELIS TECH','https://modelis-tech.com/','2025-01-17 00:00:00',2),(7,6,'Modelis-Gc','https://modelis-gc.com/','2025-01-17 00:00:00',4),(8,5,'Modelis-Gis','https://modelis-gis.com/','2025-01-17 00:00:00',3),(9,7,'Modelis-Tech','http://modelis-tech.com/','2025-01-17 00:00:00',2),(10,8,'Modelis-France','http://modelis-france.com/','2025-01-17 00:00:00',6),(11,5,'Modelis-Sénégal','http://modelis-senegal.com/','2025-01-17 00:00:00',5),(12,9,'Modelis-Mali','http://demo.modelis-mali.com/','2025-01-17 00:00:00',7),(13,10,'Modelis-Group','https://modelisgroup.com/','2025-01-17 00:00:00',8);
+/*!40000 ALTER TABLE `lien` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `pays`
+--
+
+DROP TABLE IF EXISTS `pays`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `pays` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `code` varchar(254) DEFAULT NULL,
+  `nom` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pays`
+--
+
+LOCK TABLES `pays` WRITE;
+/*!40000 ALTER TABLE `pays` DISABLE KEYS */;
+INSERT INTO `pays` VALUES (1,'CIV','Côte d\'Ivoire'),(2,'FR','France'),(3,'SE','Sénégal'),(4,'ML','Mali');
+/*!40000 ALTER TABLE `pays` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `personnelle`
+--
+
+DROP TABLE IF EXISTS `personnelle`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `personnelle` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `PaysResidence` varchar(255) DEFAULT NULL,
+  `nationalite` varchar(255) DEFAULT NULL,
+  `nom` varchar(254) NOT NULL,
+  `prenom` varchar(254) NOT NULL,
+  `sexe` varchar(255) DEFAULT NULL,
+  `email` varchar(50) NOT NULL,
+  `tel` varchar(50) DEFAULT NULL,
+  `adresse` varchar(50) DEFAULT NULL,
+  `image` text,
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `paysId` int NOT NULL,
+  `siteId` int DEFAULT NULL,
+  `profession` varchar(254) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_personnelle_site` (`siteId`),
+  CONSTRAINT `fk_personnelle_site` FOREIGN KEY (`siteId`) REFERENCES `site` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `personnelle`
+--
+
+LOCK TABLES `personnelle` WRITE;
+/*!40000 ALTER TABLE `personnelle` DISABLE KEYS */;
+INSERT INTO `personnelle` VALUES (1,'côte d\'ivoire','Ivoirienne','IRIE BI','Lizié FRANCK','M','irie.fabrice@modelisgc.com','07 59 67 12 64','Cocody','images/personne/0fcf670e93b6726dc9c3d1ed2589dae1.png','2025-01-21 13:13:12',1,2,'Gérant'),(2,'côte d\'ivoire','Ivoirienne','IRIE BI','Irie Fabrice','M','irie.fabrice@modelisgc.com','07 59 67 12 25','Angré','images/personne/e9bb377f3a6ec3cd732077e8b75046c0.png','2025-01-21 13:13:12',1,2,'DIRECTEUR GENERAL'),(3,'côte d\'ivoire','Ivoirienne','Angba','Franck','M','franck.angba@modelis-tech.com','07 59 67 18 25','Angré','images/personne/6235784eb70c0a24027298ce13fc39f9.png','2025-01-21 13:13:12',1,2,'Directeur Technique'),(4,'côte d\'ivoire','Ivoirienne','kouassi','Ange Anicet','M','anicet.kouassi@modelis-tech.com','07 59 68 11 37','Faya','images/personne/anicet.png','2025-01-21 13:13:12',1,2,'Développeur'),(5,'côte d\'ivoire','Ivoirienne','Kouassi','Remi Gnamien','M','remi.kouassi@modelis-tech.com','07 59 68 11 47','Koumassi','images/personne/remi.png','2025-01-21 13:13:12',1,2,'Géomaticien'),(6,'côte d\'ivoire','Ivoirienne','N\'zi','Wilfried','M','wilfried.nzi@modelis-tech.com','07 59 68 11 47','Faya','images/personne/wilfriednzi.jpeg','2025-01-21 13:13:12',1,2,'Responsable du service Géomatique'),(7,'côte d\'ivoire','Ivoirienne','Timité','Arnaud','M','arnaud.timite@modelis-tech.com','07 59 68 11 47','Bingerville','images/personne/arnaud-timité.jpeg','2025-01-21 13:13:12',1,2,'Développeur '),(8,'côte d\'ivoire','Ivoirienne','Adekpé','Dylan','M','dylan.adekpe@modelis-tech.com','07 59 68 11 50','Faya','images/personne/dylan.jpg','2025-01-21 13:13:12',1,2,'Développeur'),(9,'France','Française','Dupont','Jean','M','jean.dupont@gmail.com','06 12 34 56 78','Paris','images/personne/jean.png','2025-02-05 11:27:54',2,6,'CEO'),(10,'France','Française','Martin','Sophie','F','sophie.martin@gmail.com','06 98 76 54 32','Lyon','images/personne/sophie.png','2025-02-05 11:27:54',2,6,'Secrétaire'),(11,'France','Française','Lemoine','Pierre','M','pierre.lemoine@gmail.com','07 65 43 21 09','Marseille','images/personne/pierre.png','2025-02-05 11:27:54',2,6,'Comptable'),(12,'France','Française','Bernard','Lucie','F','lucie.bernard@gmail.com','06 78 54 32 10','Bordeaux','images/personne/lucie.png','2025-02-05 11:27:54',2,6,'Conseiller commercial'),(13,'France','Française','Rousseau','Antoine','M','antoine.rousseau@gmail.com','07 45 67 89 01','Nice','images/personne/antoine.png','2025-02-05 11:27:54',2,6,'Développeur'),(14,'Mali','Malienne','Traoré','Moussa','M','moussa.traore@gmail.com','06 23 45 67 89','Bamako','images/personne/moussa.png','2025-02-05 11:27:54',4,5,'Ingénieur construction'),(15,'Mali','Malienne','Diabaté','Aminata','F','aminata.diabate@gmail.com','07 12 34 56 78','Sikasso','images/personne/aminata.png','2025-02-05 11:27:54',4,5,'Conseiller commercial'),(16,'Mali','Malienne','Keita','Abdoulaye','M','abdoulaye.keita@gmail.com','06 98 76 54 32','Kayes','images/personne/abdoulaye.png','2025-02-05 11:27:54',4,5,'Responsable comptabilité analytique'),(17,'Mali','Malienne','Coulibaly','Fatoumata','F','fatoumata.coulibaly@gmail.com','07 65 43 21 09','Mopti','images/personne/fatoumata.png','2025-02-05 11:27:54',4,5,'Développeur'),(18,'Mali','Malienne','Konaté','Ibrahim','M','ibrahim.konate@gmail.com','06 45 67 89 01','Gao','images/personne/ibrahim.png','2025-02-05 11:27:54',4,5,'Développeur'),(19,'Sénégal','Sénégalaise','Ndiaye','Serigne','M','serigne.ndiaye@gmail.com','06 78 54 32 10','Dakar','images/personne/serigne.png','2025-02-05 11:27:54',3,7,'Responsable comptabilité analytique'),(20,'Sénégal','Sénégalaise','Sow','Awa','F','awa.sow@gmail.com','07 23 45 67 89','Thiès','images/personne/awa.png','2025-02-05 11:27:54',3,7,'Ingénieur construction'),(21,'Sénégal','Sénégalaise','Fall','Mamadou','M','mamadou.fall@gmail.com','06 12 34 56 78','Saint-Louis','images/personne/mamadou.png','2025-02-05 11:27:54',3,7,'Responsable du service Géomatique'),(22,'Sénégal','Sénégalaise','Diop','Khadija','F','khadija.diop@gmail.com','07 98 76 54 32','Ziguinchor','images/personne/khadija.png','2025-02-05 11:27:54',3,7,'Ingénieur construction'),(23,'Sénégal','Sénégalaise','Gueye','Boubacar','M','boubacar.gueye@gmail.com','06 45 67 89 01','Kaolack','images/personne/boubacar.png','2025-02-05 11:27:54',3,7,'Secrétaire');
+/*!40000 ALTER TABLE `personnelle` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `realisation`
+--
+
+DROP TABLE IF EXISTS `realisation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `realisation` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `clientId` int NOT NULL,
+  `paysId` int NOT NULL,
+  `libelle` text,
+  `description` text,
+  `dateDebut` date DEFAULT NULL,
+  `dateFin` date DEFAULT NULL,
+  `enCours` tinyint(1) DEFAULT '0',
+  `resultat` text,
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `siteId` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `typeclientId` (`clientId`),
+  KEY `paysId` (`paysId`),
+  KEY `fk_realisation_site` (`siteId`),
+  CONSTRAINT `fk_realisation_site` FOREIGN KEY (`siteId`) REFERENCES `site` (`id`),
+  CONSTRAINT `realisation_ibfk_1` FOREIGN KEY (`clientId`) REFERENCES `client` (`id`),
+  CONSTRAINT `realisation_ibfk_2` FOREIGN KEY (`paysId`) REFERENCES `pays` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `realisation`
+--
+
+LOCK TABLES `realisation` WRITE;
+/*!40000 ALTER TABLE `realisation` DISABLE KEYS */;
+INSERT INTO `realisation` VALUES (1,13,1,'DÉVELOPPEMENT D\'UNE APPLICATION DE TOPOGRAPHIE : EASYTOPO','<p>Dans les années 2000, les fondateurs de Modelis technologie ont développé une première version d’une application de topographie appelée EasyTopo. Cette application est très appréciée des cabinets de géomètres experts au Mali. La plupart l’utilise dans leur activité quotidienne pour gérer des lotissements et éditer des documents administratifs.</p>\n<p>Utilisé depuis 2004, ce logiciel présente aujourd’hui de nombreuses limitations. En effet, le langage de programmation n’est plus maintenu par Microsoft. Il n’existe aucune notion de base de données ainsi que du réseau. La sécurité est quasi inexistante.</p>\n<p>Courant 2014, Modelis Technologie a repensé l’architecture de l’application. Tout le logiciel a été réécrit à partir de zéro. Ce sont plus de deux millions de lignes de codes qui ont été portés en java.</p> <p>Le SIG est devenu un concept de base du logiciel. Un vrai modèle de données a vu le jour avec une base de données associée.</p>','2017-01-01',NULL,1,'<p>EasyTopo:</p>\n    <ul>\n        <li>Intègre les données CAD dans une base de données</li>\n        <li>Donne la possibilité de manipuler les données CAD dans un Système d’Information Géographique (SIG)</li>\n        <li>Fournit plusieurs fonctionnalités SIG</li>\n        <li>Facilite l’utilisation de logiciels SIG</li>\n        <li>Sécurise les données grâce à son excellent module de sécurité</li>\n    </ul>','2025-01-22 15:17:24',3),(3,5,1,'RÉALISATION D’UNE ÉTUDE GLOBALE SUR L’ASSAINISSEMENT ET LA GESTION INTÉGRÉE DU BASSIN VERSANT DU GOUROU','<p>Le projet de réalisation d’une étude globale sur l’assainissement et la gestion intégrée du Bassin Versant du Gourou se situe en Côte d’Ivoire, dans le district d’Abidjan, constitué de la Ville d’Abidjan, des communes d’Anyama, Bingerville, Songon.</p>\n<p>Sur le territoire d’Abidjan, le Bassin Versant du Gourou couvre une superficie d’environ 28,6 km². Il est délimité à l’Est par le prolongement du boulevard Latrille, vers le quartier des Deux Plateaux, au Nord par Abobo, à l’Ouest par la ligne de chemin de fer (Adjamé-Anyama) et au Sud par le carrefour de l’Indenié où le Bassin Versant du Gourou trouve son exutoire : la baie de Cocody</p>.','2015-02-01','2015-03-01',0,'<p>MODELIS TECH produit les différentes cartes demandées par le Client.</p>,<p>Pour cela, nous avons :</p>\n    <ul>\n        <li>Traité les données issues de collecte GPS</li>\n        <li>Traité les orthophotos</li>\n        <li>Généré les différentes cartes thématiques souhaitées</li>\n    </ul>','2025-01-22 15:32:47',2),(4,13,1,'DÉVELOPPEMENT DE LA PLATE-FORME DE DÉMONSTRATION DE MODELIS TECH','<p>Modelis Technologie, dans son besoin de communication sur son savoir faire a décidé de mettre en ligne une plateforme de démonstrations. Le but de cette plateforme est multiple :</p> <ul>\n        <li>Avoir une vitrine de présentation de son savoir faire ;</li>\n        <li>présenter différents usages du SIG appliqué à des métiers différents;</li>\n        <li>montrer différentes architectures open sources ;</li>\n        <li>mettre en situation la résolution de plusieurs problématiques métiers à partir d’outil.</li>\n    </ul>\n<p>Un impératif de cette plateforme est d’intégrer tout en local. Aucune donnée ne devrait être distante. Cela comprend :</p><ul>\n        <li>les bases de données;</li>\n        <li>les serveurs : web, d’application, cartographique ;</li>\n        <li>les serveurs de cache.</li>\n    </ul>','2015-04-01','2016-04-01',0,'<p>Un portail de démonstration de différentes technologies Open Sources :</p>\n    <ul>\n        <li>Un site cartographique qui présente les couches administratives</li>\n        <li>Un site cartographique pour les opérateurs de télécom</li>\n        <li>Un site cartographique pour le cadatsre</li>\n    </ul> <p>Le développement du portail a été effectué en mode agile pour prendre en compte les remarques tout au long de la réalisation des différents sites.</p>','2025-01-22 15:49:51',2),(5,1,1,'GESTION DES BORDEREAUX DE ROUTE HOMOLOGUÉS (BRH)','<p>Le projet vise à mettre en place un Système d’Information Géographique (SIG) par la conception d’une base de données cartographique sur la contenance des concessions forestières.</p>,\n<p>La cartographie numérique des périmètres permettra au ministère des Eaux et Forêts une meilleure gestion du patrimoine forestier de la Côte d’Ivoire.</p>,<p>Le SIG associé permettra à l’administration forestière d’assurer une gestion rationnelle et un contrôle plus efficace des ressources forestières. Des données plus détaillées seront ainsi mis à la disposition des opérateurs de la filière forêt-bois pour une meilleure gestion des limites de leur périmètres dans la mise en œuvre du levé des coordonnées cartographiques au GPS des arbres à abattre.</p>','2016-03-01','2016-08-01',0,'<p>Une application Web qui permet de gérer les Bordereaux de Routes Homologués (BRH) comprenant :</p>,\n    <ul>\n        <li>Une base de données centralisée</li>\n        <li>Une application en responsive design</li>\n        <li>Un code source maitrisé avec des fonctionnalités répondant aux besoins du client</li>\n        <li>Une interface conviviale et simple à l’usage</li>\n        <li>Des données sécurisées avec un accès par profil</li>\n    </ul>,<p>Le développement de l’application a été effectuée en mode Agile pour prendre en compte les remarques du client tout au long de la phase de réalisation des différents modules applicatifs</p>','2025-01-22 16:08:26',4),(6,2,1,'SOLUTION INTÉGRÉE DE GESTIONS DES INFORMATIONS DU CADASTRE DE CÔTE D\'IVOIRE','<p>Face à ses ambitions futures et les problèmes rencontrés par les agents sur le terrain, le Cadastre de Côte d’Ivoire a engagé une réflexion autour de son système d’information cadastrale. Un groupe de travail a été ainsi mandaté pour faire un état des lieux et rechercher des solutions. Les principales difficultés qui ressortent de l’état des lieux sont les suivants :</p> ,<ul>\n        <li>L’absence de solution centralisée ;</li>\n        <li>L’usage d’un logiciel plus adapté aux standards actuels. Le logiciel actuel est monoposte et fonctionne sous MS DOS. Il est incompatible avec les nouveaux systèmes d’exploitation ;</li>\n        <li>La sécurisation des données ;</li>\n<li>Le besoin de tableau de bord pour les décideurs ;</li>\n<li>Le besoin d’outils nomades pour les agents de terrain ;</li>\n<li>La connexion avec les bases de données existantes : fiscales, foncières…</li>\n<li>L’usage du SIG comme base du système</li>\n    </ul>,<p>Suite à cet état des lieux, Modelis Technologie a été sollicité par le groupe de travail afin de trouver des solutions</p>','2016-01-01',NULL,1,'<p>Une base de données SIG : sécurisée, ouverte et répondant aux standards internationaux</p>,<p>Une solution intégrée de gestion de l’information cadastrale appelée LTT</p>\n    <ul>\n        <li>Un client desktop ou LTT desktop : pour les agents de bureau. Ce client fournit les outils métiers pour interroger, manipuler, créer et mettre à jour l’information cadastrale. Il est basé sur Netbeans Platform (open source), est modulaire et offre plusieurs niveaux de sécurité. Il est aussi multi plateforme et compatible à tous les systèmes d’informations</li>\n        <li>Un client Web ou LTT Web : pour les décideurs. Il donne une vision globale des données et permet d’avoir une vue de l’ensemble du territoire national. Il offre aussi des outils d’interrogation en ligne.</li>\n        <li>Un client mobile ou LTT Mobile : pour les agents de terrain. Ce client permet d’interroger la base de données directement depuis le terrain.</li>\n    </ul> ,<p>A partir de ce système intégré, il est possible d’interroger la base de données fiscales et foncières.</p>','2025-01-22 16:26:57',3),(7,6,2,'SITE WEB COLLABORATIF POUR L\'ÉGLISE CIE FRANCE','<p>Le Centre International d’Évangélisation Mission France (CIE/FRANCE) est un ministère du Centre International d’Évangélisation Mission Africaine (CIE/MIA) basé à Ouagadougou.</p>,\n<p>Dans sa politique de développement le CIE France a engagé une réflexion autour de ses outils de communication. Le site web de l’association a été ainsi positionné au cœur de cette démarche et Modelis Technologie via son responsable a été mandaté pour accomplir ce site.</p>,<p>L’idée du site est de permette au CIE France de divulguer les nouvelles tout en donnant une meilleure visibilité aux activités de l’association.</p>','2016-06-01','2016-08-01',0,'<ul>\n        <li>Un site web responsive design : Web, Tablette, Smatphone</li>\n        <li>Une charte graphique correspondant au besoin du client</li>\n        <li>L’amélioration de la visibilité du CIE France</li>\n        <li>Le transfert de compétences vers les équipes du CIE France</li>\n        <li>Un tableau de bord donnant un accès aux statistiques des visites</li>\n    </ul>','2025-01-22 16:37:37',2);
+/*!40000 ALTER TABLE `realisation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `realisation_image`
+--
+
+DROP TABLE IF EXISTS `realisation_image`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `realisation_image` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `realisationId` int NOT NULL,
+  `image` varchar(255) NOT NULL,
+  `date_creation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `IDX_F9D6B0F8E8BD517` (`realisationId`),
+  CONSTRAINT `realisation_image_ibfk_1` FOREIGN KEY (`realisationId`) REFERENCES `realisation` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `realisation_image`
+--
+
+LOCK TABLES `realisation_image` WRITE;
+/*!40000 ALTER TABLE `realisation_image` DISABLE KEYS */;
+INSERT INTO `realisation_image` VALUES (1,1,'images/realisation/937956c24aae99f0873f803115f65d6c.png','2025-01-23 00:13:56'),(2,1,'images/realisation/a35d8c3fa6ef2a730575fc6538d56450.jpg','2025-01-23 00:13:56'),(3,1,'images/realisation/2d248fcce25cc4bd34c4604c05e7891c.png','2025-01-23 00:13:56'),(4,3,'images/realisation/ee977b9989d0c9ea1ff68e40557b3abe.png','2025-01-23 00:13:56'),(5,3,'images/realisation/f3c489940d10467523f4c682891ad969.png','2025-01-23 00:13:56'),(6,4,'images/realisation/95aec6d8ee92ed17f9e1244690629f8b.png','2025-01-23 00:13:56'),(7,4,'images/realisation/303cf03ee81dbbe0a6929017202073eb.png','2025-01-23 00:13:56'),(8,4,'images/realisation/694a861919cc1d08d38bb5dfc1db74d9.png','2025-01-23 00:13:56'),(9,4,'images/realisation/f0503309082c6f5a0d5072d3fa72cc0e.png','2025-01-23 00:13:56'),(10,5,'images/realisation/0e1a3508a2ec1f7450bf40d8ae1e95fd.png','2025-01-23 00:13:56'),(11,5,'images/realisation/3d90f4427adce451b824f9926db41778.png','2025-01-23 00:13:56'),(12,6,'images/realisation/196ebe3edb66dc42851ad55001623296.png','2025-01-23 00:13:56'),(13,6,'images/realisation/d8074336e8359efe0b95a1ae8d4edea4.png','2025-01-23 00:13:56'),(14,6,'images/realisation/167ef0cc25af6ca3f76f295d1c98ecc6.png','2025-01-23 00:13:56'),(15,6,'images/realisation/ade93273c0f9ee6b45bcaea84f2ed7c0.png','2025-01-23 00:13:56'),(16,7,'images/realisation/09741a6544cecd20bad9627962596b41.png','2025-01-23 00:13:56'),(17,7,'images/realisation/8bf75a8329cbc983ddcc74807ddd4ef2.png','2025-01-23 00:13:56');
+/*!40000 ALTER TABLE `realisation_image` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `site`
+--
+
+DROP TABLE IF EXISTS `site`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `site` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `code` varchar(50) NOT NULL,
+  `nom` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `site`
+--
+
+LOCK TABLES `site` WRITE;
+/*!40000 ALTER TABLE `site` DISABLE KEYS */;
+INSERT INTO `site` VALUES (2,'Tech','modelis-Tech'),(3,'Gis','modelis-Gis'),(4,'Gc','modelis-Gc'),(5,'Ml','modelis-Mali'),(6,'Fr','modelis-France'),(7,'Se','modelis-Senegal'),(8,'Group','modelis-Group');
+/*!40000 ALTER TABLE `site` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `typelien`
+--
+
+DROP TABLE IF EXISTS `typelien`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `typelien` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `libelle` varchar(254) DEFAULT NULL,
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `typelien`
+--
+
+LOCK TABLES `typelien` WRITE;
+/*!40000 ALTER TABLE `typelien` DISABLE KEYS */;
+INSERT INTO `typelien` VALUES (1,'Autres liens','2025-01-17 16:26:20'),(2,'Liens utiles','2025-01-17 16:27:30'),(3,'groupe','2025-01-17 16:28:50');
+/*!40000 ALTER TABLE `typelien` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2025-02-28 10:24:32
