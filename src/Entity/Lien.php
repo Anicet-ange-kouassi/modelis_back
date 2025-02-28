@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\LienRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[\AllowDynamicProperties] #[ORM\Entity(repositoryClass: LienRepository::class)]
 class Lien
@@ -13,6 +14,11 @@ class Lien
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
+
+    #[ORM\ManyToOne(targetEntity: Site::class)]
+    #[ORM\JoinColumn(name: 'siteId ', referencedColumnName: 'id', nullable: false)]
+    #[Groups(['personnelle:read'])]
+    private ?Site $siteId = null;
     #[ORM\Column(name: 'libelle', type: 'string', length: 254, nullable: true)]
     #[Assert\NotBlank(message: 'Veuillez renseigner le libellé du poste ou de la fonction occupée dans le lien')]
     #[Assert\Length(
@@ -26,9 +32,6 @@ class Lien
     #[ORM\Column(name: 'lien', type: 'string', length: 254, nullable: true)]
     private ?string $lien = null;
 
-//    #[ORM\ManyToOne(targetEntity: Typelien::class)]
-//    #[ORM\JoinColumn(name: 'typelienidId', referencedColumnName: 'id')]
-//    private ?Typelien $typelienid = null;
 
     #[ORM\Column(name: 'dateCreation', type: 'datetime', nullable: false, options: ['default' => 'CURRENT_TIMESTAMP'])]
     private \DateTimeInterface $dateCreation;
@@ -57,6 +60,22 @@ class Lien
     public function getLibelle(): ?string
     {
         return $this->libelle;
+    }
+
+    /**
+     * @return Site|null
+     */
+    public function getSiteId(): ?Site
+    {
+        return $this->siteId;
+    }
+
+    /**
+     * @param Site|null $siteId
+     */
+    public function setSiteId(?Site $siteId): void
+    {
+        $this->siteId = $siteId;
     }
 
     /**

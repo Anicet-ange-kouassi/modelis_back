@@ -19,7 +19,7 @@ class ClientController extends AbstractController
     #[OA\Get(
         path: '/api/client',
         description: 'Retourne tous les clients',
-        summary: 'Liste des historiques',
+        summary: 'Liste des clients',
         tags: ['Client'],
         responses: [
             new OA\Response(
@@ -108,5 +108,48 @@ class ClientController extends AbstractController
         $em->flush();
 
         return new JsonResponse(['message' => 'Client créé avec succès'], Response::HTTP_CREATED);
+    }
+
+    #[Route('/api/client/{id}', name: 'api_client_delete', methods: ['DELETE'])]
+    #[OA\Delete(
+        path: '/api/client/{id}',
+        description: 'Supprime un client par son ID.',
+        summary: "Suppression d'un client",
+        tags: ['Client'],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                description: 'ID du client à supprimer',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Client supprimé avec succès'
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Client introuvable'
+            ),
+        ]
+    )]
+    public function deleteClient(
+        int $id,
+        ClientRepository $clientRepository,
+        EntityManagerInterface $em,
+    ): JsonResponse {
+        $client = $clientRepository->find($id);
+
+        if (!$client) {
+            return new JsonResponse(['message' => 'client introuvable'], Response::HTTP_NOT_FOUND);
+        }
+
+        $em->remove($client);
+        $em->flush();
+
+        return new JsonResponse(['message' => 'Client supprimé avec succès'], Response::HTTP_OK);
     }
 }

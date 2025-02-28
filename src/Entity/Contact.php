@@ -32,6 +32,11 @@ class Contact
     #[Groups(['contact:read'])]
     private ?Pays $pays = null;
 
+    #[ORM\ManyToOne(targetEntity: Site::class)]
+    #[ORM\JoinColumn(name: 'siteId', referencedColumnName: 'id', nullable: false)]
+    #[Groups(['contact:read'])]
+    private ?Site $site = null;
+
     public function setId(?int $id): void
     {
         $this->id = $id;
@@ -47,9 +52,14 @@ class Contact
         return $this->adresse;
     }
 
-    public function getDateCreation(): ?\DateTime
+    public function getDateCreation(): \DateTimeInterface
     {
         return $this->dateCreation;
+    }
+
+    public function getSite(): ?Site
+    {
+        return $this->site;
     }
 
     public function getEmail(): ?string
@@ -72,20 +82,15 @@ class Contact
         $this->adresse = $adresse;
     }
 
+    public function setSite(?Site $site): void
+    {
+        $this->site = $site;
+    }
+
     public function setDateCreation(?\DateTime $dateCreation): void
     {
         $this->dateCreation = $dateCreation;
     }
-
-//    public function setDateModification(?\DateTime $dateModification): void
-//    {
-//        $this->dateModification = $dateModification;
-//    }
-//
-//    public function setDateSuppression(?\DateTime $dateSuppression): void
-//    {
-//        $this->dateSuppression = $dateSuppression;
-//    }
 
     public function setEmail(?string $email): void
     {

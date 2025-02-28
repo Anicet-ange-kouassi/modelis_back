@@ -17,16 +17,20 @@ class Realisation
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: Typeclient::class)]
-    #[ORM\JoinColumn(name: 'typeclientId', referencedColumnName: 'id', nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Client::class, cascade: ['remove'])]
+    #[ORM\JoinColumn(name: 'clientId', referencedColumnName: 'id', nullable: false)]
     #[Groups(['realisation:read'])]
-    private ?Typeclient $typeclientId = null;
+    private ?Client $clientId = null;
 
     #[ORM\ManyToOne(targetEntity: Pays::class)]
     #[ORM\JoinColumn(name: 'paysId ', referencedColumnName: 'id', nullable: false)]
     #[Groups(['realisation:read'])]
     private ?Pays $paysId = null;
 
+    #[ORM\ManyToOne(targetEntity: Site::class)]
+    #[ORM\JoinColumn(name: 'siteId ', referencedColumnName: 'id', nullable: false)]
+    #[Groups(['realisation:read'])]
+    private ?Site $siteId = null;
     #[ORM\Column(name: 'libelle', type: 'string', length: 500, nullable: true)]
     #[Assert\NotBlank(message: 'Veuillez renseigner le libellé de la realisation')]
     #[Assert\Length(
@@ -91,9 +95,19 @@ class Realisation
         return $this->libelle;
     }
 
+    public function getSiteId(): ?Site
+    {
+        return $this->siteId;
+    }
+
     public function getDateCreation(): ?\DateTimeInterface
     {
         return $this->dateCreation;
+    }
+
+    public function setSiteId(?Site $siteId): void
+    {
+        $this->siteId = $siteId;
     }
 
     public function setDateCreation(?\DateTimeInterface $dateCreation): void
@@ -131,9 +145,9 @@ class Realisation
         return $this->resultat;
     }
 
-    public function getTypeclientId(): Typeclient
+    public function getClientId(): Client
     {
-        return $this->typeclientId;
+        return $this->clientId;
     }
 
     public function setDateDebut(?\DateTimeInterface $dateDebut): void
@@ -156,20 +170,14 @@ class Realisation
         $this->enCours = $enCours;
     }
 
-    /**
-     * @param Pays|null $paysId
-     */
     public function setPaysId(?Pays $paysId): void
     {
         $this->paysId = $paysId;
     }
 
-    /**
-     * @param Typeclient|null $typeclientId
-     */
-    public function setTypeclientId(?Typeclient $typeclientId): void
+    public function setClientId(?Client $clientId): void
     {
-        $this->typeclientId = $typeclientId;
+        $this->clientId = $clientId;
     }
 
     public function setImages(Collection $images): void

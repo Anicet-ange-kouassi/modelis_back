@@ -1,8 +1,8 @@
 nelmio_api_doc:
     documentation:
         info:
-            title: Anisco API 
-            description: Documentation API de mon projet.
+            title: ModelisAPI
+            description: Documentation API du projet Modelis Backend.
             version: 1.0.0
         servers:
             - url: http://localhost:8000
